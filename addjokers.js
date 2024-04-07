@@ -1,3 +1,5 @@
+let version = "1.0.1";
+
 let jokers = [
   {
     name: "安全网",
@@ -8,7 +10,8 @@ let jokers = [
       "{C:inactive}（当前为{C:chips}+20{C:inactive}筹码）"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_safety_net.png",
-    rarity: "普通"
+    rarity: "普通",
+    cost: 5
   },
   {
     name: "回扣",
@@ -17,7 +20,8 @@ let jokers = [
       "出售牌时失去{C:money}$3{}"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_rebate.png",
-    rarity: "普通"
+    rarity: "普通",
+    cost: 4
   },
   {
     name: "双筒望远镜",
@@ -26,7 +30,8 @@ let jokers = [
       "再使用{C:attention}1{}次"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_binoculars.png",
-    rarity: "普通"
+    rarity: "普通",
+    cost: 5
   },
   {
     name: "奢侈税",
@@ -36,18 +41,75 @@ let jokers = [
       "{C:inactive}（当前为{C:attention}+3{C:inactive}）"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_luxury_tax.png",
-    rarity: "普通"
+    rarity: "普通",
+    cost: 5
+  },
+  {
+    name: "超凡升天",
+    text: [
+      "选择{C:attention}盲注{}后",
+      "生成一张{C:tarot}倒吊人{}",
+      "{C:inactive}（必须有空位）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_transcendence.png",
+    rarity: "普通",
+    cost: 5
+  },
+  {
+    name: "灾星",
+    text: [
+      "选择{C:attention}盲注{}后",
+      "生成一张{C:tarot}星星{}",
+      "{C:inactive}（必须有空位）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_calamity_star.png",
+    rarity: "普通",
+    cost: 5
+  },
+  {
+    name: "残月",
+    text: [
+      "选择{C:attention}盲注{}后",
+      "生成一张{C:tarot}月亮{}",
+      "{C:inactive}（必须有空位）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_crescent_moon.png",
+    rarity: "普通",
+    cost: 5
+  },
+  {
+    name: "日食",
+    text: [
+      "选择{C:attention}盲注{}后",
+      "生成一张{C:tarot}太阳{}",
+      "{C:inactive}（必须有空位）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_solar_eclipse.png",
+    rarity: "普通",
+    cost: 5
+  },
+  {
+    name: "末世",
+    text: [
+      "选择{C:attention}盲注{}后",
+      "生成一张{C:tarot}世界{}",
+      "{C:inactive}（必须有空位）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_doomed_world.png",
+    rarity: "普通",
+    cost: 5
   },
   {
     name: "人寿保险",
     text: [
       "选择{C:attention}盲注{}后，",
-      "失去当前筹码的{C:red}15%{}，",
+      "失去当前筹码的{C:red}12.5%{}，",
       "获得等于资金{C:money}50%{}的筹码",
       "{C:inactive}（当前为{C:chips}+0{C:inactive}筹码）"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_life_insurance.png",
-    rarity: "罕见"
+    rarity: "罕见",
+    cost: 6
   },
   {
     name: "量(子)化",
@@ -58,7 +120,8 @@ let jokers = [
       "{C:inactive}（当前为{C:mult}+0{C:inactive}倍率）"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_quantization.png",
-    rarity: "罕见"
+    rarity: "罕见",
+    cost: 6
   },
   {
     name: "逐星",
@@ -70,7 +133,8 @@ let jokers = [
       "{C:inactive}（当前为{C:mult}+0{C:inactive}倍率）"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_pursue_the_stars.png",
-    rarity: "罕见"
+    rarity: "罕见",
+    cost: 6
   },
   {
     name: "捧月",
@@ -82,7 +146,8 @@ let jokers = [
       "{C:inactive}（当前为{C:money}$0{C:inactive}）"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_embrace_the_moon.png",
-    rarity: "罕见"
+    rarity: "罕见",
+    cost: 6
   },
   {
     name: "执日",
@@ -92,7 +157,8 @@ let jokers = [
       "{C:attention}升级{}出牌牌型"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_hold_the_sun.png",
-    rarity: "罕见"
+    rarity: "罕见",
+    cost: 6
   },
   {
     name: "救世",
@@ -101,7 +167,8 @@ let jokers = [
       "提供{C:chips}+100{}筹码"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_salvage_the_world.png",
-    rarity: "罕见"
+    rarity: "罕见",
+    cost: 6
   },
   {
     name: "虚位以待",
@@ -111,7 +178,8 @@ let jokers = [
       "提供{C:mult}+15{}倍率"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_vacant_seat.png",
-    rarity: "罕见"
+    rarity: "罕见",
+    cost: 6
   },
   {
     name: "投资回报率",
@@ -121,7 +189,8 @@ let jokers = [
       "{C:inactive}（当前为{C:mult}+0{C:inactive}倍率）"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_return_on_investment.png",
-    rarity: "罕见"
+    rarity: "罕见",
+    cost: 6
   },
   {
     name: "星之彩",
@@ -132,7 +201,8 @@ let jokers = [
       "{C:inactive}（当前为{X:mult,C:white}X1{C:inactive}倍率）"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_color_out_of_space.png",
-    rarity: "罕见"
+    rarity: "罕见",
+    cost: 7
   },
   {
     name: "垃圾时间",
@@ -143,7 +213,8 @@ let jokers = [
       "失去{X:mult,C:white}X0.5{}倍率"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_garbage_time.png",
-    rarity: "罕见"
+    rarity: "罕见",
+    cost: 7
   },
   {
     name: "世界遗产",
@@ -153,7 +224,8 @@ let jokers = [
       "每弃一张牌，获得{X:mult,C:white}X0.04{}倍率"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_world_heritage.png",
-    rarity: "罕见"
+    rarity: "罕见",
+    cost: 6
   },
   {
     name: "卫星支付",
@@ -164,7 +236,8 @@ let jokers = [
       "{C:inactive}（当前为{C:money}-$0{C:inactive}）"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_satellite_payment.png",
-    rarity: "罕见"
+    rarity: "罕见",
+    cost: 6
   },
   {
     name: "税收官",
@@ -175,7 +248,8 @@ let jokers = [
       "{C:inactive}（当前为{C:money}$0{C:inactive}）"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_tax_collector.png",
-    rarity: "罕见"
+    rarity: "罕见",
+    cost: 7
   },
   {
     name: "计划妥当",
@@ -185,7 +259,8 @@ let jokers = [
       "每次{C:attention}弃牌{}后牌型都会改变"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_well_laid_plans.png",
-    rarity: "罕见"
+    rarity: "罕见",
+    cost: 8
   },
   {
     name: "BO3",
@@ -195,17 +270,19 @@ let jokers = [
       "将其升级"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_best_of_three.png",
-    rarity: "罕见"
+    rarity: "罕见",
+    cost: 7
   },
   {
     name: "免费续杯",
     text: [
       "选择{C:attention}盲注{}后，",
       "用随机小丑牌填满槽位",
-      "出售牌时失去{C:money}$5{}"
+      "出售牌时失去{C:money}$4{}"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_free_refill.png",
-    rarity: "罕见"
+    rarity: "罕见",
+    cost: 7
   },
   {
     name: "新秩序",
@@ -219,7 +296,8 @@ let jokers = [
       "{C:inactive}（当前为{X:mult,C:white}X1{C:inactive}倍率）"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_new_order.png",
-    rarity: "稀有"
+    rarity: "稀有",
+    cost: 8
   },
   {
     name: "西西弗斯",
@@ -233,7 +311,8 @@ let jokers = [
       "{C:inactive}（当前为{X:mult,C:white}X1{C:inactive}倍率）"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_sisyphus.png",
-    rarity: "稀有"
+    rarity: "稀有",
+    cost: 9
   },
   {
     name: "火箭试验",
@@ -243,7 +322,8 @@ let jokers = [
       "{C:inactive}（当前为{X:mult,C:white}X?.??{C:inactive}倍率）"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_rocket_test.png",
-    rarity: "稀有"
+    rarity: "稀有",
+    cost: 9
   },
   {
     name: "集邮",
@@ -254,7 +334,8 @@ let jokers = [
       "提供{X:mult,C:white}X1.5{}倍率"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_stamp_collection.png",
-    rarity: "稀有"
+    rarity: "稀有",
+    cost: 9
   },
   {
     name: "印刷中",
@@ -265,7 +346,8 @@ let jokers = [
       "{C:inactive}（不会添加给印刷中）"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_now_printing.png",
-    rarity: "稀有"
+    rarity: "稀有",
+    cost: 8
   }
 ]
 
@@ -432,7 +514,7 @@ for (let joker of jokers) {
     joker_div.innerHTML = `
       <h3>${joker.name}</h3>
       <img src="${joker.image_url}" alt="${joker.name}" />
-      <h4 class="rarity" style="background-color: ${rarities[joker.rarity]}">${joker.rarity}</h4>
+      <h4 class="rarity" style="background-color: ${rarities[joker.rarity]}">${joker.rarity} ${joker.cost ? `$${joker.cost}` : ""}</h4>
       <div class="text">${joker.text}</div>
     `;
   }

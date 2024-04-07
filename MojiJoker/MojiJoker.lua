@@ -8,7 +8,7 @@
 ------------MOD CODE -------------------------
 
 local MOD_ID = "MojiJoker"
-local MOD_VERSION = "v1.0.0"
+local MOD_VERSION = "1.0.1"
 
 local loc_en = {
     j_moji_color_out_of_space = {
@@ -243,7 +243,8 @@ local loc_en = {
         name = "Vacant Seat",
         text = {
             "{C:red}-#1#{} hand size",
-            "{C:mult}+#2#{} Mult per hand size"
+            "{C:mult}+#2#{} Mult per hand size",
+            "{C:inactive}(Currently {C:mult}+#3#{C:inactive} Mult)"
         }
     },
     j_moji_life_insurance = {
@@ -504,7 +505,8 @@ local loc_zh = {
         text = {
             "手牌上限{C:red}-#1#",
             "每有1手牌上限，",
-            "提供{C:mult}+#2#{}倍率"
+            "提供{C:mult}+#2#{}倍率",
+            "{C:inactive}（当前为{C:mult}+#3#{C:inactive}倍率）"
         }
     },
     j_moji_life_insurance = {
@@ -737,9 +739,9 @@ local jokers = {
     j_moji_free_refill = {
         ability_name = "Free Refill",
         slug = "moji_free_refill",
-        ability = {extra = {dollars_lose = 5}},
+        ability = {extra = {dollars_lose = 4}},
         rarity = 2,
-        cost = 6,
+        cost = 7,
         unlocked = true, discovered = true, blueprint_compat = false, eternal_compat = true
     },
     j_moji_safety_net = {
@@ -769,7 +771,7 @@ local jokers = {
     j_moji_life_insurance = {
         ability_name = "Life Insurance",
         slug = "moji_life_insurance",
-        ability = {extra = {percent_lose = 15, percent_gain = 50, chips = 0}},
+        ability = {extra = {percent_lose = 12.5, percent_gain = 50, chips = 0}},
         rarity = 2,
         cost = 6,
         unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
@@ -1615,7 +1617,7 @@ function SMODS.INIT.MojiJoker()
     end
 
     SMODS.Jokers.j_moji_vacant_seat.loc_def = function(card)
-        return {-card.ability.extra.hand_size, card.ability.extra.mult}
+        return {-card.ability.extra.hand_size, card.ability.extra.mult, (G.hand and G.hand.config.card_limit or 0) * card.ability.extra.mult}
     end
 
     -- Life Insurance
@@ -1681,36 +1683,16 @@ function SMODS.INIT.MojiJoker()
     -- World Heritage
     SMODS.Jokers.j_moji_world_heritage.calculate = function(self, context)
         if context.before and not context.blueprint then
-            local new_mult = self.ability.x_mult - self.ability.extra.Xmult_sub * #context.full_hand
-            if new_mult <= 1 then
-                G.E_MANAGER:add_event(Event({
-                    func = function()
-                        play_sound('tarot1')
-                        self.T.r = -0.2
-                        self:juice_up(0.3, 0.4)
-                        self.states.drag.is = true
-                        self.children.center.pinch.x = true
-                        G.E_MANAGER:add_event(Event({hand_trigger = 'after', delay = 0.3, blockable = false,
-                            func = function()
-                                    G.jokers:remove_card(self)
-                                    self:remove()
-                                    self = nil
-                                return true; end})) 
-                        return true
-                    end
-                }))
-                return {
-                    message = localize('k_poor_preservation'),
-                    colour = G.C.FILTER
-                }
-            else
-                self.ability.x_mult = new_mult
-                return {
-                    message = localize{type='variable',key='a_xmult_minus',vars={self.ability.extra.Xmult_sub * #context.full_hand}},
-                    colour = G.C.RED,
-                    card = self
-                }
+            local sub_mult = self.ability.extra.Xmult_sub * #context.full_hand
+            if self.ability.x_mult - sub_mult < 1 then
+                sub_mult = self.ability.x_mult - 1
             end
+            self.ability.x_mult = self.ability.x_mult - sub_mult
+            return {
+                message = localize{type='variable',key='a_xmult_minus',vars={sub_mult}},
+                colour = G.C.RED,
+                card = self
+            }
         end
 
         if context.discard and not context.blueprint then
