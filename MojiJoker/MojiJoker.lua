@@ -8,7 +8,7 @@
 ------------MOD CODE -------------------------
 
 local MOD_ID = "MojiJoker"
-local MOD_VERSION = "1.0.2"
+local MOD_VERSION = "1.0.3"
 
 local loc_en = {
     j_moji_color_out_of_space = {
@@ -211,7 +211,7 @@ local loc_en = {
             "When {C:attention}Blind{} is selected,",
             "create random Jokers",
             "until all slots are filled",
-            "Lose {C:money}$#1#{} when selling a card"
+            "Lose {C:money}$#1#{} when selling a Joker"
         }
     },
     j_moji_safety_net = {
@@ -471,8 +471,9 @@ local loc_zh = {
         name = "免费续杯",
         text = {
             "选择{C:attention}盲注{}后，",
-            "用随机小丑牌填满槽位",
-            "出售牌时失去{C:money}$#1#{}"
+            "生成随机小丑牌",
+            "直到填满槽位",
+            "出售小丑牌时失去{C:money}$#1#{}"
         }
     },
     j_moji_safety_net = {
@@ -729,15 +730,15 @@ local jokers = {
     j_moji_free_refill = {
         ability_name = "Free Refill",
         slug = "moji_free_refill",
-        ability = {extra = {dollars_lose = 4}},
+        ability = {extra = {dollars_lose = 3}},
         rarity = 2,
-        cost = 7,
+        cost = 6,
         unlocked = true, discovered = true, blueprint_compat = false, eternal_compat = true
     },
     j_moji_safety_net = {
         ability_name = "Safety Net",
         slug = "moji_safety_net",
-        ability = {extra = {chips = 20, chips_add = 12}},
+        ability = {extra = {chips = 20, chips_add = 15}},
         rarity = 1,
         cost = 5,
         unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
@@ -761,7 +762,7 @@ local jokers = {
     j_moji_life_insurance = {
         ability_name = "Life Insurance",
         slug = "moji_life_insurance",
-        ability = {extra = {percent_lose = 15, percent_gain = 50, chips = 0}},
+        ability = {extra = {percent_lose = 12.5, percent_gain = 50, chips = 0}},
         rarity = 2,
         cost = 6,
         unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
@@ -785,7 +786,7 @@ local jokers = {
     j_moji_neutron_star = {
         ability_name = "Neutron Star",
         slug = "moji_neutron_star",
-        ability = {extra = {chips = 10}},
+        ability = {extra = {chips = 12}},
         rarity = 1,
         cost = 5,
         unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
@@ -1516,12 +1517,6 @@ function SMODS.INIT.MojiJoker()
                 end}))   
                 card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_plus_joker'), colour = G.C.BLUE}) 
         end
-        if context.selling_card and not context.blueprint then
-            G.E_MANAGER:add_event(Event({hand_trigger = 'after', delay = 0.3, func = function()
-                ease_dollars(-self.ability.extra.dollars_lose, true)
-                card_eval_status_text(self, 'extra', nil, nil, nil, {message = '-' .. localize('$') .. self.ability.extra.dollars_lose, dollars = self.ability.extra.dollars_lose, colour = G.C.MONEY, instant = true})
-                return true end }))
-        end
     end
 
     SMODS.Jokers.j_moji_free_refill.loc_def = function(card)
@@ -1673,7 +1668,7 @@ function SMODS.INIT.MojiJoker()
     end
 
     SMODS.Jokers.j_moji_world_heritage.loc_def = function(card)
-        return {card.ability.extra.Xmult_sub, card.ability.extra.Xmult_add, card.ability.x_mult}
+        return {card.ability.extra.Xmult_add, card.ability.extra.Xmult_sub, card.ability.x_mult}
     end
 
     -- Neutron Star
@@ -1768,6 +1763,21 @@ function Card:calculate_dollar_bonus()
     return Card_calculate_dollar_bonus_ref(self)
 end
 
+local Card_sell_card_ref = Card.sell_card
+function Card:sell_card()
+    if self.ability.set == 'Joker' then
+        local free_refill_index = #find_joker('Free Refill')
+        if free_refill_index > 0 and G.jokers.cards[free_refill_index] ~= self then
+            local free_refill = G.jokers.cards[free_refill_index]
+            G.E_MANAGER:add_event(Event({hand_trigger = 'after', delay = 0.3, func = function()
+                ease_dollars(-free_refill.ability.extra.dollars_lose, true)
+                card_eval_status_text(free_refill, 'extra', nil, nil, nil, {message = '-' .. localize('$') .. free_refill.ability.extra.dollars_lose, dollars = free_refill.ability.extra.dollars_lose, colour = G.C.MONEY, instant = true})
+                return true end }))
+        end
+    end
+    Card_sell_card_ref(self)
+end
+
 local G_FUNCS_use_card_ref = G.FUNCS.use_card
 G.FUNCS.use_card = function(e, mute, nosave)
     e.config.button = nil
@@ -1795,7 +1805,6 @@ G.FUNCS.use_card = function(e, mute, nosave)
     end
 
     if card.ability.set == 'Planet' and count_binoculars > 0 then
-        -- todo: binoculars
         G.TAROT_INTERRUPT = G.STATE
 
         G.CONTROLLER.locks.use = true

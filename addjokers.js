@@ -4,7 +4,7 @@ let jokers = [
     text: [
       "回合结束时，",
       "每有1次未使用的{C:red}弃牌{}次数，",
-      "获得{C:chips}+12{}筹码",
+      "获得{C:chips}+15{}筹码",
       "{C:inactive}（当前为{C:chips}+20{C:inactive}筹码）"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_safety_net.png",
@@ -16,7 +16,7 @@ let jokers = [
     text: [
       "{C:attention}出牌牌型{}每被",
       "打出过1次，",
-      "提供{C:chips}+10{}筹码"
+      "提供{C:chips}+12{}筹码"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_neutron_star.png",
     rarity: "普通",
@@ -112,7 +112,7 @@ let jokers = [
     name: "人寿保险",
     text: [
       "选择{C:attention}盲注{}后，",
-      "失去当前筹码的{C:red}15%{}，",
+      "失去当前筹码的{C:red}12.5%{}，",
       "获得等于资金{C:money}50%{}的筹码",
       "{C:inactive}（当前为{C:chips}+0{C:inactive}筹码）"
     ],
@@ -275,12 +275,13 @@ let jokers = [
     name: "免费续杯",
     text: [
       "选择{C:attention}盲注{}后，",
-      "用随机小丑牌填满槽位",
-      "出售牌时失去{C:money}$4{}"
+      "生成随机小丑牌",
+      "直到填满槽位",
+      "出售小丑牌时失去{C:money}$3{}"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_free_refill.png",
     rarity: "罕见",
-    cost: 7
+    cost: 6
   },
   {
     name: "新秩序",
