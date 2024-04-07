@@ -8,7 +8,7 @@
 ------------MOD CODE -------------------------
 
 local MOD_ID = "MojiJoker"
-local MOD_VERSION = "1.0.1"
+local MOD_VERSION = "1.0.2"
 
 local loc_en = {
     j_moji_color_out_of_space = {
@@ -155,14 +155,6 @@ local loc_en = {
             "Poker hand changes after each {C:attention}discard{}"
         }
     },
-    j_moji_best_of_three = {
-        name = "Best-of-Three",
-        text = {
-            "{C:attention}Upgrade{} level of played poker hand",
-            "each time it is played {C:attention}#1#{} times",
-            "in the same round"
-        }
-    },
     j_moji_binoculars = {
         name = "Binoculars",
         text = {
@@ -267,9 +259,17 @@ local loc_en = {
     j_moji_world_heritage = {
         name = "World Heritage",
         text = {
-            "{X:mult,C:white}X#1#{} Mult",
-            "Lose {X:mult,C:white}X#2#{} Mult per card played",
-            "Gains {X:mult,C:white}X#3#{} Mult per card discarded"
+            "Gains {X:mult,C:white}X#1#{} Mult per card discarded",
+            "Loses {X:mult,C:white}X#2#{} Mult per card played",
+            "(Currently {X:mult,C:white} X#3# {C:inactive} Mult)"
+        }
+    },
+    j_moji_neutron_star = {
+        name = "Neutron Star",
+        text = {
+            "{C:chips}+#1#{} Chips",
+            "per the number of times",
+            "the {C:attention}poker hand{} has been played"
         }
     },
 }
@@ -418,14 +418,6 @@ local loc_zh = {
             "每次{C:attention}弃牌{}后牌型都会改变"
         }
     },
-    j_moji_best_of_three = {
-        name = "BO3",
-        text = {
-            "每在同一回合中",
-            "打出同一牌型{C:attention}#1#{}次，",
-            "将其升级"
-        }
-    },
     j_moji_binoculars = {
         name = "双筒望远镜",
         text = {
@@ -529,23 +521,29 @@ local loc_zh = {
     j_moji_world_heritage = {
         name = "世界遗产",
         text = {
-            "{X:mult,C:white}X#1#{}倍率",
+            "每弃一张牌，获得{X:mult,C:white}X#1#{}倍率",
             "每出一张牌，失去{X:mult,C:white}X#2#{}倍率",
-            "每弃一张牌，获得{X:mult,C:white}X#3#{}倍率"
+            "（当前为{X:mult,C:white} X#3# {C:inactive}倍率）"
+        }
+    },
+    j_moji_neutron_star = {
+        name = "中子星",
+        text = {
+            "{C:attention}出牌牌型{}每被",
+            "打出过1次，",
+            "提供{C:chips}+#1#{}筹码"
         }
     },
 }
 
 local misc_loc_en = {
     k_timeup = "Time's up!",
-    k_printed = "Prototype printed!",
-    k_poor_preservation = "Poor preservation!"
+    k_printed = "Prototype printed!"
 }
 
 local misc_loc_zh = {
     k_timeup = "时间到！",
-    k_printed = "打样成功！",
-    k_poor_preservation = "保存不善！"
+    k_printed = "打样成功！"
 }
 
 local loc_txt = G.SETTINGS.language == "zh_CN" and loc_zh or loc_en
@@ -566,12 +564,12 @@ local jokers = {
         ability = {Xmult = 3.5, extra = {Xmult_sub = 0.5}},
         rarity = 2,
         cost = 7,
-        unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
+        unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = false
     },
     j_moji_new_order = {
         ability_name = "The New Order",
         slug = "moji_new_order",
-        ability = {extra = {Xmult_add = 0.2, Xmult_sub = 0.1, rank = 14}},
+        ability = {extra = {Xmult_add = 0.15, Xmult_sub = 0.1, rank = 14}},
         rarity = 3,
         cost = 8,
         unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
@@ -669,7 +667,7 @@ local jokers = {
         slug = "moji_salvage_the_world",
         ability = {extra = {chips = 100, suit = 'Spades', trigger_cnt = 0}},
         rarity = 2,
-        cost = 6,
+        cost = 7,
         unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
     },
     j_moji_well_laid_plans = {
@@ -678,14 +676,6 @@ local jokers = {
         ability = {extra = {poker_hand = 'High Card'}},
         rarity = 2,
         cost = 8,
-        unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
-    },
-    j_moji_best_of_three = {
-        ability_name = "Best-of-Three",
-        slug = "moji_best_of_three",
-        ability = {extra = {per = 2, trigger_table = {}, triggered_this_hand = false}},
-        rarity = 2,
-        cost = 7,
         unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
     },
     j_moji_binoculars = {
@@ -718,7 +708,7 @@ local jokers = {
         ability = {extra = {times = 2}},
         rarity = 3,
         cost = 8,
-        unlocked = true, discovered = true, blueprint_compat = false, eternal_compat = true
+        unlocked = true, discovered = true, blueprint_compat = false, eternal_compat = false
     },
     j_moji_stamp_collection = {
         ability_name = "Stamp Collection",
@@ -771,7 +761,7 @@ local jokers = {
     j_moji_life_insurance = {
         ability_name = "Life Insurance",
         slug = "moji_life_insurance",
-        ability = {extra = {percent_lose = 12.5, percent_gain = 50, chips = 0}},
+        ability = {extra = {percent_lose = 15, percent_gain = 50, chips = 0}},
         rarity = 2,
         cost = 6,
         unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
@@ -787,11 +777,19 @@ local jokers = {
     j_moji_world_heritage = {
         ability_name = "World Heritage",
         slug = "moji_world_heritage",
-        ability = {Xmult = 1.5, extra = {Xmult_sub = 0.02, Xmult_add = 0.04}},
+        ability = {extra = {Xmult_sub = 0.02, Xmult_add = 0.04}},
         rarity = 2,
-        cost = 6,
+        cost = 7,
         unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
     },
+    j_moji_neutron_star = {
+        ability_name = "Neutron Star",
+        slug = "moji_neutron_star",
+        ability = {extra = {chips = 10}},
+        rarity = 1,
+        cost = 5,
+        unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
+    }
 }
 
 local rank_to_str = {
@@ -1359,37 +1357,6 @@ function SMODS.INIT.MojiJoker()
         return {localize(card.ability.extra.poker_hand, 'poker_hands')}
     end
 
-    -- Best-of-Three
-    SMODS.Jokers.j_moji_best_of_three.calculate = function(self, context)
-        if context.setting_blind and not context.blueprint and not self.getting_sliced then
-            for k, v in pairs(G.GAME.hands) do
-                self.ability.extra.trigger_table[k] = 0
-            end
-        end
-
-        if context.before and not context.individual and not context.repetition then
-            if not self.ability.extra.triggered_this_hand then
-                self.ability.extra.trigger_table[context.scoring_name] = self.ability.extra.trigger_table[context.scoring_name] + 1
-                self.ability.extra.triggered_this_hand = true
-            end
-            if self.ability.extra.trigger_table[context.scoring_name] % self.ability.extra.per == 0 then
-                return {
-                    card = self,
-                    level_up = true,
-                    message = localize('k_level_up_ex')
-                }
-            end
-        end
-
-        if context.after and not context.blueprint then
-            self.ability.extra.triggered_this_hand = false
-        end
-    end
-
-    SMODS.Jokers.j_moji_best_of_three.loc_def = function(card)
-        return {card.ability.extra.per}
-    end
-
     -- Binoculars
     SMODS.Jokers.j_moji_binoculars.loc_def = function(card)
         return {card.ability.extra.repeat_times}
@@ -1706,7 +1673,22 @@ function SMODS.INIT.MojiJoker()
     end
 
     SMODS.Jokers.j_moji_world_heritage.loc_def = function(card)
-        return {card.ability.x_mult, card.ability.extra.Xmult_sub, card.ability.extra.Xmult_add}
+        return {card.ability.extra.Xmult_sub, card.ability.extra.Xmult_add, card.ability.x_mult}
+    end
+
+    -- Neutron Star
+    SMODS.Jokers.j_moji_neutron_star.calculate = function(self, context)
+        if SMODS.end_calculate_context(context) then
+            return {
+                message = localize{type='variable',key='a_chips',vars={G.GAME.hands[context.scoring_name].played * self.ability.extra.chips}},
+                colour = G.C.CHIPS,
+                chip_mod = G.GAME.hands[context.scoring_name].played * self.ability.extra.chips
+            }
+        end
+    end
+
+    SMODS.Jokers.j_moji_neutron_star.loc_def = function(card)
+        return {card.ability.extra.chips}
     end
 end
 

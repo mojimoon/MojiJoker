@@ -1,5 +1,3 @@
-let version = "1.0.1";
-
 let jokers = [
   {
     name: "安全网",
@@ -10,6 +8,17 @@ let jokers = [
       "{C:inactive}（当前为{C:chips}+20{C:inactive}筹码）"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_safety_net.png",
+    rarity: "普通",
+    cost: 5
+  },
+  {
+    name: "中子星",
+    text: [
+      "{C:attention}出牌牌型{}每被",
+      "打出过1次，",
+      "提供{C:chips}+10{}筹码"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_neutron_star.png",
     rarity: "普通",
     cost: 5
   },
@@ -103,23 +112,11 @@ let jokers = [
     name: "人寿保险",
     text: [
       "选择{C:attention}盲注{}后，",
-      "失去当前筹码的{C:red}12.5%{}，",
+      "失去当前筹码的{C:red}15%{}，",
       "获得等于资金{C:money}50%{}的筹码",
       "{C:inactive}（当前为{C:chips}+0{C:inactive}筹码）"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_life_insurance.png",
-    rarity: "罕见",
-    cost: 6
-  },
-  {
-    name: "量(子)化",
-    text: [
-      "同时打出至少{C:attention}3{}张计分牌时，",
-      "每有1张计分牌，获得{C:mult}+1{}倍率",
-      "否则重置倍率",
-      "{C:inactive}（当前为{C:mult}+0{C:inactive}倍率）"
-    ],
-    image_url: "MojiJoker/assets/2x/j_moji_quantization.png",
     rarity: "罕见",
     cost: 6
   },
@@ -168,6 +165,18 @@ let jokers = [
     ],
     image_url: "MojiJoker/assets/2x/j_moji_salvage_the_world.png",
     rarity: "罕见",
+    cost: 7
+  },
+  {
+    name: "量(子)化",
+    text: [
+      "同时打出至少{C:attention}3{}张计分牌时，",
+      "每有1张计分牌，获得{C:mult}+1{}倍率",
+      "否则重置倍率",
+      "{C:inactive}（当前为{C:mult}+0{C:inactive}倍率）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_quantization.png",
+    rarity: "罕见",
     cost: 6
   },
   {
@@ -202,7 +211,7 @@ let jokers = [
     ],
     image_url: "MojiJoker/assets/2x/j_moji_color_out_of_space.png",
     rarity: "罕见",
-    cost: 7
+    cost: 8
   },
   {
     name: "垃圾时间",
@@ -219,13 +228,13 @@ let jokers = [
   {
     name: "世界遗产",
     text: [
-      "{X:mult,C:white}X1.5{}倍率",
       "每出一张牌，失去{X:mult,C:white}X0.02{}倍率",
-      "每弃一张牌，获得{X:mult,C:white}X0.04{}倍率"
+      "每弃一张牌，获得{X:mult,C:white}X0.04{}倍率",
+      "{C:inactive}（当前为{X:mult,C:white}X1{C:inactive}倍率）"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_world_heritage.png",
     rarity: "罕见",
-    cost: 6
+    cost: 7
   },
   {
     name: "卫星支付",
@@ -263,17 +272,6 @@ let jokers = [
     cost: 8
   },
   {
-    name: "BO3",
-    text: [
-      "每在同一回合中",
-      "打出同一牌型{C:attention}2{}次，",
-      "将其升级"
-    ],
-    image_url: "MojiJoker/assets/2x/j_moji_best_of_three.png",
-    rarity: "罕见",
-    cost: 7
-  },
-  {
     name: "免费续杯",
     text: [
       "选择{C:attention}盲注{}后，",
@@ -288,7 +286,7 @@ let jokers = [
     name: "新秩序",
     text: [
       "打出{C:attention}A{}并计分时，",
-      "获得{X:mult,C:white}X0.2{}倍率",
+      "获得{X:mult,C:white}X0.15{}倍率",
       "每次触发后目标点数{C:attention}-1{}",
       "{C:inactive}（A、K、Q、……、2、A）",
       "若一次出牌未触发新秩序，",
@@ -379,6 +377,30 @@ let consumables = [
   // },
 ]
 
+let deprecated = [
+  {
+    name: "先古契约",
+    text: [
+      "{C:green}罕见{}、{C:red}稀有{}小丑牌和{C:dark_edition}版本{}",
+      "出现概率提高{C:attention}100%{}"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_world_heritage.png",
+    rarity: "罕见",
+    cost: 8
+  },
+  {
+    name: "BO3",
+    text: [
+      "每在同一回合中",
+      "打出同一牌型{C:attention}2{}次，",
+      "将其{C:attention}升级{}"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_best_of_three.png",
+    rarity: "罕见",
+    cost: 7
+  }
+]
+
 let cols = {
   
   MULT: "#FE5F55",
@@ -410,6 +432,11 @@ let cols = {
   ETERNAL: "#c75985",
   INACTIVE: "#ffffff99",
   LEGENDARY: "#b26cbb",
+  TAROT: "#a782d1",
+  PLANET: "#13afce",
+  SPECTRAL: "#4584fa",
+  VOUCHER: "#fd682b",
+  EDITION: "#4ca893",
   DYN_UI: {
     MAIN: "#374244",
     DARK: "#374244",
