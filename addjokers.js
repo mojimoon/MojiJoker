@@ -1,11 +1,271 @@
 let jokers = [
   {
-    name: "Joker",
+    name: "安全网",
     text: [
-      "{C:mult}+4{} Mult"
+      "回合结束时，",
+      "每有1次未使用的{C:red}弃牌{}次数，",
+      "获得{C:chips}+12{}筹码",
+      "{C:inactive}（当前为{C:chips}+20{C:inactive}筹码）"
     ],
-    image_url: "img/j_joker.png",
-    rarity: "Common"
+    image_url: "MojiJoker/assets/2x/j_moji_safety_net.png",
+    rarity: "普通"
+  },
+  {
+    name: "回扣",
+    text: [
+      "获得牌时获得{C:money}$4{}",
+      "出售牌时失去{C:money}$3{}"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_rebate.png",
+    rarity: "普通"
+  },
+  {
+    name: "双筒望远镜",
+    text: [
+      "使用{C:planet}星球牌{}时，",
+      "再使用{C:attention}1{}次"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_binoculars.png",
+    rarity: "普通"
+  },
+  {
+    name: "奢侈税",
+    text: [
+      "手牌上限{C:blue}+3",
+      "每有{C:money}$20{}，手牌上限{C:red}-1{}",
+      "{C:inactive}（当前为{C:attention}+3{C:inactive}）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_luxury_tax.png",
+    rarity: "普通"
+  },
+  {
+    name: "人寿保险",
+    text: [
+      "选择{C:attention}盲注{}后，",
+      "失去当前筹码的{C:red}15%{}，",
+      "获得等于资金{C:money}50%{}的筹码",
+      "{C:inactive}（当前为{C:chips}+0{C:inactive}筹码）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_life_insurance.png",
+    rarity: "罕见"
+  },
+  {
+    name: "量(子)化",
+    text: [
+      "同时打出至少{C:attention}3{}张计分牌时，",
+      "每有1张计分牌，获得{C:mult}+1{}倍率",
+      "否则重置倍率",
+      "{C:inactive}（当前为{C:mult}+0{C:inactive}倍率）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_quantization.png",
+    rarity: "罕见"
+  },
+  {
+    name: "逐星",
+    text: [
+      "完整牌组中的{C:diamonds}方片{}牌",
+      "每比{C:attention}13{}张多1张，",
+      "提供{C:mult}+5{}倍率",
+      "{C:inactive}（按有效花色计算）",
+      "{C:inactive}（当前为{C:mult}+0{C:inactive}倍率）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_pursue_the_stars.png",
+    rarity: "罕见"
+  },
+  {
+    name: "捧月",
+    text: [
+      "回合结束时，剩余牌组中",
+      "每有{C:attention}3{}张{C:clubs}梅花{}牌，",
+      "获得{C:money}$2{}",
+      "{C:inactive}（按有效花色计算）",
+      "{C:inactive}（当前为{C:money}$0{C:inactive}）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_embrace_the_moon.png",
+    rarity: "罕见"
+  },
+  {
+    name: "执日",
+    text: [
+      "每回合首次",
+      "打出{C:hearts}红桃{}牌并计分时，",
+      "{C:attention}升级{}出牌牌型"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_hold_the_sun.png",
+    rarity: "罕见"
+  },
+  {
+    name: "救世",
+    text: [
+      "手牌中的每张{C:spades}黑桃{}牌",
+      "提供{C:chips}+100{}筹码"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_salvage_the_world.png",
+    rarity: "罕见"
+  },
+  {
+    name: "虚位以待",
+    text: [
+      "手牌上限{C:red}-2",
+      "每有1手牌上限，",
+      "提供{C:mult}+15{}倍率"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_vacant_seat.png",
+    rarity: "罕见"
+  },
+  {
+    name: "投资回报率",
+    text: [
+      "每获得{C:money}$1{}利息，",
+      "获得{C:mult}+1{}倍率",
+      "{C:inactive}（当前为{C:mult}+0{C:inactive}倍率）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_return_on_investment.png",
+    rarity: "罕见"
+  },
+  {
+    name: "星之彩",
+    text: [
+      "连续打出包含{C:attention}同花{}的牌时，",
+      "获得{X:mult,C:white}X0.5{}倍率",
+      "否则重置倍率",
+      "{C:inactive}（当前为{X:mult,C:white}X1{C:inactive}倍率）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_color_out_of_space.png",
+    rarity: "罕见"
+  },
+  {
+    name: "垃圾时间",
+    text: [
+      "{X:mult,C:white}X3.5{}倍率",
+      "若回合结束时，",
+      "所用出牌次数超过{C:attention}1{}，",
+      "失去{X:mult,C:white}X0.5{}倍率"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_garbage_time.png",
+    rarity: "罕见"
+  },
+  {
+    name: "世界遗产",
+    text: [
+      "{X:mult,C:white}X1.5{}倍率",
+      "每出一张牌，失去{X:mult,C:white}X0.02{}倍率",
+      "每弃一张牌，获得{X:mult,C:white}X0.04{}倍率"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_world_heritage.png",
+    rarity: "罕见"
+  },
+  {
+    name: "卫星支付",
+    text: [
+      "本局游戏每使用过一种{C:planet}星球牌",
+      "所有商品价格降低{C:money}$1{}",
+      "{C:inactive}（价格不会低于{C:money}$1{C:inactive}）",
+      "{C:inactive}（当前为{C:money}-$0{C:inactive}）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_satellite_payment.png",
+    rarity: "罕见"
+  },
+  {
+    name: "税收官",
+    text: [
+      "回合结束时，",
+      "每张普通/罕见/稀有/传奇小丑牌",
+      "分别提供{C:blue}$1{}/{C:green}$2{}/{C:red}$3{}/{C:legendary}$4{}",
+      "{C:inactive}（当前为{C:money}$0{C:inactive}）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_tax_collector.png",
+    rarity: "罕见"
+  },
+  {
+    name: "计划妥当",
+    text: [
+      "若出牌牌型为{C:attention}[牌型]{}，",
+      "将其{C:attention}升级{}",
+      "每次{C:attention}弃牌{}后牌型都会改变"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_well_laid_plans.png",
+    rarity: "罕见"
+  },
+  {
+    name: "BO3",
+    text: [
+      "每在同一回合中",
+      "打出同一牌型{C:attention}2{}次，",
+      "将其升级"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_best_of_three.png",
+    rarity: "罕见"
+  },
+  {
+    name: "免费续杯",
+    text: [
+      "选择{C:attention}盲注{}后，",
+      "用随机小丑牌填满槽位",
+      "出售牌时失去{C:money}$5{}"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_free_refill.png",
+    rarity: "罕见"
+  },
+  {
+    name: "新秩序",
+    text: [
+      "打出{C:attention}A{}并计分时，",
+      "获得{X:mult,C:white}X0.2{}倍率",
+      "每次触发后目标点数{C:attention}-1{}",
+      "{C:inactive}（A、K、Q、……、2、A）",
+      "若一次出牌未触发新秩序，",
+      "失去{X:mult,C:white}X0.1{}倍率",
+      "{C:inactive}（当前为{X:mult,C:white}X1{C:inactive}倍率）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_new_order.png",
+    rarity: "稀有"
+  },
+  {
+    name: "西西弗斯",
+    text: [
+      "选择{C:attention}盲注{}后",
+      "随机选择一种{C:attention}点数{}",
+      "将牌组中该点数的牌",
+      "增强为{C:attention}石头牌{}",
+      "西西弗斯每创建1张石头牌，",
+      "获得{X:mult,C:white}X0.15{}倍率",
+      "{C:inactive}（当前为{X:mult,C:white}X1{C:inactive}倍率）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_sisyphus.png",
+    rarity: "稀有"
+  },
+  {
+    name: "火箭试验",
+    text: [
+      "每个启用的{C:attention}Mod{}",
+      "提供{X:mult,C:white}X?.??{}倍率",
+      "{C:inactive}（当前为{X:mult,C:white}X?.??{C:inactive}倍率）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_rocket_test.png",
+    rarity: "稀有"
+  },
+  {
+    name: "集邮",
+    text: [
+      "每张带{C:dark_edition}版本{}的小丑牌",
+      "提供{X:mult,C:white}X1.5{}倍率",
+      "每种不同的{C:dark_edition}版本{}",
+      "提供{X:mult,C:white}X1.5{}倍率"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_stamp_collection.png",
+    rarity: "稀有"
+  },
+  {
+    name: "印刷中",
+    text: [
+      "下{C:attention}2{}次选择{C:attention}盲注{}后，",
+      "给一张随机小丑牌添加",
+      "{C:dark_edition}闪箔{}、{C:dark_edition}镭射{}或{C:dark_edition}多彩{}版本",
+      "{C:inactive}（不会添加给印刷中）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_now_printing.png",
+    rarity: "稀有"
   }
 ]
 
@@ -16,7 +276,7 @@ let consumables = [
   //   text: [
   //     "{C:mult}+4{} Mult"
   //   ],
-  //   image_url: "img/j_joker.png",
+  //   image_url: "MojiJoker/assets/2x/j_joker.png",
   //   rarity: "Tarot"
   // },
   // {
@@ -24,7 +284,7 @@ let consumables = [
   //   text: [
   //     "{C:mult}+4{} Mult"
   //   ],
-  //   image_url: "img/j_joker.png",
+  //   image_url: "MojiJoker/assets/2x/j_joker.png",
   //   rarity: "Planet"
   // },
   // {
@@ -32,7 +292,7 @@ let consumables = [
   //   text: [
   //     "{C:mult}+4{} Mult"
   //   ],
-  //   image_url: "img/j_joker.png",
+  //   image_url: "MojiJoker/assets/2x/j_joker.png",
   //   rarity: "Spectral"
   // },
 ]
@@ -67,6 +327,7 @@ let cols = {
   DARK_EDITION: "#5d5dff",
   ETERNAL: "#c75985",
   INACTIVE: "#ffffff99",
+  LEGENDARY: "#b26cbb",
   DYN_UI: {
     MAIN: "#374244",
     DARK: "#374244",
@@ -115,16 +376,16 @@ let cols = {
 }
 
 let rarities = {
-  "Common": "#009dff", 
-  "Uncommon": "#4BC292",
-  "Rare": "#fe5f55",
-  "Legendary": "#b26cbb",
-  "Joker": "#708b91",
-  "Tarot": "#a782d1",
-  "Planet": "#13afce",
-  "Spectral": "#4584fa",
-  "Voucher": "#fd682b",
-  "Edition": "#4ca893",
+  "普通": "#009dff", 
+  "罕见": "#4BC292",
+  "稀有": "#fe5f55",
+  "传奇": "#b26cbb",
+  "小丑牌": "#708b91",
+  "塔罗牌": "#a782d1",
+  "星球牌": "#13afce",
+  "幻灵牌": "#4584fa",
+  "优惠券": "#fd682b",
+  "版本": "#4ca893",
 }
 
 regex = /{([^}]+)}/g;
