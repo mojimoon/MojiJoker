@@ -8,7 +8,7 @@
 ------------MOD CODE -------------------------
 
 local MOD_ID = "MojiJoker"
-local MOD_VERSION = "1.0.3"
+local MOD_VERSION = "1.0.4"
 
 local loc_en = {
     j_moji_color_out_of_space = {
@@ -272,6 +272,38 @@ local loc_en = {
             "the {C:attention}poker hand{} has been played"
         }
     },
+    j_moji_hell = {
+        name = "The Hell",
+        text = {
+            "When defeating a {C:attention}Boss Blind{}",
+            "with at least {X:black,C:white}#1#X{} score requirement,",
+            "this card is destroyed",
+            "and reduces the ante by {C:red}-#2#{}",
+            "The higher the score,",
+            "the more the ante is reduced",
+            "{C:inactive}(Avici awaits whoever copies this card)"
+        }
+    },
+    j_moji_four_color_theorem = {
+        name = "Four Color Theorem",
+        text = {
+            "{X:mult,C:white}X#1#{} Mult",
+            "per unique scoring {C:attention}suit{}",
+            "in the played hand"
+        }
+    },
+    j_moji_these_are_the_odds = {
+        name = "These Are the Odds",
+        text = {
+            "When defeating a {C:attention}Boss Blind{}",
+            "with at least {X:black,C:white}#1#X{} score requirement,",
+            "create {C:attention}#2#{} random",
+            "{C:dark_edition}negative{} Joker",
+            "The higher the score,",
+            "the more Jokers are created",
+            "{C:inactive}(Materialism confines whoever copies this card)"
+        }
+    }
 }
 
 local loc_zh = {
@@ -535,6 +567,37 @@ local loc_zh = {
             "提供{C:chips}+#1#{}筹码"
         }
     },
+    j_moji_hell = {
+        name = "地狱",
+        text = {
+            "以至少{X:black,C:white}#1#X{}分数要求",
+            "击败{C:attention}Boss盲注{}后，",
+            "自毁并使底注{C:red}-#2#{}",
+            "分数越高，",
+            "减少的底注越多",
+            "{C:inactive}（复制此牌者将陷入无间地狱）"
+        }
+    },
+    j_moji_four_color_theorem = {
+        name = "四色定理",
+        text = {
+            "打出并计分的牌中",
+            "每种不同的{C:attention}花色{}",
+            "提供{X:mult,C:white}X#1#{}倍率"
+        }
+    },
+    j_moji_these_are_the_odds = {
+        name = "此即可能",
+        text = {
+            "以至少{X:black,C:white}#1#X{}分数要求",
+            "击败{C:attention}Boss盲注{}后，",
+            "生成#2#张带{C:dark_edition}负片{}的",
+            "随机小丑牌",
+            "分数越高，",
+            "生成的小丑牌越多",
+            "{C:inactive}（复制此牌者将囿于物质）"
+        }
+    }
 }
 
 local misc_loc_en = {
@@ -556,7 +619,7 @@ local jokers = {
         slug = "moji_color_out_of_space",
         ability = {extra = {Xmult_add = 0.5, type = 'Flush'}},
         rarity = 2,
-        cost = 8,
+        cost = 7,
         unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
     },
     j_moji_garbage_time = {
@@ -652,7 +715,7 @@ local jokers = {
         slug = "moji_embrace_the_moon",
         ability = {extra = {dollars = 2, per = 3, suit = 'Clubs', trigger_cnt = 0}},
         rarity = 2,
-        cost = 6,
+        cost = 7,
         unlocked = true, discovered = true, blueprint_compat = false, eternal_compat = true
     },
     j_moji_hold_the_sun = {
@@ -732,7 +795,7 @@ local jokers = {
         slug = "moji_free_refill",
         ability = {extra = {dollars_lose = 3}},
         rarity = 2,
-        cost = 6,
+        cost = 8,
         unlocked = true, discovered = true, blueprint_compat = false, eternal_compat = true
     },
     j_moji_safety_net = {
@@ -789,6 +852,30 @@ local jokers = {
         ability = {extra = {chips = 12}},
         rarity = 1,
         cost = 5,
+        unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
+    },
+    j_moji_hell = {
+        ability_name = "The Hell",
+        slug = "moji_hell",
+        ability = {extra = {score = 2, ante = 1}},
+        rarity = 3,
+        cost = 10,
+        unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = false
+    },
+    j_moji_four_color_theorem = {
+        ability_name = "Four Color Theorem",
+        slug = "moji_four_color_theorem",
+        ability = {extra = {Xmult = 1.5}},
+        rarity = 2,
+        cost = 8,
+        unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
+    },
+    j_moji_these_are_the_odds = {
+        ability_name = "These Are the Odds",
+        slug = "moji_these_are_the_odds",
+        ability = {extra = {score = 2, joker = 1}},
+        rarity = 4,
+        cost = 20,
         unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
     }
 }
@@ -873,6 +960,20 @@ function rocket_test_calculate()
     local Xmult = 2.5 + count * 0.5
     if count >= 16 then Xmult = math.pow(1.05, count - 15) * 10 end
     return Xmult, count
+end
+
+function add_temp_handsize(mod)
+    if not G.GAME.round_resets.temp_handsize then
+        G.GAME.round_resets.temp_handsize = 0
+    end
+    G.E_MANAGER:add_event(Event({
+        func = function()
+            G.hand.config.real_card_limit = (G.hand.config.real_card_limit or G.hand.config.card_limit) + mod
+            G.hand.config.card_limit = math.max(0, G.hand.config.real_card_limit)
+            return true
+        end
+    }))
+    G.GAME.round_resets.temp_handsize = G.GAME.round_resets.temp_handsize + mod
 end
 
 function SMODS.INIT.MojiJoker()
@@ -1507,7 +1608,7 @@ function SMODS.INIT.MojiJoker()
             G.E_MANAGER:add_event(Event({
                 func = function() 
                     for i = 1, jokers_to_create do
-                        local card = create_card('Joker', G.jokers, nil, 0, nil, nil, nil, 'rif')
+                        local card = create_card('Joker', G.jokers, nil, nil, nil, nil, nil, 'free_refill')
                         card:add_to_deck()
                         G.jokers:emplace(card)
                         card:start_materialize()
@@ -1515,7 +1616,7 @@ function SMODS.INIT.MojiJoker()
                     end
                     return true
                 end}))   
-                card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_plus_joker'), colour = G.C.BLUE}) 
+            card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_plus_joker'), colour = G.C.BLUE}) 
         end
     end
 
@@ -1553,12 +1654,11 @@ function SMODS.INIT.MojiJoker()
     -- Luxury Tax
     SMODS.Jokers.j_moji_luxury_tax.calculate = function(self, context)
         if context.setting_blind and not context.blueprint and not self.getting_sliced then
-            self.ability.extra.cur_hand_size = math.max(self.ability.extra.hand_size - self.ability.extra.hand_size_sub * (G.GAME.dollars > 0 and math.floor(G.GAME.dollars / self.ability.extra.per) or 0), self.ability.extra.min_hand_size)
-            G.hand:change_size(self.ability.extra.cur_hand_size)
-        end
-
-        if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
-            G.hand:change_size(-self.ability.extra.cur_hand_size)
+            local new_hand_size = math.max(self.ability.extra.hand_size - self.ability.extra.hand_size_sub * (G.GAME.dollars > 0 and math.floor(G.GAME.dollars / self.ability.extra.per) or 0), self.ability.extra.min_hand_size)
+            if new_hand_size ~= self.ability.extra.hand_size then
+                G.hand:change_size(new_hand_size - self.ability.extra.hand_size)
+                self.ability.extra.hand_size = new_hand_size
+            end
         end
     end
 
@@ -1685,6 +1785,110 @@ function SMODS.INIT.MojiJoker()
     SMODS.Jokers.j_moji_neutron_star.loc_def = function(card)
         return {card.ability.extra.chips}
     end
+
+    -- Hell
+    SMODS.Jokers.j_moji_hell.calculate = function(self, context)
+        if context.end_of_round and not context.individual and not context.repetition then
+            if G.GAME.last_blind and G.GAME.last_blind.boss then
+                if G.GAME.blind.chips == math.inf then return end
+                local G_GAME_chips = (G.GAME.chips == math.inf and 1.79e308 or G.GAME.chips)
+                local score_mult = G_GAME_chips / G.GAME.blind.chips
+                if score_mult < self.ability.extra.score then return end
+                local ante = math.floor((1 + math.log(math.log(score_mult, self.ability.extra.score), self.ability.extra.score)) * self.ability.extra.ante)
+                ease_ante(-ante)
+                G.GAME.round_resets.blind_ante = G.GAME.round_resets.blind_ante or G.GAME.round_resets.ante
+                G.GAME.round_resets.blind_ante = G.GAME.round_resets.blind_ante + (-ante)
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        play_sound('tarot1')
+                        self.T.r = -0.2
+                        self:juice_up(0.3, 0.4)
+                        self.states.drag.is = true
+                        self.children.center.pinch.x = true
+                        G.E_MANAGER:add_event(Event({hand_trigger = 'after', delay = 0.3, blockable = false,
+                            func = function()
+                                    G.jokers:remove_card(self)
+                                    self:remove()
+                                    self = nil
+                                return true; end})) 
+                        return true
+                    end
+                }))
+            end
+        end
+    end
+    
+    SMODS.Jokers.j_moji_hell.loc_def = function(card)
+        return {card.ability.extra.score, card.ability.extra.ante}
+    end
+
+    -- Four Color Theorem
+    SMODS.Jokers.j_moji_four_color_theorem.calculate = function(self, context)
+        if SMODS.end_calculate_context(context) then
+            local suits = {
+                ['Hearts'] = 0,
+                ['Diamonds'] = 0,
+                ['Spades'] = 0,
+                ['Clubs'] = 0
+            }
+            for i = 1, #context.scoring_hand do
+                if context.scoring_hand[i].ability.name ~= 'Wild Card' then
+                    if context.scoring_hand[i]:is_suit('Hearts') and suits["Hearts"] == 0 then suits["Hearts"] = suits["Hearts"] + 1
+                    elseif context.scoring_hand[i]:is_suit('Diamonds') and suits["Diamonds"] == 0  then suits["Diamonds"] = suits["Diamonds"] + 1
+                    elseif context.scoring_hand[i]:is_suit('Spades') and suits["Spades"] == 0  then suits["Spades"] = suits["Spades"] + 1
+                    elseif context.scoring_hand[i]:is_suit('Clubs') and suits["Clubs"] == 0  then suits["Clubs"] = suits["Clubs"] + 1 end
+                end
+            end
+            for i = 1, #context.scoring_hand do
+                if context.scoring_hand[i].ability.name == 'Wild Card' then
+                    if context.scoring_hand[i]:is_suit('Hearts') and suits["Hearts"] == 0 then suits["Hearts"] = suits["Hearts"] + 1
+                    elseif context.scoring_hand[i]:is_suit('Diamonds') and suits["Diamonds"] == 0  then suits["Diamonds"] = suits["Diamonds"] + 1
+                    elseif context.scoring_hand[i]:is_suit('Spades') and suits["Spades"] == 0  then suits["Spades"] = suits["Spades"] + 1
+                    elseif context.scoring_hand[i]:is_suit('Clubs') and suits["Clubs"] == 0  then suits["Clubs"] = suits["Clubs"] + 1 end
+                end
+            end
+            local count = suits["Hearts"] + suits["Diamonds"] + suits["Spades"] + suits["Clubs"]
+            local Xmult = math.pow(self.ability.extra.Xmult, count)
+            return {
+                message = localize{type='variable',key='a_xmult',vars={Xmult}},
+                Xmult_mod = Xmult
+            }
+        end
+    end
+
+    SMODS.Jokers.j_moji_four_color_theorem.loc_def = function(card)
+        return {card.ability.extra.Xmult}
+    end
+
+    -- These Are the Odds
+    SMODS.Jokers.j_moji_these_are_the_odds.calculate = function(self, context)
+        if context.end_of_round and not context.individual and not context.repetition then
+            if G.GAME.last_blind and G.GAME.last_blind.boss then
+                if G.GAME.blind.chips == math.inf then return end
+                local G_GAME_chips = (G.GAME.chips == math.inf and 1.79e308 or G.GAME.chips)
+                local score_mult = G_GAME_chips / G.GAME.blind.chips
+                if score_mult < self.ability.extra.score then return end
+                local jokers = math.floor((1 + math.log(math.log(score_mult, self.ability.extra.score), self.ability.extra.score)) * self.ability.extra.joker)
+                G.E_MANAGER:add_event(Event({
+                    func = function() 
+                        for i = 1, jokers do
+                            local card = create_card('Joker', G.jokers, nil, nil, nil, nil, nil, 'these_are_the_odds')
+                            card:set_edition({negative = true}, true)
+                            card:add_to_deck()
+                            G.jokers:emplace(card)
+                            card:start_materialize()
+                            G.GAME.joker_buffer = 0
+                        end
+                        return true
+                    end}))   
+                card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_plus_joker'), colour = G.C.BLUE})
+            end
+        end
+    end
+
+    SMODS.Jokers.j_moji_these_are_the_odds.loc_def = function(card)
+        return {card.ability.extra.score, card.ability.extra.joker}
+    end
 end
 
 local Card_set_cost_ref = Card.set_cost
@@ -1715,15 +1919,20 @@ function Card:add_to_deck(from_debuff)
                 return true end }))
         elseif self.ability.name == 'Vacant Seat' then
             G.hand:change_size(self.ability.extra.hand_size)
+        elseif self.ability.name == 'Luxury Tax' then
+            self.ability.extra.cur_hand_size = math.max(self.ability.extra.hand_size - self.ability.extra.hand_size_sub * (G.GAME.dollars > 0 and math.floor(G.GAME.dollars / self.ability.extra.per) or 0), self.ability.extra.min_hand_size)
+            G.hand:change_size(self.ability.extra.cur_hand_size)
         else
             self.added_to_deck = false
         end
-        for i = 1, #G.jokers.cards do
-            if G.jokers.cards[i].ability.name == 'Rebate' then
-                G.E_MANAGER:add_event(Event({hand_trigger = 'after', delay = 0.3, func = function()
-                    ease_dollars(G.jokers.cards[i].ability.extra.dollars)
-                    card_eval_status_text(G.jokers.cards[i], 'extra', nil, nil, nil, {message = localize('$') .. G.jokers.cards[i].ability.extra.dollars, dollars = G.jokers.cards[i].ability.extra.dollars, colour = G.C.MONEY, instant = true})
-                    return true end}))
+        if G.jokers then
+            for i = 1, #G.jokers.cards do
+                if G.jokers.cards[i].ability.name == 'Rebate' then
+                    G.E_MANAGER:add_event(Event({hand_trigger = 'after', delay = 0.3, func = function()
+                        ease_dollars(G.jokers.cards[i].ability.extra.dollars)
+                        card_eval_status_text(G.jokers.cards[i], 'extra', nil, nil, nil, {message = localize('$') .. G.jokers.cards[i].ability.extra.dollars, dollars = G.jokers.cards[i].ability.extra.dollars, colour = G.C.MONEY, instant = true})
+                        return true end}))
+                end
             end
         end
     end
@@ -1742,6 +1951,8 @@ function Card:remove_from_deck(from_debuff)
                 return true end }))
         elseif self.ability.name == 'Vacant Seat' then
             G.hand:change_size(-self.ability.extra.hand_size)
+        elseif self.ability.name == 'Luxury Tax' then
+            G.hand:change_size(-self.ability.extra.cur_hand_size)
         else
             self.added_to_deck = true
         end

@@ -144,7 +144,7 @@ let jokers = [
     ],
     image_url: "MojiJoker/assets/2x/j_moji_embrace_the_moon.png",
     rarity: "罕见",
-    cost: 6
+    cost: 7
   },
   {
     name: "执日",
@@ -211,7 +211,7 @@ let jokers = [
     ],
     image_url: "MojiJoker/assets/2x/j_moji_color_out_of_space.png",
     rarity: "罕见",
-    cost: 8
+    cost: 7
   },
   {
     name: "垃圾时间",
@@ -235,6 +235,17 @@ let jokers = [
     image_url: "MojiJoker/assets/2x/j_moji_world_heritage.png",
     rarity: "罕见",
     cost: 7
+  },
+  {
+    name: "四色定理",
+    text: [
+      "打出并计分的牌中",
+      "每种不同的{C:attention}花色{}",
+      "提供{X:mult,C:white}X1.5{}倍率"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_four_color_theorem.png",
+    rarity: "罕见",
+    cost: 8
   },
   {
     name: "卫星支付",
@@ -281,7 +292,7 @@ let jokers = [
     ],
     image_url: "MojiJoker/assets/2x/j_moji_free_refill.png",
     rarity: "罕见",
-    cost: 6
+    cost: 8
   },
   {
     name: "新秩序",
@@ -347,6 +358,35 @@ let jokers = [
     image_url: "MojiJoker/assets/2x/j_moji_now_printing.png",
     rarity: "稀有",
     cost: 8
+  },
+  {
+    name: "地狱",
+    text: [
+      "以至少{X:green,C:white}2X{}分数要求",
+      "击败{C:attention}Boss盲注{}后，",
+      "自毁并使底注{C:red}-1{}",
+      "分数越高，",
+      "减少的底注越多",
+      "{C:inactive}（复制此牌者将陷入无间地狱）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_hell.png",
+    rarity: "稀有",
+    cost: 10
+  },
+  {
+    name: "此即可能",
+    text: [
+      "以至少{X:green,C:white}2X{}分数要求",
+      "击败{C:attention}Boss盲注{}后，",
+      "生成1张带{C:dark_edition}负片{}的",
+      "随机小丑牌",
+      "分数越高，",
+      "生成的小丑牌越多",
+      "{C:inactive}（复制此牌者将囿于物质）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_these_are_the_odds.png",
+    rarity: "传奇",
+    cost: 20
   }
 ]
 
