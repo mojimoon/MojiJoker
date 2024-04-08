@@ -8,7 +8,7 @@
 ------------MOD CODE -------------------------
 
 local MOD_ID = "MojiJoker"
-local MOD_VERSION = "1.0.4"
+local MOD_VERSION = "1.0.5"
 
 local loc_en = {
     j_moji_color_out_of_space = {
@@ -198,13 +198,6 @@ local loc_en = {
             "unique {C:dark_edition}edition{}"
         }
     },
-    j_moji_rebate = {
-        name = "Rebate",
-        text = {
-            "Earn {C:money}$#1#{} when obtaining a card",
-            "Lose {C:money}$#2#{} when selling a card"
-        }
-    },
     j_moji_free_refill = {
         name = "Free Refill",
         text = {
@@ -275,8 +268,8 @@ local loc_en = {
     j_moji_hell = {
         name = "The Hell",
         text = {
-            "When defeating a {C:attention}Boss Blind{}",
-            "with at least {X:black,C:white}#1#X{} score requirement,",
+            "After defeating a {C:attention}Boss Blind{}",
+            "with a score of at least {X:black,C:white}#1#X{} requirement,",
             "this card is destroyed",
             "and reduces the ante by {C:red}-#2#{}",
             "The higher the score,",
@@ -288,20 +281,47 @@ local loc_en = {
         name = "Four Color Theorem",
         text = {
             "{X:mult,C:white}X#1#{} Mult",
-            "per unique scoring {C:attention}suit{}",
-            "in the played hand"
+            "per unique {C:attention}suit{}",
+            "among the played and scored cards"
         }
     },
     j_moji_these_are_the_odds = {
         name = "These Are the Odds",
         text = {
-            "When defeating a {C:attention}Boss Blind{}",
-            "with at least {X:black,C:white}#1#X{} score requirement,",
+            "After defeating a {C:attention}Boss Blind{}",
+            "with a score of at least {X:black,C:white}#1#X{} requirement,",
             "create {C:attention}#2#{} random",
             "{C:dark_edition}negative{} Joker",
             "The higher the score,",
             "the more Jokers are created",
             "{C:inactive}(Materialism confines whoever copies this card)"
+        }
+    },
+    j_moji_startup_capital = {
+        name = "Startup Capital",
+        text = {
+            "After defeating a {C:attention}Boss Blind{}",
+            "sell this card to earn {C:money}$#1#{}"
+        }
+    },
+    j_moji_rebate = {
+        name = "Rebate",
+        text = {
+            "Earn {C:money}$#1#{}",
+            "at the end of the round",
+            "for each {C:voucher}Voucher{} purchased this run",
+            "{C:inactive}(Currently {C:money}$#2#{C:inactive})"
+        }
+    },
+    j_moji_colorful_galaxy = {
+        name = "Colorful Galaxy",
+        text = {
+            "{C:green}#1#/#2#{} chance to",
+            "add {C:dark_edition}edition{} to a random",
+            "{C:attention}Joker{} after playing a hand",
+            "The possibility is multiplied by {C:green}#3#{}",
+            "per unique {C:attention}suit{}",
+            "among the played and scored cards"
         }
     }
 }
@@ -492,13 +512,6 @@ local loc_zh = {
             "提供{X:mult,C:white}X#2#{}倍率"
         }
     },
-    j_moji_rebate = {
-        name = "回扣",
-        text = {
-            "获得牌时获得{C:money}$#1#{}",
-            "出售牌时失去{C:money}$#2#{}"
-        }
-    },
     j_moji_free_refill = {
         name = "免费续杯",
         text = {
@@ -554,8 +567,8 @@ local loc_zh = {
     j_moji_world_heritage = {
         name = "世界遗产",
         text = {
-            "每弃一张牌，获得{X:mult,C:white}X#1#{}倍率",
-            "每出一张牌，失去{X:mult,C:white}X#2#{}倍率",
+            "每弃1张牌，获得{X:mult,C:white}X#1#{}倍率",
+            "每出1张牌，失去{X:mult,C:white}X#2#{}倍率",
             "（当前为{X:mult,C:white} X#3# {C:inactive}倍率）"
         }
     },
@@ -596,6 +609,34 @@ local loc_zh = {
             "分数越高，",
             "生成的小丑牌越多",
             "{C:inactive}（复制此牌者将囿于物质）"
+        }
+    },
+    j_moji_startup_capital = {
+        name = "启动资金",
+        text = {
+            "击败{C:attention}Boss盲注{}后，",
+            "出售此牌获得{C:money}$#1#{}"
+        }
+    },
+    j_moji_rebate = {
+        name = "返现",
+        text = {
+            "本局游戏每购买过",
+            "1张{C:voucher}优惠券{}，",
+            "回合结束时获得{C:money}$#1#{}",
+            "{C:inactive}（当前为{C:money}$#2#{C:inactive}）"
+        }
+    },
+    j_moji_colorful_galaxy = {
+        name = "多彩银河",
+        text = {
+            "每次出牌时，",
+            "有{C:green}#1#/#2#{}几率",
+            "给一张随机{C:attention}小丑牌",
+            "添加{C:dark_edition}版本{}",
+            "打出并计分的牌中，",
+            "每种不同的{C:attention}花色{}",
+            "使上述概率乘以{C:green}#3#{}"
         }
     }
 }
@@ -782,14 +823,6 @@ local jokers = {
         cost = 9,
         unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
     },
-    j_moji_rebate = {
-        ability_name = "Rebate",
-        slug = "moji_rebate",
-        ability = {extra = {dollars = 4, dollars_lose = 3}},
-        rarity = 1,
-        cost = 4,
-        unlocked = true, discovered = true, blueprint_compat = false, eternal_compat = true
-    },
     j_moji_free_refill = {
         ability_name = "Free Refill",
         slug = "moji_free_refill",
@@ -877,6 +910,30 @@ local jokers = {
         rarity = 4,
         cost = 20,
         unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
+    },
+    j_moji_startup_capital = {
+        ability_name = "Startup Capital",
+        slug = "moji_startup_capital",
+        ability = {extra = {dollars = 20, active = false}},
+        rarity = 1,
+        cost = 1,
+        unlocked = true, discovered = true, blueprint_compat = false, eternal_compat = false
+    },
+    j_moji_rebate = {
+        ability_name = "Rebate",
+        slug = "moji_rebate",
+        ability = {extra = {dollars = 3}},
+        rarity = 1,
+        cost = 5,
+        unlocked = true, discovered = true, blueprint_compat = false, eternal_compat = true
+    },
+    j_moji_colorful_galaxy = {
+        ability_name = "Colorful Galaxy",
+        slug = "moji_colorful_galaxy",
+        ability = {extra = {odds = 81, mult = 3}},
+        rarity = 3,
+        cost = 10,
+        unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
     }
 }
 
@@ -907,6 +964,17 @@ function count_used_consumeables(set)
         if v.set == set then
             count = count + 1
         end 
+    end
+    return count
+end
+
+function count_used_vouchers()
+    if not G.GAME.used_vouchers then return 0 end
+    local count = 0
+    for k, v in pairs(G.GAME.used_vouchers) do
+        if v == true then
+            count = count + 1
+        end
     end
     return count
 end
@@ -960,20 +1028,6 @@ function rocket_test_calculate()
     local Xmult = 2.5 + count * 0.5
     if count >= 16 then Xmult = math.pow(1.05, count - 15) * 10 end
     return Xmult, count
-end
-
-function add_temp_handsize(mod)
-    if not G.GAME.round_resets.temp_handsize then
-        G.GAME.round_resets.temp_handsize = 0
-    end
-    G.E_MANAGER:add_event(Event({
-        func = function()
-            G.hand.config.real_card_limit = (G.hand.config.real_card_limit or G.hand.config.card_limit) + mod
-            G.hand.config.card_limit = math.max(0, G.hand.config.real_card_limit)
-            return true
-        end
-    }))
-    G.GAME.round_resets.temp_handsize = G.GAME.round_resets.temp_handsize + mod
 end
 
 function SMODS.INIT.MojiJoker()
@@ -1585,20 +1639,6 @@ function SMODS.INIT.MojiJoker()
         return {card.ability.extra.Xmult, card.ability.extra.unique_Xmult}
     end
 
-    -- Rebate
-    SMODS.Jokers.j_moji_rebate.calculate = function(self, context)
-        if context.selling_card and not context.blueprint then
-            G.E_MANAGER:add_event(Event({hand_trigger = 'after', delay = 0.3, func = function()
-                ease_dollars(-self.ability.extra.dollars_lose, true)
-                card_eval_status_text(self, 'extra', nil, nil, nil, {message = '-' .. localize('$') .. self.ability.extra.dollars_lose, dollars = self.ability.extra.dollars_lose, colour = G.C.MONEY, instant = true})
-                return true end }))
-        end
-    end
-
-    SMODS.Jokers.j_moji_rebate.loc_def = function(card)
-        return {card.ability.extra.dollars, card.ability.extra.dollars_lose}
-    end
-
     -- Free Refill
     SMODS.Jokers.j_moji_free_refill.calculate = function(self, context)
         if context.setting_blind and not context.blueprint and not self.getting_sliced then
@@ -1800,6 +1840,7 @@ function SMODS.INIT.MojiJoker()
                 G.GAME.round_resets.blind_ante = G.GAME.round_resets.blind_ante + (-ante)
                 G.E_MANAGER:add_event(Event({
                     func = function()
+                        card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_active_ex'), colour = G.C.FILTER})
                         play_sound('tarot1')
                         self.T.r = -0.2
                         self:juice_up(0.3, 0.4)
@@ -1871,6 +1912,7 @@ function SMODS.INIT.MojiJoker()
                 local jokers = math.floor((1 + math.log(math.log(score_mult, self.ability.extra.score), self.ability.extra.score)) * self.ability.extra.joker)
                 G.E_MANAGER:add_event(Event({
                     func = function() 
+                        self:juice_up(0.8, 0.5)
                         for i = 1, jokers do
                             local card = create_card('Joker', G.jokers, nil, nil, nil, nil, nil, 'these_are_the_odds')
                             card:set_edition({negative = true}, true)
@@ -1888,6 +1930,89 @@ function SMODS.INIT.MojiJoker()
 
     SMODS.Jokers.j_moji_these_are_the_odds.loc_def = function(card)
         return {card.ability.extra.score, card.ability.extra.joker}
+    end
+
+    -- Startup Capital
+    SMODS.Jokers.j_moji_startup_capital.calculate = function(self, context)
+        if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
+            if G.GAME.last_blind and G.GAME.last_blind.boss then
+                if not self.ability.extra.active then
+                    self.ability.extra.active = true
+                    local eval = function(card) return not card.REMOVED end
+                    juice_card_until(self, eval, true)
+                    return {
+                        message = localize('k_active_ex'),
+                        colour = G.C.FILTER
+                    }
+                end
+            end
+        end
+
+        if context.selling_self and not context.blueprint then
+            if self.ability.extra.active then
+                ease_dollars(self.ability.extra.dollars)
+                card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('$') .. self.ability.extra.dollars, dollars = self.ability.extra.dollars, colour = G.C.MONEY, instant = true})
+            end
+        end
+    end
+
+    SMODS.Jokers.j_moji_startup_capital.loc_def = function(card)
+        return {card.ability.extra.dollars}
+    end
+
+    -- Rebate
+    SMODS.Jokers.j_moji_rebate.loc_def = function(card)
+        return {card.ability.extra.dollars, count_used_vouchers() * card.ability.extra.dollars}
+    end
+
+    -- Colorful Galaxy
+    SMODS.Jokers.j_moji_colorful_galaxy.calculate = function(self, context)
+        if context.before and not context.blueprint then
+            local suits = {
+                ['Hearts'] = 0,
+                ['Diamonds'] = 0,
+                ['Spades'] = 0,
+                ['Clubs'] = 0
+            }
+            for i = 1, #context.scoring_hand do
+                if context.scoring_hand[i].ability.name ~= 'Wild Card' then
+                    if context.scoring_hand[i]:is_suit('Hearts') and suits["Hearts"] == 0 then suits["Hearts"] = suits["Hearts"] + 1
+                    elseif context.scoring_hand[i]:is_suit('Diamonds') and suits["Diamonds"] == 0  then suits["Diamonds"] = suits["Diamonds"] + 1
+                    elseif context.scoring_hand[i]:is_suit('Spades') and suits["Spades"] == 0  then suits["Spades"] = suits["Spades"] + 1
+                    elseif context.scoring_hand[i]:is_suit('Clubs') and suits["Clubs"] == 0  then suits["Clubs"] = suits["Clubs"] + 1 end
+                end
+            end
+            for i = 1, #context.scoring_hand do
+                if context.scoring_hand[i].ability.name == 'Wild Card' then
+                    if context.scoring_hand[i]:is_suit('Hearts') and suits["Hearts"] == 0 then suits["Hearts"] = suits["Hearts"] + 1
+                    elseif context.scoring_hand[i]:is_suit('Diamonds') and suits["Diamonds"] == 0  then suits["Diamonds"] = suits["Diamonds"] + 1
+                    elseif context.scoring_hand[i]:is_suit('Spades') and suits["Spades"] == 0  then suits["Spades"] = suits["Spades"] + 1
+                    elseif context.scoring_hand[i]:is_suit('Clubs') and suits["Clubs"] == 0  then suits["Clubs"] = suits["Clubs"] + 1 end
+                end
+            end
+            local count = suits["Hearts"] + suits["Diamonds"] + suits["Spades"] + suits["Clubs"]
+            if pseudorandom('colorful_galaxy_trigger') < (G.GAME and G.GAME.probabilities.normal or 1) * math.pow(self.ability.extra.mult, count) / self.ability.extra.odds then
+                local eligible_cards = {}
+                for i = 1, #G.jokers.cards do
+                    if not G.jokers.cards[i].edition then
+                        eligible_cards[#eligible_cards + 1] = G.jokers.cards[i]
+                    end
+                end
+                if #eligible_cards > 0 then
+                    G.E_MANAGER:add_event(Event({func = function() 
+                        self:juice_up(0.8, 0.5) 
+                        card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_active_ex'), colour = G.C.FILTER})
+                        return true end}))
+                    local card = pseudorandom_element(eligible_cards, pseudoseed('colorful_galaxy_card'))
+                    local editions = {{foil = true}, {holo = true}, {polychrome = true}, {negative = true}}
+                    local edition = pseudorandom_element(editions, pseudoseed('colorful_galaxy_edition'))
+                    card:set_edition(edition, true)
+                end
+            end
+        end
+    end
+    SMODS.Jokers.j_moji_colorful_galaxy.loc_def = function(card)
+        return {(G.GAME and G.GAME.probabilities.normal or 1), card.ability.extra.odds, card.ability.extra.mult}
     end
 end
 
@@ -1925,16 +2050,6 @@ function Card:add_to_deck(from_debuff)
         else
             self.added_to_deck = false
         end
-        if G.jokers then
-            for i = 1, #G.jokers.cards do
-                if G.jokers.cards[i].ability.name == 'Rebate' then
-                    G.E_MANAGER:add_event(Event({hand_trigger = 'after', delay = 0.3, func = function()
-                        ease_dollars(G.jokers.cards[i].ability.extra.dollars)
-                        card_eval_status_text(G.jokers.cards[i], 'extra', nil, nil, nil, {message = localize('$') .. G.jokers.cards[i].ability.extra.dollars, dollars = G.jokers.cards[i].ability.extra.dollars, colour = G.C.MONEY, instant = true})
-                        return true end}))
-                end
-            end
-        end
     end
     Card_add_to_deck_ref(self, from_debuff)
 end
@@ -1964,11 +2079,18 @@ local Card_calculate_dollar_bonus_ref = Card.calculate_dollar_bonus
 function Card:calculate_dollar_bonus()
     if self.debuff then return end
     if self.ability.set == 'Joker' then
+        local dollars = -1
         if self.ability.name == 'Embrace the Moon' then
-            return self.ability.extra.dollars * math.floor(self.ability.extra.trigger_cnt / self.ability.extra.per)
+            dollars = self.ability.extra.dollars * math.floor(self.ability.extra.trigger_cnt / self.ability.extra.per)
+        elseif self.ability.name == 'Tax Collector' then 
+            dollars = tax_collector_count() * self.ability.extra.dollars
+        elseif self.ability.name == 'Rebate' then
+            dollars = count_used_vouchers() * self.ability.extra.dollars
         end
-        if self.ability.name == 'Tax Collector' then 
-            return tax_collector_count() * self.ability.extra.dollars
+        if dollars > 0 then
+            return dollars
+        elseif dollars == 0 then
+            return
         end
     end
     return Card_calculate_dollar_bonus_ref(self)

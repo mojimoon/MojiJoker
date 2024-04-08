@@ -4,4 +4,4 @@
 
 [![](https://img.shields.io/badge/Preview-GitHub%20Pages-blue)](https://mojimoon.github.io/mojijoker)
 
-![](screenshots/1_0_2.png)
+![](screenshots/1_0_5.png)

@@ -23,14 +23,14 @@ let jokers = [
     cost: 5
   },
   {
-    name: "回扣",
+    name: "启动资金",
     text: [
-      "获得牌时获得{C:money}$4{}",
-      "出售牌时失去{C:money}$3{}"
+      "击败{C:attention}Boss盲注{}后，",
+      "出售本牌以获得{C:money}$20{}"
     ],
-    image_url: "MojiJoker/assets/2x/j_moji_rebate.png",
+    image_url: "MojiJoker/assets/2x/j_moji_startup_capital.png",
     rarity: "普通",
-    cost: 4
+    cost: 1
   },
   {
     name: "双筒望远镜",
@@ -54,13 +54,14 @@ let jokers = [
     cost: 5
   },
   {
-    name: "超凡升天",
+    name: "返现",
     text: [
-      "选择{C:attention}盲注{}后",
-      "生成一张{C:tarot}倒吊人{}",
-      "{C:inactive}（必须有空位）"
+      "本局游戏每购买过",
+      "1张{C:voucher}优惠券{}，",
+      "回合结束时获得{C:money}$3{}",
+      "{C:inactive}（当前为{C:money}$0{C:inactive}）"
     ],
-    image_url: "MojiJoker/assets/2x/j_moji_transcendence.png",
+    image_url: "MojiJoker/assets/2x/j_moji_rebate.png",
     rarity: "普通",
     cost: 5
   },
@@ -109,16 +110,15 @@ let jokers = [
     cost: 5
   },
   {
-    name: "人寿保险",
+    name: "超凡升天",
     text: [
-      "选择{C:attention}盲注{}后，",
-      "失去当前筹码的{C:red}12.5%{}，",
-      "获得等于资金{C:money}50%{}的筹码",
-      "{C:inactive}（当前为{C:chips}+0{C:inactive}筹码）"
+      "选择{C:attention}盲注{}后",
+      "生成一张{C:tarot}倒吊人{}",
+      "{C:inactive}（必须有空位）"
     ],
-    image_url: "MojiJoker/assets/2x/j_moji_life_insurance.png",
-    rarity: "罕见",
-    cost: 6
+    image_url: "MojiJoker/assets/2x/j_moji_transcendence.png",
+    rarity: "普通",
+    cost: 5
   },
   {
     name: "逐星",
@@ -166,6 +166,18 @@ let jokers = [
     image_url: "MojiJoker/assets/2x/j_moji_salvage_the_world.png",
     rarity: "罕见",
     cost: 7
+  },
+  {
+    name: "人寿保险",
+    text: [
+      "选择{C:attention}盲注{}后，",
+      "失去当前筹码的{C:red}12.5%{}，",
+      "获得等于资金{C:money}50%{}的筹码",
+      "{C:inactive}（当前为{C:chips}+0{C:inactive}筹码）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_life_insurance.png",
+    rarity: "罕见",
+    cost: 6
   },
   {
     name: "量(子)化",
@@ -228,8 +240,8 @@ let jokers = [
   {
     name: "世界遗产",
     text: [
-      "每出一张牌，失去{X:mult,C:white}X0.02{}倍率",
-      "每弃一张牌，获得{X:mult,C:white}X0.04{}倍率",
+      "每弃1张牌，获得{X:mult,C:white}X0.04{}倍率",
+      "每出1张牌，失去{X:mult,C:white}X0.02{}倍率",
       "{C:inactive}（当前为{X:mult,C:white}X1{C:inactive}倍率）"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_world_heritage.png",
@@ -295,6 +307,18 @@ let jokers = [
     cost: 8
   },
   {
+    name: "印刷中",
+    text: [
+      "下{C:attention}2{}次选择{C:attention}盲注{}后，",
+      "给一张随机小丑牌添加",
+      "{C:dark_edition}闪箔{}、{C:dark_edition}镭射{}或{C:dark_edition}多彩{}版本",
+      "{C:inactive}（不会添加给印刷中）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_now_printing.png",
+    rarity: "罕见",
+    cost: 8
+  },
+  {
     name: "新秩序",
     text: [
       "打出{C:attention}A{}并计分时，",
@@ -336,6 +360,20 @@ let jokers = [
     cost: 9
   },
   {
+    name: "地狱",
+    text: [
+      "以至少{X:green,C:white}2X{}分数要求",
+      "击败{C:attention}Boss盲注{}后，",
+      "自毁并使底注{C:red}-1{}",
+      "分数越高，",
+      "减少的底注越多",
+      "{C:inactive}（复制此牌者将陷入无间地狱）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_hell.png",
+    rarity: "稀有",
+    cost: 10
+  },
+  {
     name: "集邮",
     text: [
       "每张带{C:dark_edition}版本{}的小丑牌",
@@ -348,28 +386,17 @@ let jokers = [
     cost: 9
   },
   {
-    name: "印刷中",
+    name: "多彩银河",
     text: [
-      "下{C:attention}2{}次选择{C:attention}盲注{}后，",
-      "给一张随机小丑牌添加",
-      "{C:dark_edition}闪箔{}、{C:dark_edition}镭射{}或{C:dark_edition}多彩{}版本",
-      "{C:inactive}（不会添加给印刷中）"
+      "每次出牌时，",
+      "有{C:green}1/81{}几率",
+      "给一张随机{C:attention}小丑牌",
+      "添加{C:dark_edition}版本{}",
+      "打出并计分的牌中，",
+      "每种不同的{C:attention}花色{}",
+      "使上述概率乘以{C:green}3{}"
     ],
-    image_url: "MojiJoker/assets/2x/j_moji_now_printing.png",
-    rarity: "稀有",
-    cost: 8
-  },
-  {
-    name: "地狱",
-    text: [
-      "以至少{X:green,C:white}2X{}分数要求",
-      "击败{C:attention}Boss盲注{}后，",
-      "自毁并使底注{C:red}-1{}",
-      "分数越高，",
-      "减少的底注越多",
-      "{C:inactive}（复制此牌者将陷入无间地狱）"
-    ],
-    image_url: "MojiJoker/assets/2x/j_moji_hell.png",
+    image_url: "MojiJoker/assets/2x/j_moji_colorful_galaxy.png",
     rarity: "稀有",
     cost: 10
   },
@@ -387,7 +414,51 @@ let jokers = [
     image_url: "MojiJoker/assets/2x/j_moji_these_are_the_odds.png",
     rarity: "传奇",
     cost: 20
-  }
+  },
+  // {
+  //   name: "先古契约",
+  //   text: [
+  //     "{C:green}罕见{}、{C:red}稀有{}小丑牌和{C:dark_edition}版本{}",
+  //     "出现概率提高{C:attention}100%{}"
+  //   ],
+  //   image_url: "MojiJoker/assets/2x/j_moji_world_heritage.png",
+  //   rarity: "罕见",
+  //   cost: 8
+  // },
+  // {
+  //   name: "BO3",
+  //   text: [
+  //     "每在同一回合中",
+  //     "打出同一牌型{C:attention}2{}次，",
+  //     "将其{C:attention}升级{}"
+  //   ],
+  //   image_url: "MojiJoker/assets/2x/j_moji_best_of_three.png",
+  //   rarity: "罕见",
+  //   cost: 7
+  // },
+  // {
+  //   name: "定期存款",
+  //   text: [
+  //     "获得本牌时将所有资金",
+  //     "储存于本牌{C:inactive}（最多{C:money}$50{C:inactive}）",
+  //     "{C:attention}2{}回合后，",
+  //     "出售本牌可获得",
+  //     "储存资金的{C:attention}2{}倍"
+  //   ],
+  //   image_url: "MojiJoker/assets/2x/j_moji_fixed_deposit.png",
+  //   rarity: "罕见",
+  //   cost: 1
+  // },
+  // {
+  //   name: "回扣",
+  //   text: [
+  //     "获得牌时获得{C:money}$4{}",
+  //     "出售牌时失去{C:money}$3{}"
+  //   ],
+  //   image_url: "MojiJoker/assets/2x/j_moji_rebate.png",
+  //   rarity: "普通",
+  //   cost: 4
+  // },
 ]
 
 // works the same. 
@@ -418,30 +489,6 @@ let consumables = [
   // },
 ]
 
-let deprecated = [
-  {
-    name: "先古契约",
-    text: [
-      "{C:green}罕见{}、{C:red}稀有{}小丑牌和{C:dark_edition}版本{}",
-      "出现概率提高{C:attention}100%{}"
-    ],
-    image_url: "MojiJoker/assets/2x/j_moji_world_heritage.png",
-    rarity: "罕见",
-    cost: 8
-  },
-  {
-    name: "BO3",
-    text: [
-      "每在同一回合中",
-      "打出同一牌型{C:attention}2{}次，",
-      "将其{C:attention}升级{}"
-    ],
-    image_url: "MojiJoker/assets/2x/j_moji_best_of_three.png",
-    rarity: "罕见",
-    cost: 7
-  }
-]
-
 let cols = {
   
   MULT: "#FE5F55",
@@ -469,7 +516,7 @@ let cols = {
   VOUCHER: "#cb724c",
   BOOSTER: "#646eb7",
   EDITION: "#ffffff",
-  DARK_EDITION: "#5d5dff",
+  DARK_EDITION: "#9d9dff",
   ETERNAL: "#c75985",
   INACTIVE: "#ffffff99",
   LEGENDARY: "#b26cbb",
