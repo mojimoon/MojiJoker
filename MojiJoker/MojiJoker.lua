@@ -8,7 +8,7 @@
 ------------MOD CODE -------------------------
 
 local MOD_ID = "MojiJoker"
-local MOD_VERSION = "1.0.5"
+local MOD_VERSION = "1.0.6"
 
 local loc_en = {
     j_moji_color_out_of_space = {
@@ -16,7 +16,7 @@ local loc_en = {
         text = {
             "Gains {X:mult,C:white}X#1#{} multiplier per",
             "consecutive hand containing {C:attention}#3#{}",
-            "Otherwise reset",
+            "Otherwise resets",
             "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)"
         }
     },
@@ -47,7 +47,7 @@ local loc_en = {
             "If at least {C:attention}#3#{} scoring cards",
             "are played in one hand,",
             "gains {C:mult}+#1#{} Mult per scoring card",
-            "Otherwise reset",
+            "Otherwise resets",
             "{C:inactive}(Currently {C:mult}+#2#{C:inactive} Mult)"
         }
     },
@@ -63,40 +63,40 @@ local loc_en = {
     j_moji_transcendence = {
         name = "Transcendence",
         text = {
-            "When {C:attention}Blind{} is selected,",
-            "create a copy of {C:tarot}The Hanged Man{}", 
+            "Create a copy of {C:tarot}The Hanged Man{}",
+            "when {C:attention}Blind{} is selected",
             "{C:inactive}(Must have room)"
         }
     },
     j_moji_calamity_star = {
         name = "Calamity Star",
         text = {
-            "When {C:attention}Blind{} is selected,",
-            "create a copy of {C:tarot}The Star{}",
+            "Create a copy of {C:tarot}The Star{}",
+            "when {C:attention}Blind{} is selected",
             "{C:inactive}(Must have room)"
         }
     },
     j_moji_crescent_moon = {
         name = "Crescent Moon",
         text = {
-            "When {C:attention}Blind{} is selected,",
-            "create a copy of {C:tarot}The Moon{}",
+            "Create a copy of {C:tarot}The Moon{}",
+            "when {C:attention}Blind{} is selected",
             "{C:inactive}(Must have room)"
         }
     },
     j_moji_solar_eclipse = {
         name = "Solar Eclipse",
         text = {
-            "When {C:attention}Blind{} is selected,",
-            "create a copy of {C:tarot}The Sun{}",
+            "Create a copy of {C:tarot}The Sun{}",
+            "when {C:attention}Blind{} is selected",
             "{C:inactive}(Must have room)"
         }
     },
     j_moji_doomed_world = {
         name = "Doomed World",
         text = {
-            "When {C:attention}Blind{} is selected,",
-            "create a copy of {C:tarot}The World{}",
+            "Create a copy of {C:tarot}The World{}",
+            "when {C:attention}Blind{} is selected",
             "{C:inactive}(Must have room)"
         }
     },
@@ -232,15 +232,6 @@ local loc_en = {
             "{C:inactive}(Currently {C:mult}+#3#{C:inactive} Mult)"
         }
     },
-    j_moji_life_insurance = {
-        name = "Life Insurance",
-        text = {
-            "When {C:attention}Blind{} is selected,",
-            "lose {C:red}#1#%{} of current chips",
-            "Gain chips equal to {C:attention}#2#%{} of your money",
-            "{C:inactive}(Currently {C:chips}+#3#{C:inactive} chips)"
-        }
-    },
     j_moji_return_on_investment = {
         name = "Return on Investment",
         text = {
@@ -316,14 +307,67 @@ local loc_en = {
     j_moji_colorful_galaxy = {
         name = "Colorful Galaxy",
         text = {
-            "{C:green}#1#/#2#{} chance to",
+            "{C:green}#1# in #2#{} chance to",
             "add {C:dark_edition}edition{} to a random",
             "{C:attention}Joker{} after playing a hand",
             "The possibility is multiplied by {C:green}#3#{}",
             "per unique {C:attention}suit{}",
             "among the played and scored cards"
         }
-    }
+    },
+    j_moji_contrasting_colors = {
+        name = "Contrasting Colors",
+        text = {
+            "Gains {C:chips}+#1#{} Chips",
+            "if a hand contains a {C:attention}#3#{}",
+            "{C:inactive}(Currently {C:chips}+#2#{C:inactive} Chips)"
+        }
+    },
+    j_moji_acrobatics = {
+        name = "Acrobatics",
+        text = {
+            "{C:attention}+#1#{} hand size",
+            "after each {C:red}discard{}",
+            "Resets after {C:blue}playing{} a hand"
+        }
+    },
+    j_moji_buy_one_get_one_free = {
+        name = "Buy One Get One Free",
+        text = {
+            "Create a random {C:planet}Planet{} card",
+            "when you spend at least {C:money}$#1#{}",
+            "{C:inactive}(Must have room)"
+        }
+    },
+    j_moji_double_shadow = {
+        name = "Double Shadow",
+        text = {
+            "{X:mult,C:white}X#1#{} Mult",
+            "for every pair of cards with the same rank",
+            "in the played cards",
+            "Same applies to the pairs in your hand"
+        }
+    },
+    j_moji_last_ditch_effort = {
+        name = "Last-Ditch Effort",
+        text = {
+            "Apply {C:dark_edition}Eternal{}",
+            "to the Joker on the left",
+            "when {C:attention}Blind{} is selected",
+            "Gains {X:mult,C:white}X#1#{} Mult",
+            "for each {C:dark_edition}Eternal{} applied",
+            "{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)"
+        }
+    },
+    j_moji_pawn_shop = {
+        name = "Pawn Shop",
+        text = {
+            "Pawn Shop is inherently {C:dark_edition}Eternal{}",
+            "{C:attention}+#1#{} Joker slot",
+            "for each {C:dark_edition}Eternal{} Joker",
+            "you have"
+        }
+    },
 }
 
 local loc_zh = {
@@ -517,7 +561,7 @@ local loc_zh = {
         text = {
             "选择{C:attention}盲注{}后，",
             "生成随机小丑牌",
-            "直到填满槽位",
+            "直到没有空位",
             "出售小丑牌时失去{C:money}$#1#{}"
         }
     },
@@ -545,15 +589,6 @@ local loc_zh = {
             "每有1手牌上限，",
             "提供{C:mult}+#2#{}倍率",
             "{C:inactive}（当前为{C:mult}+#3#{C:inactive}倍率）"
-        }
-    },
-    j_moji_life_insurance = {
-        name = "人寿保险",
-        text = {
-            "选择{C:attention}盲注{}后，",
-            "失去当前筹码的{C:red}#1#%{}，",
-            "获得等于资金{C:money}#2#%{}的筹码",
-            "{C:inactive}（当前为{C:chips}+#3#{C:inactive}筹码）"
         }
     },
     j_moji_return_on_investment = {
@@ -638,7 +673,57 @@ local loc_zh = {
             "每种不同的{C:attention}花色{}",
             "使上述概率乘以{C:green}#3#{}"
         }
-    }
+    },
+    j_moji_contrasting_colors = {
+        name = "撞色",
+        text = {
+            "若打出的牌中有{C:attention}#3#{}，",
+            "获得{C:chips}+#1#{}筹码",
+            "{C:inactive}（当前为{C:chips}+#2#{C:inactive}筹码）"
+        }
+    },
+    j_moji_acrobatics = {
+        name = "杂技",
+        text = {
+            "每次{C:red}弃牌{}后，",
+            "手牌上限{C:attention}+#1#{}",
+            "每次{C:blue}出牌{}后重置",
+        }
+    },
+    j_moji_buy_one_get_one_free = {
+        name = "买一送一",
+        text = {
+            "每当你消费至少{C:money}$#1#{}时，",
+            "生成一张随机的{C:planet}星球牌",
+            "{C:inactive}（必须有空位）"
+        }
+    },
+    j_moji_double_shadow = {
+        name = "形影成双",
+        text = {
+            "打出的每对点数相同的牌",
+            "和手牌中每对点数相同的牌",
+            "都提供{X:mult,C:white}X#1#{}倍率"
+        }
+    },
+    j_moji_last_ditch_effort = {
+        name = "最后一搏",
+        text = {
+            "选择{C:attention}盲注{}后，",
+            "为左侧的小丑牌添加{C:dark_edition}永恒{}",
+            "每成功添加1次，",
+            "获得{X:mult,C:white}X#1#{}倍率",
+            "{C:inactive}（当前为{X:mult,C:white}X#2#{C:inactive}倍率）"
+        }
+    },
+    j_moji_pawn_shop = {
+        name = "典当行",
+        text = {
+            "本牌自动获得{C:dark_edition}永恒{}",
+            "每有一张{C:dark_edition}永恒{}小丑牌，",
+            "小丑牌槽位{C:attention}+#1#{}",
+        }
+    },
 }
 
 local misc_loc_en = {
@@ -834,7 +919,7 @@ local jokers = {
     j_moji_safety_net = {
         ability_name = "Safety Net",
         slug = "moji_safety_net",
-        ability = {extra = {chips = 20, chips_add = 15}},
+        ability = {extra = {chips = 30, chips_add = 15}},
         rarity = 1,
         cost = 5,
         unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
@@ -850,15 +935,7 @@ local jokers = {
     j_moji_vacant_seat = {
         ability_name = "Vacant Seat",
         slug = "moji_vacant_seat",
-        ability = {extra = {hand_size = -2, mult = 15}},
-        rarity = 2,
-        cost = 6,
-        unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
-    },
-    j_moji_life_insurance = {
-        ability_name = "Life Insurance",
-        slug = "moji_life_insurance",
-        ability = {extra = {percent_lose = 12.5, percent_gain = 50, chips = 0}},
+        ability = {extra = {hand_size = -1, mult = 12}},
         rarity = 2,
         cost = 6,
         unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
@@ -932,8 +1009,56 @@ local jokers = {
         slug = "moji_colorful_galaxy",
         ability = {extra = {odds = 81, mult = 3}},
         rarity = 3,
-        cost = 10,
+        cost = 9,
         unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
+    },
+    j_moji_contrasting_colors = {
+        ability_name = "Contrasting Colors",
+        slug = "moji_contrasting_colors",
+        ability = {extra = {chips = 20, chips_add = 10, type = 'Flush'}},
+        rarity = 1,
+        cost = 5,
+        unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
+    },
+    j_moji_acrobatics = {
+        ability_name = "Acrobatics",
+        slug = "moji_acrobatics",
+        ability = {extra = {hand_size = 3, cur_hand_size = 0}},
+        rarity = 1,
+        cost = 4,
+        unlocked = true, discovered = true, blueprint_compat = false, eternal_compat = true
+    },
+    j_moji_buy_one_get_one_free = {
+        ability_name = "Buy One Get One Free",
+        slug = "moji_buy_one_get_one_free",
+        ability = {extra = {dollars_min = 4}},
+        rarity = 2,
+        cost = 6,
+        unlocked = true, discovered = true, blueprint_compat = false, eternal_compat = true
+    },
+    j_moji_double_shadow = {
+        ability_name = "Double Shadow",
+        slug = "moji_double_shadow",
+        ability = {extra = {Xmult = 1.5, seen = {played = {}, hand = {}}}},
+        rarity = 3,
+        cost = 9,
+        unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
+    },
+    j_moji_last_ditch_effort = {
+        ability_name = "Last-Ditch Effort",
+        slug = "moji_last_ditch_effort",
+        ability = {extra = {Xmult_add = 0.5}},
+        rarity = 2,
+        cost = 7,
+        unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
+    },
+    j_moji_pawn_shop = {
+        ability_name = "Pawn Shop",
+        slug = "moji_pawn_shop",
+        ability = {extra = {slot = 1, cur_slot = 0}},
+        rarity = 3,
+        cost = 10,
+        unlocked = true, discovered = true, blueprint_compat = false, eternal_compat = true
     }
 }
 
@@ -1231,7 +1356,7 @@ function SMODS.INIT.MojiJoker()
                                 G.GAME.consumeable_buffer = 0
                                 return true
                             end}))   
-                            card_eval_status_text(context.blueprint_card or self, 'extra', nil, nil, nil, {message = localize('k_plus_tarot'), colour = G.C.PURPLE})                       
+                            card_eval_status_text(context.blueprint_card or self, 'extra', nil, nil, nil, {message = localize('k_plus_tarot'), colour = G.C.PURPLE})
                         return true
                     end)}))
             end
@@ -1257,7 +1382,7 @@ function SMODS.INIT.MojiJoker()
                                 G.GAME.consumeable_buffer = 0
                                 return true
                             end}))   
-                            card_eval_status_text(context.blueprint_card or self, 'extra', nil, nil, nil, {message = localize('k_plus_tarot'), colour = G.C.PURPLE})                       
+                            card_eval_status_text(context.blueprint_card or self, 'extra', nil, nil, nil, {message = localize('k_plus_tarot'), colour = G.C.PURPLE})
                         return true
                     end)}))
             end
@@ -1283,7 +1408,7 @@ function SMODS.INIT.MojiJoker()
                                 G.GAME.consumeable_buffer = 0
                                 return true
                             end}))   
-                            card_eval_status_text(context.blueprint_card or self, 'extra', nil, nil, nil, {message = localize('k_plus_tarot'), colour = G.C.PURPLE})                       
+                            card_eval_status_text(context.blueprint_card or self, 'extra', nil, nil, nil, {message = localize('k_plus_tarot'), colour = G.C.PURPLE})
                         return true
                     end)}))
             end
@@ -1309,7 +1434,7 @@ function SMODS.INIT.MojiJoker()
                                 G.GAME.consumeable_buffer = 0
                                 return true
                             end}))   
-                            card_eval_status_text(context.blueprint_card or self, 'extra', nil, nil, nil, {message = localize('k_plus_tarot'), colour = G.C.PURPLE})                       
+                            card_eval_status_text(context.blueprint_card or self, 'extra', nil, nil, nil, {message = localize('k_plus_tarot'), colour = G.C.PURPLE})
                         return true
                     end)}))
             end
@@ -1335,7 +1460,7 @@ function SMODS.INIT.MojiJoker()
                                 G.GAME.consumeable_buffer = 0
                                 return true
                             end}))   
-                            card_eval_status_text(context.blueprint_card or self, 'extra', nil, nil, nil, {message = localize('k_plus_tarot'), colour = G.C.PURPLE})                       
+                            card_eval_status_text(context.blueprint_card or self, 'extra', nil, nil, nil, {message = localize('k_plus_tarot'), colour = G.C.PURPLE})
                         return true
                     end)}))
             end
@@ -1722,40 +1847,6 @@ function SMODS.INIT.MojiJoker()
         return {-card.ability.extra.hand_size, card.ability.extra.mult, (G.hand and G.hand.config.card_limit or 0) * card.ability.extra.mult}
     end
 
-    -- Life Insurance
-    SMODS.Jokers.j_moji_life_insurance.calculate = function(self, context)
-        if context.setting_blind and not context.blueprint and not self.getting_sliced then
-            if G.GAME.round_resets.ante > G.GAME.win_ante then
-                self.ability.extra.percent_lose = 0
-            end
-            local balance = - math.floor(self.ability.extra.chips * self.ability.extra.percent_lose / 100) + math.floor(math.max(G.GAME.dollars, 0) * self.ability.extra.percent_gain / 100)
-            self.ability.extra.chips = math.max(0, self.ability.extra.chips + balance)
-            if balance < 0 then
-                G.E_MANAGER:add_event(Event({func = function()
-                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_chips_minus', vars = {-balance}}, colour = G.C.CHIPS})
-                return true end }))
-            elseif balance > 0 then
-                G.E_MANAGER:add_event(Event({func = function()
-                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_chips', vars = {balance}}, colour = G.C.CHIPS})
-                return true end }))
-            end
-        end
-
-        if SMODS.end_calculate_context(context) then
-            if self.ability.extra.chips > 0 then
-                return {
-                    message = localize{type='variable',key='a_chips',vars={self.ability.extra.chips}},
-                    colour = G.C.CHIPS,
-                    chip_mod = self.ability.extra.chips
-                }
-            end
-        end
-    end
-
-    SMODS.Jokers.j_moji_life_insurance.loc_def = function(card)
-        return {card.ability.extra.percent_lose, card.ability.extra.percent_gain, card.ability.extra.chips}
-    end
-
     -- Return on Investment
     SMODS.Jokers.j_moji_return_on_investment.calculate = function(self, context)
         if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
@@ -2014,6 +2105,71 @@ function SMODS.INIT.MojiJoker()
     SMODS.Jokers.j_moji_colorful_galaxy.loc_def = function(card)
         return {(G.GAME and G.GAME.probabilities.normal or 1), card.ability.extra.odds, card.ability.extra.mult}
     end
+
+    -- Contrasting Colors
+    SMODS.Jokers.j_moji_contrasting_colors.calculate = function(self, context)
+        if context.before and not context.blueprint then
+            if next(context.poker_hands[self.ability.extra.type]) then
+                self.ability.extra.chips = self.ability.extra.chips + self.ability.extra.chips_add
+                card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_chips',vars={self.ability.extra.chips_add}}, colour = G.C.CHIPS})
+            end
+        end
+
+        if SMODS.end_calculate_context(context) then
+            return {
+                message = localize{type='variable',key='a_chips',vars={self.ability.extra.chips}},
+                colour = G.C.CHIPS,
+                chip_mod = self.ability.extra.chips
+            }
+        end
+    end
+
+    SMODS.Jokers.j_moji_contrasting_colors.loc_def = function(card)
+        return {card.ability.extra.chips_add, card.ability.extra.chips, localize(card.ability.extra.type, 'poker_hands')}
+    end
+
+    -- Acrobatics
+    SMODS.Jokers.j_moji_acrobatics.calculate = function(self, context)
+        if context.discard and not context.blueprint and context.other_card == context.full_hand[#context.full_hand] then
+            G.hand:change_size(self.ability.extra.hand_size)
+            self.ability.extra.cur_hand_size = self.ability.extra.cur_hand_size + self.ability.extra.hand_size
+            G.E_MANAGER:add_event(Event({func = function() self:juice_up(0.8, 0.5) return true end}))
+        end
+
+        if context.after and not context.blueprint then
+            G.hand:change_size(-self.ability.extra.cur_hand_size)
+            self.ability.extra.cur_hand_size = 0
+        end
+
+        if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
+            G.hand:change_size(-self.ability.extra.cur_hand_size)
+            self.ability.extra.cur_hand_size = 0
+        end
+    end
+
+    SMODS.Jokers.j_moji_acrobatics.loc_def = function(card)
+        return {card.ability.extra.hand_size}
+    end
+
+    -- Buy One Get One Free
+    SMODS.Jokers.j_moji_buy_one_get_one_free.loc_def = function(card)
+        return {card.ability.extra.dollars_min}
+    end
+
+    -- Double Shadow
+    SMODS.Jokers.j_moji_double_shadow.loc_def = function(card)
+        return {card.ability.extra.Xmult}
+    end
+
+    -- Last-Ditch Effort
+    SMODS.Jokers.j_moji_last_ditch_effort.loc_def = function(card)
+        return {card.ability.extra.Xmult_add, card.ability.x_mult}
+    end
+
+    -- Pawn Shop
+    SMODS.Jokers.j_moji_pawn_shop.loc_def = function(card)
+        return {card.ability.extra.slot}
+    end
 end
 
 local Card_set_cost_ref = Card.set_cost
@@ -2068,6 +2224,8 @@ function Card:remove_from_deck(from_debuff)
             G.hand:change_size(-self.ability.extra.hand_size)
         elseif self.ability.name == 'Luxury Tax' then
             G.hand:change_size(-self.ability.extra.cur_hand_size)
+        elseif self.ability.name == 'Acrobatics' then
+            G.hand:change_size(-self.ability.extra.cur_hand_size)
         else
             self.added_to_deck = true
         end
@@ -2109,6 +2267,36 @@ function Card:sell_card()
         end
     end
     Card_sell_card_ref(self)
+end
+
+local ease_dollars_ref = ease_dollars
+function ease_dollars(mod, instant)
+    if mod < 0 and G.jokers then
+        local max_possible = G.consumeables.config.card_limit - #G.consumeables.cards - G.GAME.consumeable_buffer
+        if max_possible > 0 then
+            for i = 1, #G.jokers.cards do
+                if G.jokers.cards[i].ability.name == 'Buy One Get One Free' and -mod >= G.jokers.cards[i].ability.extra.dollars_min then
+                    G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+                    G.E_MANAGER:add_event(Event({
+                        func = (function()
+                            G.E_MANAGER:add_event(Event({
+                                func = function() 
+                                    local card = create_card('Planet',G.consumeables, nil, nil, nil, nil, nil, nil)
+                                    card:add_to_deck()
+                                    G.consumeables:emplace(card)
+                                    G.GAME.consumeable_buffer = 0
+                                    return true
+                                end}))   
+                                card_eval_status_text(G.jokers.cards[i], 'extra', nil, nil, nil, {message = localize('k_plus_planet'), colour = G.C.BLUE})
+                            return true
+                        end)}))
+                    end
+                    max_possible = max_possible - 1
+                    if max_possible == 0 then break end
+                end
+            end
+    end
+    ease_dollars_ref(mod, instant)
 end
 
 local G_FUNCS_use_card_ref = G.FUNCS.use_card

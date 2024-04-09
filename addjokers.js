@@ -5,7 +5,7 @@ let jokers = [
       "回合结束时，",
       "每有1次未使用的{C:red}弃牌{}次数，",
       "获得{C:chips}+15{}筹码",
-      "{C:inactive}（当前为{C:chips}+20{C:inactive}筹码）"
+      "{C:inactive}（当前为{C:chips}+30{C:inactive}筹码）"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_safety_net.png",
     rarity: "普通",
@@ -19,6 +19,17 @@ let jokers = [
       "提供{C:chips}+12{}筹码"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_neutron_star.png",
+    rarity: "普通",
+    cost: 5
+  },
+  {
+    name: "撞色",
+    text: [
+      "若打出的牌中有{C:attention}同花{}，",
+      "获得{C:chips}+10{}筹码",
+      "{C:inactive}（当前为{C:chips}+20{C:inactive}筹码）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_contrasting_colors.png",
     rarity: "普通",
     cost: 5
   },
@@ -41,6 +52,17 @@ let jokers = [
     image_url: "MojiJoker/assets/2x/j_moji_binoculars.png",
     rarity: "普通",
     cost: 5
+  },
+  {
+    name: "杂技",
+    text: [
+      "每次{C:red}弃牌{}后，",
+      "手牌上限{C:attention}+3{}",
+      "每次{C:blue}出牌{}后重置",
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_acrobatics.png",
+    rarity: "普通",
+    cost: 4
   },
   {
     name: "奢侈税",
@@ -121,6 +143,40 @@ let jokers = [
     cost: 5
   },
   {
+    name: "量(子)化",
+    text: [
+      "同时打出至少{C:attention}3{}张计分牌时，",
+      "每有1张计分牌，获得{C:mult}+1{}倍率",
+      "否则重置倍率",
+      "{C:inactive}（当前为{C:mult}+0{C:inactive}倍率）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_quantization.png",
+    rarity: "罕见",
+    cost: 6
+  },
+  {
+    name: "虚位以待",
+    text: [
+      "手牌上限{C:red}-1",
+      "每有1手牌上限，",
+      "提供{C:mult}+12{}倍率"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_vacant_seat.png",
+    rarity: "罕见",
+    cost: 6
+  },
+  {
+    name: "投资回报率",
+    text: [
+      "每获得{C:money}$1{}利息，",
+      "获得{C:mult}+1{}倍率",
+      "{C:inactive}（当前为{C:mult}+0{C:inactive}倍率）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_return_on_investment.png",
+    rarity: "罕见",
+    cost: 6
+  },
+  {
     name: "逐星",
     text: [
       "完整牌组中的{C:diamonds}方片{}牌",
@@ -166,52 +222,6 @@ let jokers = [
     image_url: "MojiJoker/assets/2x/j_moji_salvage_the_world.png",
     rarity: "罕见",
     cost: 7
-  },
-  {
-    name: "人寿保险",
-    text: [
-      "选择{C:attention}盲注{}后，",
-      "失去当前筹码的{C:red}12.5%{}，",
-      "获得等于资金{C:money}50%{}的筹码",
-      "{C:inactive}（当前为{C:chips}+0{C:inactive}筹码）"
-    ],
-    image_url: "MojiJoker/assets/2x/j_moji_life_insurance.png",
-    rarity: "罕见",
-    cost: 6
-  },
-  {
-    name: "量(子)化",
-    text: [
-      "同时打出至少{C:attention}3{}张计分牌时，",
-      "每有1张计分牌，获得{C:mult}+1{}倍率",
-      "否则重置倍率",
-      "{C:inactive}（当前为{C:mult}+0{C:inactive}倍率）"
-    ],
-    image_url: "MojiJoker/assets/2x/j_moji_quantization.png",
-    rarity: "罕见",
-    cost: 6
-  },
-  {
-    name: "虚位以待",
-    text: [
-      "手牌上限{C:red}-2",
-      "每有1手牌上限，",
-      "提供{C:mult}+15{}倍率"
-    ],
-    image_url: "MojiJoker/assets/2x/j_moji_vacant_seat.png",
-    rarity: "罕见",
-    cost: 6
-  },
-  {
-    name: "投资回报率",
-    text: [
-      "每获得{C:money}$1{}利息，",
-      "获得{C:mult}+1{}倍率",
-      "{C:inactive}（当前为{C:mult}+0{C:inactive}倍率）"
-    ],
-    image_url: "MojiJoker/assets/2x/j_moji_return_on_investment.png",
-    rarity: "罕见",
-    cost: 6
   },
   {
     name: "星之彩",
@@ -260,6 +270,19 @@ let jokers = [
     cost: 8
   },
   {
+    name: "最后一搏",
+    text: [
+      "选择{C:attention}盲注{}后，",
+      "为左侧的小丑牌添加{C:dark_edition}永恒{}",
+      "每成功添加1次，",
+      "获得{X:mult,C:white}X0.5{}倍率",
+      "{C:inactive}（当前为{X:mult,C:white}X1{C:inactive}倍率）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_last_ditch_effort.png",
+    rarity: "罕见",
+    cost: 7
+  },
+  {
     name: "卫星支付",
     text: [
       "本局游戏每使用过一种{C:planet}星球牌",
@@ -284,6 +307,17 @@ let jokers = [
     cost: 7
   },
   {
+    name: "买一送一",
+    text: [
+      "每当你消费至少{C:money}$4{}时，",
+      "生成一张随机的{C:planet}星球牌",
+      "{C:inactive}（必须有空位）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_buy_one_get_one_free.png",
+    rarity: "罕见",
+    cost: 6
+  },
+  {
     name: "计划妥当",
     text: [
       "若出牌牌型为{C:attention}[牌型]{}，",
@@ -299,7 +333,7 @@ let jokers = [
     text: [
       "选择{C:attention}盲注{}后，",
       "生成随机小丑牌",
-      "直到填满槽位",
+      "直到没有空位",
       "出售小丑牌时失去{C:money}$3{}"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_free_refill.png",
@@ -360,6 +394,29 @@ let jokers = [
     cost: 9
   },
   {
+    name: "集邮",
+    text: [
+      "每张带{C:dark_edition}版本{}的小丑牌",
+      "提供{X:mult,C:white}X1.5{}倍率",
+      "每种不同的{C:dark_edition}版本{}",
+      "提供{X:mult,C:white}X1.5{}倍率"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_stamp_collection.png",
+    rarity: "稀有",
+    cost: 9
+  },
+  {
+    name: "形影成双",
+    text: [
+      "打出的每对点数相同的牌",
+      "和手牌中每对点数相同的牌",
+      "都提供{X:mult,C:white}X1.5{}倍率"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_double_shadow.png",
+    rarity: "稀有",
+    cost: 9
+  },
+  {
     name: "地狱",
     text: [
       "以至少{X:green,C:white}2X{}分数要求",
@@ -374,18 +431,6 @@ let jokers = [
     cost: 10
   },
   {
-    name: "集邮",
-    text: [
-      "每张带{C:dark_edition}版本{}的小丑牌",
-      "提供{X:mult,C:white}X1.5{}倍率",
-      "每种不同的{C:dark_edition}版本{}",
-      "提供{X:mult,C:white}X1.5{}倍率"
-    ],
-    image_url: "MojiJoker/assets/2x/j_moji_stamp_collection.png",
-    rarity: "稀有",
-    cost: 9
-  },
-  {
     name: "多彩银河",
     text: [
       "每次出牌时，",
@@ -397,6 +442,17 @@ let jokers = [
       "使上述概率乘以{C:green}3{}"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_colorful_galaxy.png",
+    rarity: "稀有",
+    cost: 9
+  },
+  {
+    name: "典当行",
+    text: [
+      "本牌自动获得{C:dark_edition}永恒{}",
+      "每有一张{C:dark_edition}永恒{}小丑牌，",
+      "小丑牌槽位{C:attention}+1{}"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_pawn_shop.png",
     rarity: "稀有",
     cost: 10
   },
@@ -432,7 +488,7 @@ let jokers = [
   //     "打出同一牌型{C:attention}2{}次，",
   //     "将其{C:attention}升级{}"
   //   ],
-  //   image_url: "MojiJoker/assets/2x/j_moji_best_of_three.png",
+  //   image_url: "MojiJoker/assets/2x/j_moji_pawn_shop.png",
   //   rarity: "罕见",
   //   cost: 7
   // },
@@ -458,6 +514,18 @@ let jokers = [
   //   image_url: "MojiJoker/assets/2x/j_moji_rebate.png",
   //   rarity: "普通",
   //   cost: 4
+  // },
+  // {
+  //   name: "人寿保险",
+  //   text: [
+  //     "选择{C:attention}盲注{}后，",
+  //     "失去当前筹码的{C:red}12.5%{}，",
+  //     "获得等于资金{C:money}50%{}的筹码",
+  //     "{C:inactive}（当前为{C:chips}+0{C:inactive}筹码）"
+  //   ],
+  //   image_url: "MojiJoker/assets/2x/j_moji_buy_one_get_one_free.png",
+  //   rarity: "罕见",
+  //   cost: 6
   // },
 ]
 
