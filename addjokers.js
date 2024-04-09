@@ -69,7 +69,7 @@ let jokers = [
     text: [
       "手牌上限{C:blue}+3",
       "每有{C:money}$20{}，手牌上限{C:red}-1{}",
-      "{C:inactive}（当前为{C:attention}+3{C:inactive}）"
+      "{C:inactive}（当前为{C:attention}+3{C:inactive}，最少为{C:attention}+0{C:inactive}）"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_luxury_tax.png",
     rarity: "普通",
@@ -443,7 +443,22 @@ let jokers = [
     ],
     image_url: "MojiJoker/assets/2x/j_moji_pawn_shop.png",
     rarity: "稀有",
-    cost: 10
+    cost: 12
+  },
+  {
+    name: "假如……？",
+    text: [
+      "选择{C:attention}盲注{}后，",
+      "摧毁右侧的小丑牌",
+      "获得{X:mult,C:white}X0.5{}倍率",
+      "并根据其稀有度和版本",
+      "获得随机效果",
+      "{C:inactive}（财富、空间、力量、幸运）",
+      "{C:inactive}（当前为{X:mult,C:white}X1{C:inactive}倍率）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_what_if.png",
+    rarity: "稀有",
+    cost: 12
   },
   {
     name: "此即可能",
