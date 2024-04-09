@@ -8,7 +8,7 @@
 ------------MOD CODE -------------------------
 
 local MOD_ID = "MojiJoker"
-local MOD_VERSION = "1.0.6"
+local MOD_VERSION = "1.0.7"
 
 local loc_en = {
     j_moji_color_out_of_space = {
@@ -337,15 +337,6 @@ local loc_en = {
             "Create a random {C:planet}Planet{} card",
             "when you spend at least {C:money}$#1#{}",
             "{C:inactive}(Must have room)"
-        }
-    },
-    j_moji_double_shadow = {
-        name = "Double Shadow",
-        text = {
-            "{X:mult,C:white}X#1#{} Mult",
-            "for every pair of cards with the same rank",
-            "in the played cards",
-            "Same applies to the pairs in your hand"
         }
     },
     j_moji_last_ditch_effort = {
@@ -698,14 +689,6 @@ local loc_zh = {
             "{C:inactive}（必须有空位）"
         }
     },
-    j_moji_double_shadow = {
-        name = "形影成双",
-        text = {
-            "打出的每对点数相同的牌",
-            "和手牌中每对点数相同的牌",
-            "都提供{X:mult,C:white}X#1#{}倍率"
-        }
-    },
     j_moji_last_ditch_effort = {
         name = "最后一搏",
         text = {
@@ -935,7 +918,7 @@ local jokers = {
     j_moji_vacant_seat = {
         ability_name = "Vacant Seat",
         slug = "moji_vacant_seat",
-        ability = {extra = {hand_size = -1, mult = 12}},
+        ability = {extra = {hand_size = -1, mult = 10}},
         rarity = 2,
         cost = 6,
         unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
@@ -1035,14 +1018,6 @@ local jokers = {
         rarity = 2,
         cost = 6,
         unlocked = true, discovered = true, blueprint_compat = false, eternal_compat = true
-    },
-    j_moji_double_shadow = {
-        ability_name = "Double Shadow",
-        slug = "moji_double_shadow",
-        ability = {extra = {Xmult = 1.5, seen = {played = {}, hand = {}}}},
-        rarity = 3,
-        cost = 9,
-        unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
     },
     j_moji_last_ditch_effort = {
         ability_name = "Last-Ditch Effort",
@@ -1585,6 +1560,8 @@ function SMODS.INIT.MojiJoker()
                 if context.other_card:is_suit(self.ability.extra.suit) and not context.other_card.debuff then
                     self.ability.extra.trigger_cnt = self.ability.extra.trigger_cnt + 1
                     return {
+                        message = localize{type='variable',key='a_chips',vars={self.ability.extra.chips}},
+                        colour = G.C.CHIPS,
                         card = context.other_card
                     }
                 end
@@ -1594,8 +1571,6 @@ function SMODS.INIT.MojiJoker()
         if SMODS.end_calculate_context(context) then
             if self.ability.extra.trigger_cnt > 0 then
                 return {
-                    message = localize{type='variable',key='a_chips',vars={self.ability.extra.chips * self.ability.extra.trigger_cnt}},
-                    colour = G.C.CHIPS,
                     chip_mod = self.ability.extra.chips * self.ability.extra.trigger_cnt
                 }
             end
@@ -2156,17 +2131,49 @@ function SMODS.INIT.MojiJoker()
         return {card.ability.extra.dollars_min}
     end
 
-    -- Double Shadow
-    SMODS.Jokers.j_moji_double_shadow.loc_def = function(card)
-        return {card.ability.extra.Xmult}
+    -- Last-Ditch Effort
+    SMODS.Jokers.j_moji_last_ditch_effort.calculate = function(self, context)
+        if context.setting_blind and not context.blueprint and not self.getting_sliced then
+            local joker_on_the_left = nil
+            for i = #G.jokers.cards, 1, -1 do
+                if G.jokers.cards[i].ability.name == 'Last-Ditch Effort' then
+                    joker_on_the_left = i == 1 and nil or G.jokers.cards[i - 1]
+                    break
+                end
+            end
+            if not joker_on_the_left or joker_on_the_left.ability.eternal then return end
+            joker_on_the_left:set_eternal(true)
+            if joker_on_the_left.ability.eternal then
+                self.ability.x_mult = self.ability.x_mult + self.ability.extra.Xmult_add
+                G.E_MANAGER:add_event(Event({func = function()
+                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {self.ability.extra.Xmult_add}}, colour = G.C.MULT})
+                return true end }))
+            end
+        end
     end
 
-    -- Last-Ditch Effort
     SMODS.Jokers.j_moji_last_ditch_effort.loc_def = function(card)
         return {card.ability.extra.Xmult_add, card.ability.x_mult}
     end
 
     -- Pawn Shop
+    SMODS.Jokers.j_moji_pawn_shop.calculate = function(self, context)
+        if context.setting_blind or context.end_of_round then
+            if not context.blueprint then
+                local cur_slot = 0
+                for i = 1, #G.jokers.cards do
+                    if G.jokers.cards[i].ability.eternal then
+                        cur_slot = cur_slot + 1
+                    end
+                end
+                if cur_slot ~= self.ability.extra.cur_slot then
+                    G.jokers.config.card_limit = G.jokers.config.card_limit - self.ability.extra.cur_slot + cur_slot
+                    self.ability.extra.cur_slot = cur_slot
+                end
+            end
+        end
+    end
+
     SMODS.Jokers.j_moji_pawn_shop.loc_def = function(card)
         return {card.ability.extra.slot}
     end
@@ -2189,7 +2196,7 @@ end
 
 local Card_add_to_deck_ref = Card.add_to_deck
 function Card:add_to_deck(from_debuff)
-    if not self.added_to_deck then
+    if not self.added_to_deck and self.ability.set == 'Joker' then
         self.added_to_deck = true
         if self.ability.name == 'Satellite Payment' then
             self.ability.extra.planets_used = count_used_consumeables('Planet')
@@ -2203,7 +2210,23 @@ function Card:add_to_deck(from_debuff)
         elseif self.ability.name == 'Luxury Tax' then
             self.ability.extra.cur_hand_size = math.max(self.ability.extra.hand_size - self.ability.extra.hand_size_sub * (G.GAME.dollars > 0 and math.floor(G.GAME.dollars / self.ability.extra.per) or 0), self.ability.extra.min_hand_size)
             G.hand:change_size(self.ability.extra.cur_hand_size)
+        elseif self.ability.name == 'Pawn Shop' then
+            self:set_eternal(true)
+            for i = 1, #G.jokers.cards do
+                if G.jokers.cards[i].ability.eternal then
+                    self.ability.extra.cur_slot = self.ability.extra.slot + 1
+                end
+            end
+            G.jokers.config.card_limit = G.jokers.config.card_limit + self.ability.extra.cur_slot
         else
+            if self.ability.eternal then
+                for i = 1, #G.jokers.cards do
+                    if G.jokers.cards[i].ability.name == 'Pawn Shop' then
+                        G.jokers.cards[i].ability.extra.cur_slot = G.jokers.cards[i].ability.extra.cur_slot + 1
+                        G.jokers.config.card_limit = G.jokers.config.card_limit + 1
+                    end
+                end
+            end
             self.added_to_deck = false
         end
     end
@@ -2212,7 +2235,7 @@ end
 
 local Card_remove_from_deck_ref = Card.remove_from_deck
 function Card:remove_from_deck(from_debuff)
-    if self.added_to_deck then
+    if self.added_to_deck and self.ability.set == 'Joker' then
         self.added_to_deck = false
         if self.ability.name == 'Satellite Payment' then
             G.E_MANAGER:add_event(Event({func = function()
@@ -2226,7 +2249,17 @@ function Card:remove_from_deck(from_debuff)
             G.hand:change_size(-self.ability.extra.cur_hand_size)
         elseif self.ability.name == 'Acrobatics' then
             G.hand:change_size(-self.ability.extra.cur_hand_size)
+        elseif self.ability.name == 'Pawn Shop' then
+            G.jokers.config.card_limit = G.jokers.config.card_limit - self.ability.extra.cur_slot
         else
+            if self.ability.eternal then
+                for i = 1, #G.jokers.cards do
+                    if G.jokers.cards[i].ability.name == 'Pawn Shop' then
+                        G.jokers.cards[i].ability.extra.cur_slot = G.jokers.cards[i].ability.extra.cur_slot - 1
+                        G.jokers.config.card_limit = G.jokers.config.card_limit - 1
+                    end
+                end
+            end
             self.added_to_deck = true
         end
     end

@@ -159,7 +159,7 @@ let jokers = [
     text: [
       "手牌上限{C:red}-1",
       "每有1手牌上限，",
-      "提供{C:mult}+12{}倍率"
+      "提供{C:mult}+10{}倍率"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_vacant_seat.png",
     rarity: "罕见",
@@ -406,17 +406,6 @@ let jokers = [
     cost: 9
   },
   {
-    name: "形影成双",
-    text: [
-      "打出的每对点数相同的牌",
-      "和手牌中每对点数相同的牌",
-      "都提供{X:mult,C:white}X1.5{}倍率"
-    ],
-    image_url: "MojiJoker/assets/2x/j_moji_double_shadow.png",
-    rarity: "稀有",
-    cost: 9
-  },
-  {
     name: "地狱",
     text: [
       "以至少{X:green,C:white}2X{}分数要求",
@@ -526,6 +515,17 @@ let jokers = [
   //   image_url: "MojiJoker/assets/2x/j_moji_buy_one_get_one_free.png",
   //   rarity: "罕见",
   //   cost: 6
+  // },
+  // {
+  //   name: "形影成双",
+  //   text: [
+  //     "打出的每对点数相同的牌",
+  //     "和手牌中每对点数相同的牌",
+  //     "都提供{X:mult,C:white}X1.44{}倍率"
+  //   ],
+  //   image_url: "MojiJoker/assets/2x/j_moji_double_shadow.png",
+  //   rarity: "稀有",
+  //   cost: 9
   // },
 ]
 
