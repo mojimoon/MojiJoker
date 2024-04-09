@@ -44,38 +44,6 @@ let jokers = [
     cost: 1
   },
   {
-    name: "双筒望远镜",
-    text: [
-      "使用{C:planet}星球牌{}时，",
-      "再使用{C:attention}1{}次"
-    ],
-    image_url: "MojiJoker/assets/2x/j_moji_binoculars.png",
-    rarity: "普通",
-    cost: 5
-  },
-  {
-    name: "杂技",
-    text: [
-      "每次{C:red}弃牌{}后，",
-      "手牌上限{C:attention}+3{}",
-      "每次{C:blue}出牌{}后重置",
-    ],
-    image_url: "MojiJoker/assets/2x/j_moji_acrobatics.png",
-    rarity: "普通",
-    cost: 4
-  },
-  {
-    name: "奢侈税",
-    text: [
-      "手牌上限{C:blue}+3",
-      "每有{C:money}$20{}，手牌上限{C:red}-1{}",
-      "{C:inactive}（当前为{C:attention}+3{C:inactive}，最少为{C:attention}+0{C:inactive}）"
-    ],
-    image_url: "MojiJoker/assets/2x/j_moji_luxury_tax.png",
-    rarity: "普通",
-    cost: 5
-  },
-  {
     name: "返现",
     text: [
       "本局游戏每购买过",
@@ -84,6 +52,16 @@ let jokers = [
       "{C:inactive}（当前为{C:money}$0{C:inactive}）"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_rebate.png",
+    rarity: "普通",
+    cost: 5
+  },
+  {
+    name: "双筒望远镜",
+    text: [
+      "使用{C:planet}星球牌{}时，",
+      "再使用{C:attention}1{}次"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_binoculars.png",
     rarity: "普通",
     cost: 5
   },
@@ -139,6 +117,28 @@ let jokers = [
       "{C:inactive}（必须有空位）"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_transcendence.png",
+    rarity: "普通",
+    cost: 5
+  },
+  {
+    name: "杂技",
+    text: [
+      "每次{C:red}弃牌{}后，",
+      "手牌上限{C:attention}+3{}",
+      "每次{C:blue}出牌{}后重置",
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_acrobatics.png",
+    rarity: "普通",
+    cost: 4
+  },
+  {
+    name: "奢侈税",
+    text: [
+      "手牌上限{C:blue}+3",
+      "每有{C:money}$20{}，手牌上限{C:red}-1{}",
+      "{C:inactive}（当前为{C:attention}+3{C:inactive}，最少为{C:attention}+0{C:inactive}）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_luxury_tax.png",
     rarity: "普通",
     cost: 5
   },

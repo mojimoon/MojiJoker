@@ -8,7 +8,56 @@
 ------------MOD CODE -------------------------
 
 local MOD_ID = "MojiJoker"
-local MOD_VERSION = "1.0.8"
+local MOD_VERSION = "1.0.9"
+
+-- If you would like to disable a specific card, set the corresponding value to false
+-- 如果你想禁用某张卡牌，请将对应的值设置为 false
+local enabled_cards = {
+    -- Common
+    ["j_moji_safety_net"] = true, -- Chips
+    ["j_moji_neutron_star"] = true, -- Chips
+    ["j_moji_contrasting_colors"] = true, -- Chips
+    ["j_moji_startup_capital"] = true, -- Economy
+    ["j_moji_rebate"] = true, -- Economy
+    ["j_moji_binoculars"] = true, -- Effect: Consumeables
+    ["j_moji_calamity_star"] = true, -- Effect: Consumeables
+    ["j_moji_crescent_moon"] = true, -- Effect: Consumeables
+    ["j_moji_solar_eclipse"] = true, -- Effect: Consumeables
+    ["j_moji_doomed_world"] = true, -- Effect: Consumeables
+    ["j_moji_transcendence"] = true, -- Effect: Consumeables
+    ["j_moji_acrobatics"] = true, -- Effect: Hand Size
+    ["j_moji_luxury_tax"] = true, -- Effect: Hand Size
+    -- Uncommon
+    ["j_moji_salvage_the_world"] = true, -- Chips
+    ["j_moji_quantization"] = true, -- + Mult
+    ["j_moji_vacant_seat"] = true, -- + Mult
+    ["j_moji_return_on_investment"] = true, -- + Mult
+    ["j_moji_pursue_the_stars"] = true, -- + Mult
+    ["j_moji_color_out_of_space"] = true, -- X Mult
+    ["j_moji_garbage_time"] = true, -- X Mult
+    ["j_moji_world_heritage"] = true, -- X Mult
+    ["j_moji_four_color_theorem"] = true, -- X Mult
+    ["j_moji_last_ditch_effort"] = true, -- X Mult, Effect: Joker
+    ["j_moji_embrace_the_moon"] = true, -- Economy
+    ["j_moji_satellite_payment"] = true, -- Economy
+    ["j_moji_tax_collector"] = true, -- Economy
+    ["j_moji_buy_one_get_one_free"] = true, -- Effect: Consumeables
+    ["j_moji_hold_the_sun"] = true, -- Effect: Poker Hand
+    ["j_moji_well_laid_plans"] = true, -- Effect: Poker Hand
+    ["j_moji_free_refill"] = true, -- Effect: Joker
+    ["j_moji_now_printing"] = true, -- Effect: Joker
+    -- Rare
+    ["j_moji_new_order"] = true, -- X Mult
+    ["j_moji_rocket_test"] = true, -- X Mult
+    ["j_moji_stamp_collection"] = true, -- X Mult
+    ["j_moji_sisyphus"] = true, -- X Mult, Effect: Playing Cards
+    ["j_moji_colorful_galaxy"] = true, -- Effect: Joker
+    ["j_moji_pawn_shop"] = true, -- Effect: Joker
+    ["j_moji_what_if"] = false, -- X Mult, Effect: Misc
+    ["j_moji_hell"] = true, -- Effect: Misc
+    -- Legendary
+    ["j_moji_these_are_the_odds"] = true, -- Effect: Joker
+}
 
 local loc_en = {
     j_moji_color_out_of_space = {
@@ -767,6 +816,9 @@ local misc_loc_zh = {
     k_what_if_destory_playing_card = '摧毁游戏牌',
     k_what_if_duplicate_playing_card = '复制游戏牌',
     k_what_if_double_growth = '本牌成长 X2',
+    k_what_if_2x_global_probabilities = '全局概率 X2',
+    k_what_if_half_global_probabilities = '全局概率 /2',
+    k_what_if_1000x_global_probabilities = '全局概率 X1000',
 }
 
 local loc_txt = G.SETTINGS.language == "zh_CN" and loc_zh or loc_en
@@ -2266,13 +2318,11 @@ function SMODS.INIT.MojiJoker()
                 if j.edition and j.edition.negative then
                     sendDebugMessage('What If: Legendary Negative')
                     G.jokers.config.card_limit = G.jokers.config.card_limit * 2
-                    -- card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type='variable',key='k_what_if_double_joker_slot',vars={2}}, colour = G.C.FILTER})
                     card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_double_joker_slot'), colour = G.C.FILTER})
                 -- others => +2 joker slot & duplicate until full
                 else
                     sendDebugMessage('What If: Legendary Non-Negative')
                     G.jokers.config.card_limit = G.jokers.config.card_limit + 3
-                    -- card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type='variable',key='k_what_if_add_joker_slot',vars={2}}, colour = G.C.BLUE})
                     card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_add_joker_slot'), colour = G.C.BLUE})
                     local no_of_copy = G.jokers.config.card_limit - #G.jokers.cards
                     G.E_MANAGER:add_event(Event({trigger = 'before', delay = 0.4, func = function()
@@ -2292,14 +2342,12 @@ function SMODS.INIT.MojiJoker()
                 if (d <= 20) then
                     sendDebugMessage('What If: Non-Legendary Negative 1: +1 Joker Slot')
                     G.jokers.config.card_limit = G.jokers.config.card_limit + 1
-                    -- card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type='variable',key='k_what_if_add_joker_slot',vars={1}}, colour = G.C.ORANGE})
                     card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_add_joker_slot'), colour = G.C.ORANGE})
                 end
                 -- 20% => -1 ante
                 if (21 <= d and d <= 40) then
                     sendDebugMessage('What If: Non-Legendary Negative 2: -1 Ante')
                     ease_ante(-1)
-                    -- card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type='variable',key='k_what_if_sub_ante',vars={1}}, colour = G.C.PURPLE})
                     card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_sub_ante'), colour = G.C.PURPLE})
                 end
                 -- 20% => random negative joker
@@ -2330,9 +2378,17 @@ function SMODS.INIT.MojiJoker()
                     card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_duplicate_random_joker'), colour = G.C.GREEN})
                     joker_slot_to_remove = 1
                 end
-                -- 20% => double tag
-                if (81 <= d and d <= 100) then
-                    sendDebugMessage('What If: Non-Legendary Negative 5: Double Tag')
+                -- 2% => 1000x global probabilities
+                if (81 <= d and d <= 82) then
+                    sendDebugMessage('What If: Non-Legendary Negative 5: 1000x Global Probabilities')
+                    for k, v in pairs(G.GAME.probabilities) do
+                        G.GAME.probabilities[k] = v * 1000
+                    end
+                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_1000x_global_probabilities'), colour = G.C.RED})
+                end
+                -- 18% => double tag
+                if (82 <= d and d <= 100) then
+                    sendDebugMessage('What If: Non-Legendary Negative 6: Double Tag')
                     G.E_MANAGER:add_event(Event({
                         func = function()
                             add_tag(Tag('tag_double'))
@@ -2353,7 +2409,6 @@ function SMODS.INIT.MojiJoker()
                         fail = true
                     else
                         change_shop_size(1)
-                        -- card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type='variable',key='k_what_if_add_shop_card_slot',vars={1}}, colour = G.C.ORANGE})
                         card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_add_shop_card_slot'), colour = G.C.ORANGE})
                     end
                 end
@@ -2361,7 +2416,6 @@ function SMODS.INIT.MojiJoker()
                 if (21 <= d and d <= 40) or fail then
                     sendDebugMessage('What If: Rare Non-Negative 2: +1 Consumeable Slot')
                     G.consumeables.config.card_limit = G.consumeables.config.card_limit + 1
-                    -- card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type='variable',key='k_what_if_add_consumeable_slot',vars={1}}, colour = G.C.PURPLE})
                     card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_add_consumeable_slot'), colour = G.C.PURPLE})
                     fail = false
                 end
@@ -2372,7 +2426,6 @@ function SMODS.INIT.MojiJoker()
                         fail = true
                     else
                         G.GAME.interest_cap = math.max(0, G.GAME.interest_cap * 2)
-                        -- card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type='variable',key='k_what_if_double_interest_cap',vars={2}}, colour = G.C.BLUE})
                         card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_double_interest_cap'), colour = G.C.BLUE})
                     end
                 end
@@ -2383,9 +2436,17 @@ function SMODS.INIT.MojiJoker()
                     card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_edition_negative'), colour = G.C.GREEN})
                     fail = false
                 end
-                -- 20% => double money
-                if (61 <= d and d <= 80) then
-                    sendDebugMessage('What If: Rare Non-Negative 5: Double Money')
+                -- 4% => 2x global probabilities
+                if (61 <= d and d <= 64) then
+                    sendDebugMessage('What If: Rare Non-Negative 5: 2x Global Probabilities')
+                    for k, v in pairs(G.GAME.probabilities) do
+                        G.GAME.probabilities[k] = v * 2
+                    end
+                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_2x_global_probabilities'), colour = G.C.RED})
+                end
+                -- 16% => double money
+                if (65 <= d and d <= 80) then
+                    sendDebugMessage('What If: Rare Non-Negative 6: Double Money')
                     local dollars = G.GAME.dollars
                     if dollars + G.GAME.dollars < 20 then dollars = 20 - G.GAME.dollars end
                     ease_dollars(dollars)
@@ -2396,13 +2457,12 @@ function SMODS.INIT.MojiJoker()
                     local n = pseudorandom('what_if_negative', 1, 100)
                     -- 50% => -1 shop card slot
                     if n <= 50 and G.GAME.shop.joker_max > 1 then
-                        sendDebugMessage('What If: Rare Non-Negative 6.1: -1 Shop Card Slot')
+                        sendDebugMessage('What If: Rare Non-Negative 7.1: -1 Shop Card Slot')
                         change_shop_size(-1)
-                        -- card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type='variable',key='k_what_if_sub_shop_card_slot',vars={1}}, colour = G.C.RED})
                         card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_sub_shop_card_slot'), colour = G.C.RED})
                     -- 50% => destroy random joker
                     else
-                        sendDebugMessage('What If: Rare Non-Negative 6.2: Destroy Random Joker')
+                        sendDebugMessage('What If: Rare Non-Negative 7.2: Destroy Random Joker')
                         local destructable_jokers = {}
                         for i = 1, #G.jokers.cards do
                             if G.jokers.cards[i] ~= self and G.jokers.cards[i] ~= j and not G.jokers.cards[i].getting_sliced then
@@ -2474,7 +2534,6 @@ function SMODS.INIT.MojiJoker()
                     if n <= 50 then
                         sendDebugMessage('What If: Uncommon Non-Negative 5.1: +1 Win Ante')
                         G.GAME.win_ante = G.GAME.win_ante + 1
-                        -- card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type='variable',key='k_what_if_add_win_ante',vars={1}}, colour = G.C.BLUE})
                         card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_add_win_ante'), colour = G.C.BLUE})
                     -- 50% => destroy playing cards
                     else
@@ -2512,14 +2571,12 @@ function SMODS.INIT.MojiJoker()
                 if (21 <= d and d <= 40) then
                     sendDebugMessage('What If: Common Non-Negative 2: Growth x2')
                     self.ability.extra.Xmult_add = self.ability.extra.Xmult_add * 2
-                    -- card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type='variable',key='k_what_if_double_growth',vars={2}}, colour = G.C.PURPLE})
                     card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_double_growth'), colour = G.C.PURPLE})
                 end
                 -- 20% => +1 hand size
                 if (41 <= d and d <= 60) then
                     sendDebugMessage('What If: Common Non-Negative 3: +1 Hand Size')
                     G.hand:change_size(1)
-                    -- card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type='variable',key='k_what_if_add_hand_size',vars={1}}, colour = G.C.BLUE})
                     card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_add_hand_size'), colour = G.C.BLUE})
                 end
                 -- 10% => +1 discard
@@ -2537,18 +2594,23 @@ function SMODS.INIT.MojiJoker()
                         local dollars = -10
                         ease_dollars(dollars)
                         card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('$') .. dollars, dollars = dollars, colour = G.C.RED, instant = true})
-                    -- 50% => -1 hand size
-                    elseif G.hand.config.card_limit > 5 then
+                    -- 30% => -1 hand size
+                    elseif n <= 80 and G.hand.config.card_limit > 5 then
                         sendDebugMessage('What If: Common Non-Negative 5.2: -1 Hand Size')
                         G.hand:change_size(-1)
-                        -- card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type='variable',key='k_what_if_sub_hand_size',vars={1}}, colour = G.C.RED})
                         card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_sub_hand_size'), colour = G.C.RED})
+                    -- 20% => 0.5x global probabilities
+                    else
+                        sendDebugMessage('What If: Common Non-Negative 5.3: 0.5x Global Probabilities')
+                        for k, v in pairs(G.GAME.probabilities) do
+                            G.GAME.probabilities[k] = v / 2
+                        end
+                        card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_half_global_probabilities'), colour = G.C.RED})
                     end
                 end
             end
 
             self.ability.x_mult = self.ability.x_mult + self.ability.extra.Xmult_add
-            card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {self.ability.extra.Xmult_add}}, colour = G.C.MULT})
 
             j.getting_sliced = true
             G.E_MANAGER:add_event(Event({func = function()
@@ -2848,6 +2910,21 @@ G.FUNCS.use_card = function(e, mute, nosave)
         return
     end
     G_FUNCS_use_card_ref(e, mute, nosave)
+end
+
+local Back_apply_to_run_ref = Back.apply_to_run
+function Back.apply_to_run(arg_56_0)
+    Back_apply_to_run_ref(arg_56_0)
+    G.E_MANAGER:add_event(Event({
+        func = function()
+            for k, v in pairs(enabled_cards) do
+                if not v then
+                    G.GAME.banned_keys[k] = true
+                end
+            end
+            return true
+        end
+    }))
 end
 
 ----------------------------------------------
