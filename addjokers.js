@@ -4,8 +4,8 @@ let jokers = [
     text: [
       "回合结束时，",
       "每有1次未使用的{C:red}弃牌{}次数，",
-      "获得{C:chips}+15{}筹码",
-      "{C:inactive}（当前为{C:chips}+30{C:inactive}筹码）"
+      "获得{C:chips}+12{}筹码",
+      "{C:inactive}（当前为{C:chips}+20{C:inactive}筹码）"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_safety_net.png",
     rarity: "普通",
@@ -203,11 +203,9 @@ let jokers = [
   {
     name: "破罐子破摔",
     text: [
-      "每消费{C:money}$1{}，",
-      "获得{C:mult}+1{}倍率",
+      "每消费{C:money}$1{}，{C:mult}+1{}倍率",
+      "每获得{C:money}$1{}利息，{C:mult}-2{}倍率",
       "{C:inactive}（当前为{C:mult}+0{C:inactive}倍率）",
-      "每拥有{C:money}$4{}，",
-      "提供的倍率{C:mult}-1{}"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_who_needs_money.png",
     rarity: "罕见",
@@ -220,7 +218,7 @@ let jokers = [
       "摧毁手牌中",
       "所有{C:attention}非增强牌{}",
       "每摧毁1张牌，",
-      "获得{C:mult}+4{}倍率",
+      "获得{C:mult}+3{}倍率",
       "{C:inactive}（当前为{C:mult}+0{C:inactive}倍率）"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_second_wind.png",
@@ -493,14 +491,15 @@ let jokers = [
     ],
     image_url : "MojiJoker/assets/2x/j_moji_barricade.png",
     rarity: "稀有",
-    cost: 10
+    cost: 12
   },
   {
     name: "典当行",
     text: [
       "本牌自动获得{C:dark_edition}永恒{}",
       "每有一张{C:dark_edition}永恒{}小丑牌，",
-      "小丑牌槽位{C:attention}+1{}"
+      "小丑牌槽位{C:attention}+1{}",
+      "{C:inactive}（槽位满时也可购买永恒小丑牌）"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_pawn_shop.png",
     rarity: "稀有",

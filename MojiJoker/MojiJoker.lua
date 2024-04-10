@@ -8,7 +8,7 @@
 ------------MOD CODE -------------------------
 
 local MOD_ID = "MojiJoker"
-local MOD_VERSION = "1.1.2"
+local MOD_VERSION = "1.1.3"
 
 -- If you would like to disable a specific card, set the corresponding value to false
 -- 如果你想禁用某张卡牌，请将对应的值设置为 false
@@ -410,8 +410,9 @@ local loc_en = {
         text = {
             "Pawn Shop is inherently {C:dark_edition}Eternal{}",
             "{C:attention}+#1#{} Joker slot",
-            "for each {C:dark_edition}Eternal{} Joker",
-            "you have"
+            "for each {C:dark_edition}Eternal{} Joker you own",
+            "{C:inactive}(you can buy Eternal Jokers",
+            "{C:inactive}even if no slots are available)"
         }
     },
     j_moji_what_if = {
@@ -429,11 +430,11 @@ local loc_en = {
     j_moji_who_needs_money = {
         name = "Who Needs Money?",
         text = {
-            "Gains {C:mult}+#1#{} Mult",
+            "{C:mult}+#1#{} Mult",
             "for every {C:money}$1{} spent",
-            "{C:inactive}(Currently {C:mult}+#2#{C:inactive} Mult)",
-            "Mult is reduced by {C:mult}#4#{}",
-            "for every {C:money}$#3#{} you have"
+            "{C:mult}-#2#{} Mult",
+            "for every {C:money}$1{} interest earned",
+            "{C:inactive}(Currently {C:mult}+#3#{C:inactive} Mult)",
         }
     },
     j_moji_mojimoon = {
@@ -838,7 +839,8 @@ local loc_zh = {
         text = {
             "本牌自动获得{C:dark_edition}永恒{}",
             "每有一张{C:dark_edition}永恒{}小丑牌，",
-            "小丑牌槽位{C:attention}+#1#{}"
+            "小丑牌槽位{C:attention}+#1#{}",
+            "{C:inactive}（槽位满时也可购买永恒小丑牌）"
         }
     },
     j_moji_what_if = {
@@ -856,11 +858,9 @@ local loc_zh = {
     j_moji_who_needs_money = {
         name = "破罐子破摔",
         text = {
-            "每消费{C:money}$1{}，",
-            "获得{C:mult}+#1#{}倍率",
-            "{C:inactive}（当前为{C:mult}+#2#{C:inactive}倍率）",
-            "每拥有{C:money}$#3#{}，",
-            "提供的倍率{C:mult}-#4#{}"
+            "每消费{C:money}$1{}，{C:mult}+#1#{}倍率",
+            "每获得{C:money}$1{}利息，{C:mult}-#2#{}倍率",
+            "{C:inactive}（当前为{C:mult}+#3#{C:inactive}倍率）",
         }
     },
     j_moji_mojimoon = {
@@ -1191,7 +1191,7 @@ local jokers = {
     j_moji_safety_net = {
         ability_name = "Safety Net",
         slug = "moji_safety_net",
-        ability = {extra = {chips = 30, chips_add = 15}},
+        ability = {extra = {chips = 20, chips_add = 12}},
         rarity = 1,
         cost = 5,
         unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
@@ -1335,7 +1335,7 @@ local jokers = {
     j_moji_who_needs_money = {
         ability_name = "Who Needs Money?",
         slug = "moji_who_needs_money",
-        ability = {extra = {mult_add = 1, per = 4, mult_sub = 1}},
+        ability = {extra = {mult_add = 1, mult_sub = 2}},
         rarity = 2,
         cost = 7,
         unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
@@ -1367,7 +1367,7 @@ local jokers = {
     j_moji_second_wind = {
         ability_name = "Second Wind",
         slug = "moji_second_wind",
-        ability = {extra = {mult_add = 4}},
+        ability = {extra = {mult_add = 3}},
         rarity = 2,
         cost = 7,
         unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
@@ -1377,7 +1377,7 @@ local jokers = {
         slug = "moji_barricade",
         ability = {extra = {cur_hands = 0, cur_discards = 0}},
         rarity = 3,
-        cost = 10,
+        cost = 12,
         unlocked = true, discovered = true, blueprint_compat = false, eternal_compat = true
     }
     -- j_moji_limited_edition = {
@@ -2550,20 +2550,28 @@ function SMODS.INIT.MojiJoker()
 
     -- Who Needs Money?
     SMODS.Jokers.j_moji_who_needs_money.calculate = function(self, context)
+        if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
+            if G.GAME.dollars < 5 then return end
+            local interest = G.GAME.interest_amount*math.min(math.floor(G.GAME.dollars/5), G.GAME.interest_cap/5)
+            self.ability.mult = self.ability.mult - interest * self.ability.extra.mult_sub
+            G.E_MANAGER:add_event(Event({func = function()
+                card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_mult_minus', vars = {interest * self.ability.extra.mult_sub}}, colour = G.C.RED})
+            return true end }))
+        end
+
         if SMODS.end_calculate_context(context) then
-            local mult = self.ability.mult - self.ability.extra.mult_sub * math.floor((G.GAME.dollars > 0 and G.GAME.dollars or 0) / self.ability.extra.per)
-            if mult > 0 then
+            if self.ability.mult > 0 then
                 return {
-                    message = localize{type='variable',key='a_mult',vars={mult}},
+                    message = localize{type='variable',key='a_mult',vars={self.ability.mult}},
                     colour = G.C.RED,
-                    mult_mod = mult
+                    mult_mod = self.ability.mult
                 }
             end
         end
     end
 
     SMODS.Jokers.j_moji_who_needs_money.loc_def = function(card)
-        return {card.ability.extra.mult_add, card.ability.mult, card.ability.extra.per, card.ability.extra.mult_sub}
+        return {card.ability.extra.mult_add, card.ability.extra.mult_sub, card.ability.mult}
     end
 
     -- Mojimoon
@@ -2667,7 +2675,7 @@ function SMODS.INIT.MojiJoker()
     -- Second Wind
     SMODS.Jokers.j_moji_second_wind.calculate = function(self, context)
         if context.individual and not context.blueprint then
-            if context.cardarea == G.hand then
+            if context.cardarea == G.hand and G.GAME.current_round.hands_played == 0 then
                 if context.other_card.config.center == G.P_CENTERS.c_base then
                     G.E_MANAGER:add_event(Event({trigger = 'immediate', func = function() context.other_card:start_dissolve(nil, true) return true end}))
                     self.ability.mult = self.ability.mult + self.ability.extra.mult_add
@@ -3615,6 +3623,14 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
     end
 
     return create_card_ref(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
+end
+
+local G_FUNC_check_for_buy_space_ref = G.FUNCS.check_for_buy_space
+function G.FUNCS.check_for_buy_space(card)
+    if G.jokers and card.ability.set == 'Joker' and card.ability.eternal and next(find_joker('Pawn Shop')) and #G.jokers.cards < G.jokers.config.card_limit + ((card.edition and card.edition.negative) and 2 or 1) then
+        return true
+    end
+    return G_FUNC_check_for_buy_space_ref(card)
 end
 
 ----------------------------------------------
