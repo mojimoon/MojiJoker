@@ -8,7 +8,7 @@
 ------------MOD CODE -------------------------
 
 local MOD_ID = "MojiJoker"
-local MOD_VERSION = "1.1.1"
+local MOD_VERSION = "1.1.2"
 
 -- If you would like to disable a specific card, set the corresponding value to false
 -- 如果你想禁用某张卡牌，请将对应的值设置为 false
@@ -19,6 +19,7 @@ local enabled_cards = {
     ["j_moji_contrasting_colors"] = true, -- Chips
     ["j_moji_startup_capital"] = true, -- Economy
     ["j_moji_rebate"] = true, -- Economy
+    ["j_moji_certificate_of_deposit"] = true, -- Economy
     ["j_moji_binoculars"] = true, -- Effect: Consumeables
     ["j_moji_calamity_star"] = true, -- Effect: Consumeables
     ["j_moji_crescent_moon"] = true, -- Effect: Consumeables
@@ -35,6 +36,7 @@ local enabled_cards = {
     ["j_moji_return_on_investment"] = true, -- + Mult
     ["j_moji_pursue_the_stars"] = true, -- + Mult
     ["j_moji_who_needs_money"] = true, -- + Mult
+    ["j_moji_second_wind"] = true, -- + Mult
     ["j_moji_color_out_of_space"] = true, -- X Mult
     ["j_moji_garbage_time"] = true, -- X Mult
     ["j_moji_world_heritage"] = true, -- X Mult
@@ -43,6 +45,7 @@ local enabled_cards = {
     ["j_moji_embrace_the_moon"] = true, -- Economy
     ["j_moji_satellite_payment"] = true, -- Economy
     ["j_moji_tax_collector"] = true, -- Economy
+    ["j_moji_reroll_ticket"] = true, -- Economy
     ["j_moji_buy_one_get_one_free"] = true, -- Effect: Consumeables
     ["j_moji_hold_the_sun"] = true, -- Effect: Poker Hand
     ["j_moji_well_laid_plans"] = true, -- Effect: Poker Hand
@@ -50,11 +53,11 @@ local enabled_cards = {
     ["j_moji_now_printing"] = true, -- Effect: Joker
     -- Rare
     ["j_moji_new_order"] = true, -- X Mult
-    ["j_moji_rocket_test"] = true, -- X Mult
     ["j_moji_stamp_collection"] = true, -- X Mult
     ["j_moji_sisyphus"] = true, -- X Mult, Effect: Playing Cards
     ["j_moji_colorful_galaxy"] = true, -- Effect: Joker
     ["j_moji_pawn_shop"] = true, -- Effect: Joker
+    ["j_moji_barricade"] = true, -- Effect: Misc
     ["j_moji_what_if"] = true, -- X Mult, Effect: Misc
     ["j_moji_hell"] = true, -- Effect: Misc
     -- Legendary
@@ -222,14 +225,14 @@ local loc_en = {
             "{C:inactive}(Currently {C:money}$#5#{C:inactive})"
         }
     },
-    j_moji_rocket_test = {
-        name = "Rocket Test",
-        text = {
-            "Each enabled {C:attention}Mod{}",
-            "gives {X:mult,C:white}X#1#{} Mult",
-            "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)"
-        }
-    },
+    -- j_moji_rocket_test = {
+    --     name = "Rocket Test",
+    --     text = {
+    --         "Each enabled {C:attention}Mod{}",
+    --         "gives {X:mult,C:white}X#1#{} Mult",
+    --         "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)"
+    --     }
+    -- },
     j_moji_now_printing = {
         name = "Now Printing",
         text = {
@@ -452,6 +455,33 @@ local loc_en = {
             "by the same amount"
         }
     },
+    j_moji_reroll_ticket = {
+        name = "Reroll Ticket",
+        text = {
+            "Rerolls cost {C:money}$#1#{} less",
+            "Effect reduces by {C:money}$#2#{}",
+            "at the end of the {C:attention}shop",
+            "if any rerolls are used"
+        }
+    },
+    j_moji_second_wind = {
+        name = "Second Wind",
+        text = {
+            "After playing the {C:attention}first hand{}",
+            "of the round, destroy",
+            "all {C:attention}non-enhance{} cards in hand",
+            "Gains {C:mult}+#1#{} Mult",
+            "for each card destroyed",
+            "{C:inactive}(Currently {C:mult}+#2#{C:inactive} Mult)"
+        }
+    },
+    j_moji_barricade = {
+        name = "Barricade",
+        text = {
+            "{C:blue}Hands{} and {C:red}discards{}",
+            "carries over between rounds",
+        }
+    }
     -- j_moji_limited_edition = {
     --     name = "Limited Edition",
     --     text = {
@@ -625,14 +655,14 @@ local loc_zh = {
             "{C:inactive}（当前为{C:money}$#5#{C:inactive}）"
         }
     },
-    j_moji_rocket_test = {
-        name = "火箭试验",
-        text = {
-            "每个启用的{C:attention}Mod{}",
-            "提供{X:mult,C:white}X#1#{}倍率",
-            "{C:inactive}（当前为{X:mult,C:white} X#2# {C:inactive}倍率）"
-        }
-    },
+    -- j_moji_rocket_test = {
+    --     name = "火箭试验",
+    --     text = {
+    --         "每个启用的{C:attention}Mod{}",
+    --         "提供{X:mult,C:white}X#1#{}倍率",
+    --         "{C:inactive}（当前为{X:mult,C:white} X#2# {C:inactive}倍率）"
+    --     }
+    -- },
     j_moji_now_printing = {
         name = "印刷中",
         text = {
@@ -851,6 +881,32 @@ local loc_zh = {
             "相应提高负债限额"
         }
     },
+    j_moji_reroll_ticket = {
+        name = "重掷券",
+        text = {
+            "重掷价格降低{C:money}$#1#{}",
+            "若在商店重掷至少一次，",
+            "离开商店时，效果减少{C:money}$#2#{}"
+        }
+    },
+    j_moji_second_wind = {
+        name = "重振精神",
+        text = {
+            "每回合{C:attention}首次出牌{}后，",
+            "摧毁手牌中",
+            "所有{C:attention}非增强牌{}",
+            "每摧毁1张牌，",
+            "获得{C:mult}+#1#{}倍率",
+            "{C:inactive}（当前为{C:mult}+#2#{C:inactive}倍率）"
+        }
+    },
+    j_moji_barricade = {
+        name = "壁垒",
+        text = {
+            "{C:blue}出牌{}和{C:red}弃牌{}次数",
+            "跨回合保留"
+        }
+    }
     -- j_moji_limited_edition = {
     --     name = "限量版",
     --     text = {
@@ -867,6 +923,7 @@ local loc_zh = {
 local misc_loc_en = {
     k_moji_timeup = "Time's up!",
     k_moji_prototype_printed = "Prototype printed!",
+    k_moji_reroll_addiction = "Reroll addiction!",
     k_what_if_double_joker_slot = "X2 Joker Slot",
     k_what_if_add_joker_slot = "+1 Joker Slot",
     k_what_if_sub_ante = "-1 Ante",
@@ -910,6 +967,7 @@ local misc_loc_en = {
 local misc_loc_zh = {
     k_moji_timeup = "时间到！",
     k_moji_prototype_printed = "打样成功！",
+    k_moji_reroll_addiction = "重掷成瘾！",
     k_what_if_double_joker_slot = '小丑牌槽位 X2',
     k_what_if_add_joker_slot = '小丑牌槽位 +1',
     k_what_if_sub_ante = '底注 -1',
@@ -1098,14 +1156,14 @@ local jokers = {
         cost = 7,
         unlocked = true, discovered = true, blueprint_compat = false, eternal_compat = true
     },
-    j_moji_rocket_test = {
-        ability_name = "Rocket Test",
-        slug = "moji_rocket_test",
-        ability = {},
-        rarity = 3,
-        cost = 9,
-        unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
-    },
+    -- j_moji_rocket_test = {
+    --     ability_name = "Rocket Test",
+    --     slug = "moji_rocket_test",
+    --     ability = {},
+    --     rarity = 3,
+    --     cost = 9,
+    --     unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
+    -- },
     j_moji_now_printing = {
         ability_name = "Now Printing",
         slug = "moji_now_printing",
@@ -1165,9 +1223,9 @@ local jokers = {
     j_moji_world_heritage = {
         ability_name = "World Heritage",
         slug = "moji_world_heritage",
-        ability = {extra = {Xmult_sub = 0.03, Xmult_add = 0.04}},
-        rarity = 2,
-        cost = 7,
+        ability = {extra = {Xmult_sub = 0.02, Xmult_add = 0.04}},
+        rarity = 3,
+        cost = 8,
         unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
     },
     j_moji_neutron_star = {
@@ -1277,7 +1335,7 @@ local jokers = {
     j_moji_who_needs_money = {
         ability_name = "Who Needs Money?",
         slug = "moji_who_needs_money",
-        ability = {extra = {mult_add = 1, per = 5, mult_sub = 2}},
+        ability = {extra = {mult_add = 1, per = 4, mult_sub = 1}},
         rarity = 2,
         cost = 7,
         unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
@@ -1287,7 +1345,7 @@ local jokers = {
         slug = "moji_mojimoon",
         ability = {},
         rarity = 1,
-        cost = 5,
+        cost = 4,
         unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
     },
     j_moji_certificate_of_deposit = {
@@ -1298,6 +1356,30 @@ local jokers = {
         cost = 1,
         unlocked = true, discovered = true, blueprint_compat = false, eternal_compat = true
     },
+    j_moji_reroll_ticket = {
+        ability_name = "Reroll Ticket",
+        slug = "moji_reroll_ticket",
+        ability = {extra = {dollars = 5, dollars_sub = 1, rerolled_this_shop = false}},
+        rarity = 2,
+        cost = 6,
+        unlocked = true, discovered = true, blueprint_compat = false, eternal_compat = true
+    },
+    j_moji_second_wind = {
+        ability_name = "Second Wind",
+        slug = "moji_second_wind",
+        ability = {extra = {mult_add = 4}},
+        rarity = 2,
+        cost = 7,
+        unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
+    },
+    j_moji_barricade = {
+        ability_name = "Barricade",
+        slug = "moji_barricade",
+        ability = {extra = {cur_hands = 0, cur_discards = 0}},
+        rarity = 3,
+        cost = 10,
+        unlocked = true, discovered = true, blueprint_compat = false, eternal_compat = true
+    }
     -- j_moji_limited_edition = {
     --     ability_name = "Limited Edition",
     --     slug = "moji_limited_edition",
@@ -1912,17 +1994,17 @@ function SMODS.INIT.MojiJoker()
     end
     
     -- Rocket Test
-    SMODS.Jokers.j_moji_rocket_test.calculate = function(self, context)
-        if context.before and not context.blueprint then
-            local tmp = nil
-            self.ability.x_mult, tmp = rocket_test_calculate()
-        end
-    end
+    -- SMODS.Jokers.j_moji_rocket_test.calculate = function(self, context)
+    --     if context.before and not context.blueprint then
+    --         local tmp = nil
+    --         self.ability.x_mult, tmp = rocket_test_calculate()
+    --     end
+    -- end
 
-    SMODS.Jokers.j_moji_rocket_test.loc_def = function(card)
-        local x_mult, count = rocket_test_calculate()
-        return {string.format("%.2f", math.pow(x_mult, 1 / count)), string.format("%.2f", x_mult)}
-    end
+    -- SMODS.Jokers.j_moji_rocket_test.loc_def = function(card)
+    --     local x_mult, count = rocket_test_calculate()
+    --     return {string.format("%.2f", math.pow(x_mult, 1 / count)), string.format("%.2f", x_mult)}
+    -- end
 
     -- Now Printing
     SMODS.Jokers.j_moji_now_printing.calculate = function(self, context)
@@ -2541,6 +2623,97 @@ function SMODS.INIT.MojiJoker()
     --     return {card.ability.extra.Xmult, ((G.GAME.starting_deck_size and G.GAME.starting_deck_size or 52) - (G.playing_cards and count_enhance(G.playing_cards) or 0)) * card.ability.extra.Xmult + 1}
     -- end
 
+    -- Reroll Ticket
+    SMODS.Jokers.j_moji_reroll_ticket.calculate = function(self, context)
+        if context.reroll_shop and not context.blueprint then
+            self.ability.extra.rerolled_this_shop = true
+        end
+
+        if context.ending_shop and not context.blueprint then
+            if self.ability.extra.rerolled_this_shop then
+                self.ability.extra.dollars = self.ability.extra.dollars - self.ability.extra.dollars_sub
+                G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost + self.ability.extra.dollars_sub
+                G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost + self.ability.extra.dollars_sub)
+                self.ability.extra.rerolled_this_shop = false
+                if self.ability.extra.dollars <= 0 then
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            play_sound('tarot1')
+                            self.T.r = -0.2
+                            self:juice_up(0.3, 0.4)
+                            self.states.drag.is = true
+                            self.children.center.pinch.x = true
+                            G.E_MANAGER:add_event(Event({hand_trigger = 'after', delay = 0.3, blockable = false,
+                                func = function()
+                                        G.jokers:remove_card(self)
+                                        self:remove()
+                                        self = nil
+                                    return true; end})) 
+                            return true
+                        end
+                    }))
+                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_moji_reroll_addiction'), colour = G.C.FILTER})
+                else
+                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('$') .. self.ability.extra.dollars, dollars = self.ability.extra.dollars, colour = G.C.PURPLE})
+                end
+            end
+        end
+    end
+
+    SMODS.Jokers.j_moji_reroll_ticket.loc_def = function(card)
+        return {card.ability.extra.dollars, card.ability.extra.dollars_sub}
+    end
+
+    -- Second Wind
+    SMODS.Jokers.j_moji_second_wind.calculate = function(self, context)
+        if context.individual and not context.blueprint then
+            if context.cardarea == G.hand then
+                if context.other_card.config.center == G.P_CENTERS.c_base then
+                    G.E_MANAGER:add_event(Event({trigger = 'immediate', func = function() context.other_card:start_dissolve(nil, true) return true end}))
+                    self.ability.mult = self.ability.mult + self.ability.extra.mult_add
+                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_mult',vars={self.ability.extra.mult_add}}, colour = G.C.RED})
+                end
+            end
+        end
+
+        if SMODS.end_calculate_context(context) then
+            if self.ability.mult > 0 then
+                return {
+                    message = localize{type='variable',key='a_mult',vars={self.ability.mult}},
+                    colour = G.C.RED,
+                    mult_mod = self.ability.mult
+                }
+            end
+        end
+    end
+
+    SMODS.Jokers.j_moji_second_wind.loc_def = function(card)
+        return {card.ability.extra.mult_add, card.ability.mult}
+    end
+
+    -- Barricade
+    SMODS.Jokers.j_moji_barricade.calculate = function(self, context)
+        if context.setting_blind and not context.blueprint and not self.getting_sliced then
+            G.E_MANAGER:add_event(Event({func = function()
+                ease_discard(self.ability.extra.cur_discards, nil, true)
+                ease_hands_played(self.ability.extra.cur_hands)
+                if self.ability.extra.cur_hands > 0 then
+                    card_eval_status_text(context.blueprint_card or self, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_hands', vars = {self.ability.extra.cur_hands}}})
+                end
+            return true end}))
+        end
+
+        if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
+            self.ability.extra.cur_discards = G.GAME.current_round.discards_left
+            self.ability.extra.cur_hands = G.GAME.current_round.hands_left
+        end
+    end
+            
+
+    SMODS.Jokers.j_moji_barricade.loc_def = function(card)
+        return {}
+    end
+
     -- What If ... ? (ability name: What If)
     SMODS.Jokers.j_moji_what_if.calculate = function(self, context)
         if context.setting_blind and not context.blueprint and not self.getting_sliced then
@@ -3101,6 +3274,11 @@ function Card:add_to_deck(from_debuff)
             G.E_MANAGER:add_event(Event({func = function() self:juice_up(0.8, 0.5) return true end}))
         elseif self.ability.name == 'Certificate of Deposit' then
             G.GAME.bankrupt_at = G.GAME.bankrupt_at - self.ability.extra.dollars
+        elseif self.ability.name == 'Reroll Ticket' then
+            G.E_MANAGER:add_event(Event({func = function()
+                G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost - self.ability.extra.dollars
+                G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost - self.ability.extra.dollars)
+                return true end }))
         else
             if self.ability.eternal then
                 for i = 1, #G.jokers.cards do
@@ -3137,6 +3315,11 @@ function Card:remove_from_deck(from_debuff)
             G.jokers.config.card_limit = G.jokers.config.card_limit - self.ability.extra.cur_slot
         elseif self.ability.name == 'Certificate of Deposit' then
             G.GAME.bankrupt_at = G.GAME.bankrupt_at + self.ability.extra.dollars
+        elseif self.ability.name == 'Reroll Ticket' then
+            G.E_MANAGER:add_event(Event({func = function()
+                G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost + self.ability.extra.dollars
+                G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost + self.ability.extra.dollars)
+                return true end }))
         else
             if self.ability.eternal then
                 for i = 1, #G.jokers.cards do
@@ -3199,8 +3382,9 @@ function ease_dollars(mod, instant)
     if mod > 0 and G.jokers then
         for i = 1, #G.jokers.cards do
             if G.jokers.cards[i].ability.name == 'Certificate of Deposit' then
-                G.jokers.cards[i].ability.dollars = G.jokers.cards[i].ability.dollars + mod
+                G.jokers.cards[i].ability.extra.dollars = G.jokers.cards[i].ability.extra.dollars + mod
                 G.GAME.bankrupt_at = G.GAME.bankrupt_at - mod
+                card_eval_status_text(G.jokers.cards[i], 'extra', nil, nil, nil, {message = localize('$') .. G.jokers.cards[i].ability.extra.dollars, dollars = G.jokers.cards[i].ability.extra.dollars, colour = G.C.PURPLE})
             end
         end
     end

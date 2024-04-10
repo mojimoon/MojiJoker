@@ -78,6 +78,18 @@ let jokers = [
     cost: 5
   },
   {
+    name: "文字门",
+    text: [
+      "选择{C:attention}盲注{}后，",
+      "随机生成一张来自",
+      "{C:attention}MojiJoker{}的小丑牌",
+      "{C:inactive}（必须有空位）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_mojimoon.png",
+    rarity: "普通",
+    cost: 4
+  },
+  {
     name: "杂技",
     text: [
       "每次{C:red}弃牌{}后，",
@@ -96,18 +108,6 @@ let jokers = [
       "{C:inactive}（当前为{C:attention}+3{C:inactive}，最少为{C:attention}+0{C:inactive}）"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_luxury_tax.png",
-    rarity: "普通",
-    cost: 5
-  },
-  {
-    name: "文字门",
-    text: [
-      "选择{C:attention}盲注{}后，",
-      "随机生成一张来自",
-      "{C:attention}MojiJoker{}的小丑牌",
-      "{C:inactive}（必须有空位）"
-    ],
-    image_url: "MojiJoker/assets/2x/j_moji_mojimoon.png",
     rarity: "普通",
     cost: 5
   },
@@ -206,10 +206,24 @@ let jokers = [
       "每消费{C:money}$1{}，",
       "获得{C:mult}+1{}倍率",
       "{C:inactive}（当前为{C:mult}+0{C:inactive}倍率）",
-      "每拥有{C:money}$5{}，",
-      "提供的倍率{C:mult}-2{}"
+      "每拥有{C:money}$4{}，",
+      "提供的倍率{C:mult}-1{}"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_who_needs_money.png",
+    rarity: "罕见",
+    cost: 7
+  },
+  {
+    name: "重振精神",
+    text: [
+      "每回合{C:attention}首次出牌{}后，",
+      "摧毁手牌中",
+      "所有{C:attention}非增强牌{}",
+      "每摧毁1张牌，",
+      "获得{C:mult}+4{}倍率",
+      "{C:inactive}（当前为{C:mult}+0{C:inactive}倍率）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_second_wind.png",
     rarity: "罕见",
     cost: 7
   },
@@ -285,17 +299,6 @@ let jokers = [
     cost: 7
   },
   {
-    name: "世界遗产",
-    text: [
-      "每弃1张牌，获得{X:mult,C:white}X0.04{}倍率",
-      "每出1张牌，失去{X:mult,C:white}X0.03{}倍率",
-      "{C:inactive}（当前为{X:mult,C:white}X1{C:inactive}倍率）"
-    ],
-    image_url: "MojiJoker/assets/2x/j_moji_world_heritage.png",
-    rarity: "罕见",
-    cost: 7
-  },
-  {
     name: "四色定理",
     text: [
       "打出并计分的牌中",
@@ -320,6 +323,18 @@ let jokers = [
     cost: 7
   },
   {
+    name: "税收官",
+    text: [
+      "回合结束时，",
+      "每张普通/罕见/稀有/传奇小丑牌",
+      "分别提供{C:blue}$1{}/{C:green}$2{}/{C:red}$3{}/{C:legendary}$4{}",
+      "{C:inactive}（当前为{C:money}$0{C:inactive}）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_tax_collector.png",
+    rarity: "罕见",
+    cost: 7
+  },
+  {
     name: "卫星支付",
     text: [
       "本局游戏每使用过一种{C:planet}星球牌",
@@ -332,16 +347,15 @@ let jokers = [
     cost: 6
   },
   {
-    name: "税收官",
+    name: "重掷券",
     text: [
-      "回合结束时，",
-      "每张普通/罕见/稀有/传奇小丑牌",
-      "分别提供{C:blue}$1{}/{C:green}$2{}/{C:red}$3{}/{C:legendary}$4{}",
-      "{C:inactive}（当前为{C:money}$0{C:inactive}）"
+      "重掷价格降低{C:money}$5{}",
+      "若在商店重掷至少一次，",
+      "离开商店时，效果减少{C:money}$1{}"
     ],
-    image_url: "MojiJoker/assets/2x/j_moji_tax_collector.png",
+    image_url: "MojiJoker/assets/2x/j_moji_reroll_ticket.png",
     rarity: "罕见",
-    cost: 7
+    cost: 6
   },
   {
     name: "买一送一",
@@ -390,6 +404,17 @@ let jokers = [
     cost: 8
   },
   {
+    name: "世界遗产",
+    text: [
+      "每弃1张牌，获得{X:mult,C:white}X0.04{}倍率",
+      "每出1张牌，失去{X:mult,C:white}X0.02{}倍率",
+      "{C:inactive}（当前为{X:mult,C:white}X1{C:inactive}倍率）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_world_heritage.png",
+    rarity: "稀有",
+    cost: 8
+  },
+  {
     name: "新秩序",
     text: [
       "打出{C:attention}A{}并计分时，",
@@ -420,17 +445,6 @@ let jokers = [
     cost: 9
   },
   {
-    name: "火箭试验",
-    text: [
-      "每个启用的{C:attention}Mod{}",
-      "提供{X:mult,C:white}X?.??{}倍率",
-      "{C:inactive}（当前为{X:mult,C:white}X?.??{C:inactive}倍率）"
-    ],
-    image_url: "MojiJoker/assets/2x/j_moji_rocket_test.png",
-    rarity: "稀有",
-    cost: 9
-  },
-  {
     name: "集邮",
     text: [
       "每张带{C:dark_edition}版本{}的小丑牌",
@@ -439,6 +453,21 @@ let jokers = [
       "提供{X:mult,C:white}X1.5{}倍率"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_stamp_collection.png",
+    rarity: "稀有",
+    cost: 9
+  },
+  {
+    name: "多彩银河",
+    text: [
+      "每次出牌时，",
+      "有{C:green}1/81{}几率",
+      "给一张随机{C:attention}小丑牌",
+      "添加{C:dark_edition}版本{}",
+      "打出并计分的牌中，",
+      "每种不同的{C:attention}花色{}",
+      "使上述概率乘以{C:green}3{}"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_colorful_galaxy.png",
     rarity: "稀有",
     cost: 9
   },
@@ -457,19 +486,14 @@ let jokers = [
     cost: 10
   },
   {
-    name: "多彩银河",
+    name: "壁垒",
     text: [
-      "每次出牌时，",
-      "有{C:green}1/81{}几率",
-      "给一张随机{C:attention}小丑牌",
-      "添加{C:dark_edition}版本{}",
-      "打出并计分的牌中，",
-      "每种不同的{C:attention}花色{}",
-      "使上述概率乘以{C:green}3{}"
+      "{C:blue}出牌{}和{C:red}弃牌{}次数",
+      "跨回合保留"
     ],
-    image_url: "MojiJoker/assets/2x/j_moji_colorful_galaxy.png",
+    image_url : "MojiJoker/assets/2x/j_moji_barricade.png",
     rarity: "稀有",
-    cost: 9
+    cost: 10
   },
   {
     name: "典当行",
@@ -576,6 +600,31 @@ let jokers = [
   //     "都提供{X:mult,C:white}X1.44{}倍率"
   //   ],
   //   image_url: "MojiJoker/assets/2x/j_moji_double_shadow.png",
+  //   rarity: "稀有",
+  //   cost: 9
+  // },
+  // {
+  //   name: "限量版",
+  //   text: [
+  //     "为打出并计分的牌",
+  //     "添加随机{C:attention}增强",
+  //     "完整牌组中每有",
+  //     "一张非增强牌，",
+  //     "提供{X:mult,C:white}X0.05{}倍率",
+  //     "{C:inactive}（当前为{X:mult,C:white}X3.6{C:inactive}倍率）"
+  //   ],
+  //   image_url: "MojiJoker/assets/2x/j_moji_limited_edition.png",
+  //   rarity: "稀有",
+  //   cost: 9
+  // }，
+  // {
+  //   name: "火箭试验",
+  //   text: [
+  //     "每个启用的{C:attention}Mod{}",
+  //     "提供{X:mult,C:white}X?.??{}倍率",
+  //     "{C:inactive}（当前为{X:mult,C:white}X?.??{C:inactive}倍率）"
+  //   ],
+  //   image_url: "MojiJoker/assets/2x/j_moji_rocket_test.png",
   //   rarity: "稀有",
   //   cost: 9
   // },
@@ -803,7 +852,7 @@ for (let consumable of consumables) {
     consumable_div.innerHTML = `
       <h3>${consumable.name}</h3>
       <img src="${consumable.image_url}" alt="${consumable.name}" />
-      <h4 class="rarity" style="background-color: ${rarities[consumable.rarity]}">${consumable.rarity}</h4>
+      <h4 class="rarity" style="background-color: ${rarities[consumable.rarity]}">${consumable.rarity} ${consumable.cost ? `$${consumable.cost}` : ""}</h4>
       <div class="text">${consumable.text}</div>
     `;
   }
