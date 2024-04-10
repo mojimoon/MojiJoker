@@ -224,6 +224,19 @@ let jokers = [
     cost: 7
   },
   {
+    name: "破罐子破摔",
+    text: [
+      "每消费{C:money}$1{}，",
+      "获得{C:mult}+1{}倍率",
+      "{C:inactive}（当前为{C:mult}+0{C:inactive}倍率）",
+      "每拥有{C:money}$4{}，",
+      "提供的倍率{C:mult}-1{}"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_who_needs_money.png",
+    rarity: "罕见",
+    cost: 7
+  },
+  {
     name: "星之彩",
     text: [
       "连续打出包含{C:attention}同花{}的牌时，",
@@ -375,7 +388,7 @@ let jokers = [
       "将牌组中该点数的牌",
       "增强为{C:attention}石头牌{}",
       "西西弗斯每创建1张石头牌，",
-      "获得{X:mult,C:white}X0.15{}倍率",
+      "获得{X:mult,C:white}X0.1{}倍率",
       "{C:inactive}（当前为{X:mult,C:white}X1{C:inactive}倍率）"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_sisyphus.png",

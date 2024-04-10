@@ -8,7 +8,7 @@
 ------------MOD CODE -------------------------
 
 local MOD_ID = "MojiJoker"
-local MOD_VERSION = "1.0.9"
+local MOD_VERSION = "1.1.0"
 
 -- If you would like to disable a specific card, set the corresponding value to false
 -- 如果你想禁用某张卡牌，请将对应的值设置为 false
@@ -33,6 +33,7 @@ local enabled_cards = {
     ["j_moji_vacant_seat"] = true, -- + Mult
     ["j_moji_return_on_investment"] = true, -- + Mult
     ["j_moji_pursue_the_stars"] = true, -- + Mult
+    ["j_moji_who_needs_money"] = true, -- + Mult
     ["j_moji_color_out_of_space"] = true, -- X Mult
     ["j_moji_garbage_time"] = true, -- X Mult
     ["j_moji_world_heritage"] = true, -- X Mult
@@ -53,7 +54,7 @@ local enabled_cards = {
     ["j_moji_sisyphus"] = true, -- X Mult, Effect: Playing Cards
     ["j_moji_colorful_galaxy"] = true, -- Effect: Joker
     ["j_moji_pawn_shop"] = true, -- Effect: Joker
-    ["j_moji_what_if"] = false, -- X Mult, Effect: Misc
+    ["j_moji_what_if"] = true, -- X Mult, Effect: Misc
     ["j_moji_hell"] = true, -- Effect: Misc
     -- Legendary
     ["j_moji_these_are_the_odds"] = true, -- Effect: Joker
@@ -421,6 +422,16 @@ local loc_en = {
             "{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)"
         }
     },
+    j_moji_who_needs_money = {
+        name = "Who Needs Money?",
+        text = {
+            "Gains {C:mult}+#1#{} Mult",
+            "for every {C:money}$1{} spent",
+            "{C:inactive}(Currently {C:mult}+#2#{C:inactive} Mult)",
+            "Mult is reduced by {C:mult}#4#{}",
+            "for every {C:money}$#3#{} you have"
+        }
+    },
 }
 
 local loc_zh = {
@@ -781,44 +792,102 @@ local loc_zh = {
             "{C:inactive}（当前为{X:mult,C:white}X#2#{C:inactive}倍率）"
         }
     },
+    j_moji_who_needs_money = {
+        name = "破罐子破摔",
+        text = {
+            "每消费{C:money}$1{}，",
+            "获得{C:mult}+#1#{}倍率",
+            "{C:inactive}（当前为{C:mult}+#2#{C:inactive}倍率）",
+            "每拥有{C:money}$#3#{}，",
+            "提供的倍率{C:mult}-#4#{}"
+        }
+    },
 }
 
 local misc_loc_en = {
-    k_timeup = "Time's up!",
-    k_printed = "Prototype printed!",
+    k_moji_timeup = "Time's up!",
+    k_moji_prototype_printed = "Prototype printed!",
+    k_what_if_double_joker_slot = "X2 Joker Slot",
+    k_what_if_add_joker_slot = "+1 Joker Slot",
+    k_what_if_sub_ante = "-1 Ante",
+    k_what_if_random_negative_joker = "Random Negative Joker",
+    k_what_if_duplicate_random_joker = "Copy Random Joker",
+    k_what_if_1000x_global_probabilities = "X1000 Global Probabilities",
+    k_what_if_win_game = "Win Game",
+    k_what_if_random_legendary_joker = "Random Legendary Joker",
+    k_what_if_edition_all_jokers = "Apply Edition to All Jokers",
+    k_what_if_add_shop_card_slot = "+1 Shop Card Slot",
+    k_what_if_double_interest_cap = "X2 Interest Cap",
+    k_what_if_edition_negative = "Negative",
+    k_what_if_edition_all_playing_cards = "Apply Edition to All Playing Cards",
+    k_what_if_seal_all_playing_cards = "Seal All Playing Cards",
+    k_what_if_sub_shop_card_slot = "-1 Shop Card Slot",
+    k_what_if_destroy_random_joker = "Destroy Random Joker",
+    k_what_if_add_consumeable_slot = "+1 Consumeable Slot",
+    k_what_if_enhance_all_playing_cards = "Enhance All Playing Cards",
+    k_what_if_2x_global_probabilities = "X2 Global Probabilities",
+    k_what_if_2x_all_poker_hand_levels = "X2 All Poker Hand Levels",
+    k_what_if_sub_joker_slot = "-1 Joker Slot",
+    k_what_if_blind_score_up = "X1.5 Blind Score Requirement",
+    k_what_if_edition_polychrome = "Polychrome",
+    k_what_if_edition_holo = "Holo",
+    k_what_if_level_up_all_poker_hands = "Level Up All Poker Hands",
+    k_what_if_add_win_ante = "+1 Win Ante",
+    k_what_if_destory_playing_card = "Randomly Destroy Playing Card",
+    k_what_if_blind_score_down = "X0.8 Blind Score Requirement",
+    k_what_if_eternal_all_jokers = "Apply Eternal to All Jokers",
+    k_what_if_edition_foil = "Foil",
+    k_what_if_double_growth = "Grows 2X faster",
+    k_what_if_add_hand_size = "+1 Hand Size",
+    k_what_if_add_hand = "+1 Hand",
+    k_what_if_add_discard = "+1 Discard",
+    k_what_if_sub_hand_size = "-1 Hand Size",
+    k_what_if_half_global_probabilities = "X0.5 Global Probabilities",
+    k_what_if_duplicate_playing_card = "Copy Random Playing Card",
+    k_what_if_duplicate_random_joker_until_full = "Copy Random Joker Until Full",
 }
 
 local misc_loc_zh = {
-    k_timeup = "时间到！",
-    k_printed = "打样成功！",
+    k_moji_timeup = "时间到！",
+    k_moji_prototype_printed = "打样成功！",
     k_what_if_double_joker_slot = '小丑牌槽位 X2',
     k_what_if_add_joker_slot = '小丑牌槽位 +1',
-    k_what_if_add_consumeable_slot = '消耗牌槽位 +1',
+    k_what_if_sub_ante = '底注 -1',
+    k_what_if_random_negative_joker = '随机负片小丑牌',
+    k_what_if_duplicate_random_joker = '复制随机小丑牌',
+    k_what_if_1000x_global_probabilities = '全局概率 X1000',
+    k_what_if_win_game = '获得胜利',
+    k_what_if_random_legendary_joker = '随机传奇小丑牌',
+    k_what_if_edition_all_jokers = '所有小丑牌获得版本',
     k_what_if_add_shop_card_slot = '商店卡牌槽位 +1',
-    k_what_if_sub_shop_card_slot = '商店卡牌槽位 -1',
     k_what_if_double_interest_cap = '利息上限 X2',
-    k_what_if_add_hand_size = '手牌上限 +1',
-    k_what_if_sub_hand_size = '手牌上限 -1',
-    k_what_if_add_hand = '出牌次数 +1',
-    k_what_if_add_discard = '弃牌次数 +1',
     k_what_if_edition_negative = '负片',
+    k_what_if_edition_all_playing_cards = '所有游戏牌获得版本',
+    k_what_if_seal_all_playing_cards = '所有游戏牌获得蜡封',
+    k_what_if_sub_shop_card_slot = '商店卡牌槽位 -1',
+    k_what_if_destroy_random_joker = '摧毁随机小丑牌',
+    k_what_if_add_consumeable_slot = '消耗牌槽位 +1',
+    k_what_if_enhance_all_playing_cards = '所有游戏牌获得增强',
+    k_what_if_2x_global_probabilities = '全局概率 X2',
+    k_what_if_2x_all_poker_hand_levels = '所有牌型等级 X2',
+    k_what_if_sub_joker_slot = '小丑牌槽位 -1',
+    k_what_if_blind_score_up = '盲注分数要求 X1.5',
     k_what_if_edition_polychrome = '多彩',
     k_what_if_edition_holo = '镭射',
-    k_what_if_edition_foil = '闪箔',
-    k_what_if_sub_ante = '底注 -#1#',
-    k_what_if_random_negative_joker = '随机负片小丑',
-    k_what_if_voucher_tag = '优惠券标签',
-    k_what_if_double_tag = '双倍标签',
-    k_what_if_destroy_random_joker = '摧毁随机小丑',
-    k_what_if_duplicate_random_joker = '复制随机小丑',
-    k_what_if_duplicate_random_joker_until_full = '复制随机小丑至满',
+    k_what_if_level_up_all_poker_hands = '所有牌型等级 +1',
     k_what_if_add_win_ante = '获胜所需底注 +1',
-    k_what_if_destory_playing_card = '摧毁游戏牌',
-    k_what_if_duplicate_playing_card = '复制游戏牌',
+    k_what_if_destory_playing_card = '随机摧毁游戏牌',
+    k_what_if_blind_score_down = '盲注分数要求 X0.8',
+    k_what_if_eternal_all_jokers = '所有小丑牌获得永恒',
+    k_what_if_edition_foil = '闪箔',
     k_what_if_double_growth = '本牌成长 X2',
-    k_what_if_2x_global_probabilities = '全局概率 X2',
-    k_what_if_half_global_probabilities = '全局概率 /2',
-    k_what_if_1000x_global_probabilities = '全局概率 X1000',
+    k_what_if_add_hand_size  = '手牌上限 +1',
+    k_what_if_add_hand = '出牌次数 +1',
+    k_what_if_add_discard = '弃牌次数 +1',
+    k_what_if_sub_hand_size = '手牌上限 -1',
+    k_what_if_half_global_probabilities = '全局概率 X0.5',
+    k_what_if_duplicate_playing_card = '复制随机游戏牌',
+    k_what_if_duplicate_random_joker_until_full = '复制随机小丑牌至上限',
 }
 
 local loc_txt = G.SETTINGS.language == "zh_CN" and loc_zh or loc_en
@@ -908,7 +977,7 @@ local jokers = {
     j_moji_sisyphus = {
         ability_name = "Sisyphus",
         slug = "moji_sisyphus",
-        ability = {extra = {Xmult_add = 0.15}},
+        ability = {extra = {Xmult_add = 0.1}},
         rarity = 3,
         cost = 9,
         unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
@@ -1140,10 +1209,18 @@ local jokers = {
     j_moji_what_if = {
         ability_name = "What If",
         slug = "moji_what_if",
-        ability = {extra = {Xmult_add = 0.5}},
+        ability = {extra = {Xmult_add = 0.5, XBlind = 1}},
         rarity = 3,
         cost = 12,
         unlocked = true, discovered = true, blueprint_compat = false, eternal_compat = true
+    },
+    j_moji_who_needs_money = {
+        ability_name = "Who Needs Money?",
+        slug = "moji_who_needs_money",
+        ability = {extra = {mult_add = 1, per = 4, mult_sub = 1}},
+        rarity = 2,
+        cost = 7,
+        unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
     }
 }
 
@@ -1317,7 +1394,7 @@ function SMODS.INIT.MojiJoker()
                         end
                     }))
                     return {
-                        message = localize('k_timeup'),
+                        message = localize('k_moji_timeup'),
                         colour = G.C.FILTER
                     }
                 else
@@ -1764,7 +1841,7 @@ function SMODS.INIT.MojiJoker()
             end
             if self.ability.extra.times == 0 then
                 G.E_MANAGER:add_event(Event({func = function()
-                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_printed'), colour = G.C.FILTER})
+                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_moji_prototype_printed'), colour = G.C.FILTER})
                 return true end }))
                 G.E_MANAGER:add_event(Event({
                     func = function()
@@ -2289,6 +2366,24 @@ function SMODS.INIT.MojiJoker()
         return {card.ability.extra.slot}
     end
 
+    -- Who Needs Money?
+    SMODS.Jokers.j_moji_who_needs_money.calculate = function(self, context)
+        if SMODS.end_calculate_context(context) then
+            local mult = self.ability.mult - self.ability.extra.mult_sub * math.floor((G.GAME.dollars > 0 and G.GAME.dollars or 0) / self.ability.extra.per)
+            if mult > 0 then
+                return {
+                    message = localize{type='variable',key='a_mult',vars={mult}},
+                    colour = G.C.RED,
+                    mult_mod = mult
+                }
+            end
+        end
+    end
+
+    SMODS.Jokers.j_moji_who_needs_money.loc_def = function(card)
+        return {card.ability.extra.mult_add, card.ability.mult, card.ability.extra.per, card.ability.extra.mult_sub}
+    end
+
     -- What If ... ? (ability name: What If)
     SMODS.Jokers.j_moji_what_if.calculate = function(self, context)
         if context.setting_blind and not context.blueprint and not self.getting_sliced then
@@ -2308,51 +2403,73 @@ function SMODS.INIT.MojiJoker()
                     eligible_cards[#eligible_cards + 1] = G.jokers.cards[i]
                 end
             end
-            local t = pseudorandom_element(eligible_cards, pseudoseed('what_if_joker'))
+            local joker_to_edition = eligible_cards and pseudorandom_element(eligible_cards, pseudoseed('what_if')) or nil
+
             local d = pseudorandom('what_if_dice', 1, 100)
+            local e = pseudorandom('what_if_edition', 1, 100)
             local joker_slot_to_remove = 0
 
             -- legendary
             if j.config.center.rarity == 4 then
-                -- negative => x2 joker slot
+                -- x2 joker slot
+                sendDebugMessage('what if: x2 joker slot ')
+                G.jokers.config.card_limit = G.jokers.config.card_limit * 2
+                card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_double_joker_slot'), colour = G.C.FILTER})
+                -- negative => duplicate random joker until full
                 if j.edition and j.edition.negative then
-                    sendDebugMessage('What If: Legendary Negative')
-                    G.jokers.config.card_limit = G.jokers.config.card_limit * 2
-                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_double_joker_slot'), colour = G.C.FILTER})
-                -- others => +2 joker slot & duplicate until full
-                else
-                    sendDebugMessage('What If: Legendary Non-Negative')
-                    G.jokers.config.card_limit = G.jokers.config.card_limit + 3
-                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_add_joker_slot'), colour = G.C.BLUE})
-                    local no_of_copy = G.jokers.config.card_limit - #G.jokers.cards
-                    G.E_MANAGER:add_event(Event({trigger = 'before', delay = 0.4, func = function()
-                        for i = 1, no_of_copy do
-                            local card = copy_card(t, nil, nil, nil, nil)
-                            card:start_materialize()
-                            card:add_to_deck()
-                            G.jokers:emplace(card)
+                    sendDebugMessage('what if: duplicate random joker until full ')
+                    local copiable_cards = {}
+                    for i = 1, #G.jokers.cards do
+                        if G.jokers.cards[i].ability.name ~= 'What If' and G.jokers.cards[i] ~= j then
+                            copiable_cards[#copiable_cards + 1] = G.jokers.cards[i]
                         end
-                        return true
-                    end}))
-                    joker_slot_to_remove = 1
+                    end
+                    local target = #copiable_cards > 0  and pseudorandom_element(copiable_cards, pseudoseed('what_if_copy')) or nil
+
+                    if target then
+                        local no_of_copy = G.jokers.config.card_limit - #G.jokers.cards
+                        G.E_MANAGER:add_event(Event({trigger = 'before', delay = 0.4, func = function()
+                            for i = 1, no_of_copy do
+                                local card = copy_card(target, nil, nil, nil, nil)
+                                card:start_materialize()
+                                card:add_to_deck()
+                                G.jokers:emplace(card)
+                            end
+                            return true
+                        end}))
+                    else -- create random jokers until full
+                        local no_of_jokers = G.jokers.config.card_limit - #G.jokers.cards
+                        G.E_MANAGER:add_event(Event({trigger = 'before', delay = 0.4, func = function()
+                            for i = 1, no_of_jokers do
+                                local card = create_card('Joker', G.jokers, pseudorandom('what_if_legendary') < G.GAME.probabilities.normal / 100 and true or nil, nil, nil, nil, nil, 'what_if_random_negative_joker')
+                                card:add_to_deck()
+                                G.jokers:emplace(card)
+                                card:start_materialize()
+                            end
+                            return true
+                        end}))
+                    end
                 end
             -- negative
             elseif j.edition and j.edition.negative then
+                local fail = false
                 -- 20% => +1 joker slot
                 if (d <= 20) then
-                    sendDebugMessage('What If: Non-Legendary Negative 1: +1 Joker Slot')
+                    sendDebugMessage('what if: +1 joker slot ')
                     G.jokers.config.card_limit = G.jokers.config.card_limit + 1
                     card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_add_joker_slot'), colour = G.C.ORANGE})
                 end
                 -- 20% => -1 ante
                 if (21 <= d and d <= 40) then
-                    sendDebugMessage('What If: Non-Legendary Negative 2: -1 Ante')
+                    sendDebugMessage('what if: -1 ante ')
                     ease_ante(-1)
+                    G.GAME.round_resets.blind_ante = G.GAME.round_resets.blind_ante or G.GAME.round_resets.ante
+                    G.GAME.round_resets.blind_ante = G.GAME.round_resets.blind_ante - 1
                     card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_sub_ante'), colour = G.C.PURPLE})
                 end
                 -- 20% => random negative joker
                 if (41 <= d and d <= 60) then
-                    sendDebugMessage('What If: Non-Legendary Negative 3: Random Negative Joker')
+                    sendDebugMessage('what if: random negative joker ')
                     G.GAME.joker_buffer = G.GAME.joker_buffer + 1
                     G.E_MANAGER:add_event(Event({func = function()
                         local card = create_card('Joker', G.jokers, pseudorandom('what_if_legendary') < G.GAME.probabilities.normal / 100 and true or nil, nil, nil, nil, nil, 'what_if_random_negative_joker')
@@ -2364,112 +2481,141 @@ function SMODS.INIT.MojiJoker()
                     return true end}))
                     card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_random_negative_joker'), colour = G.C.BLUE})
                 end
-                -- 20% => duplicate random joker
+                -- 20% => duplicate random joker until full
                 if (61 <= d and d <= 80) then
-                    sendDebugMessage('What If: Non-Legendary Negative 4: Duplicate Random Joker')
+                    sendDebugMessage('what if: duplicate random joker ')
                     G.Jokers.config.card_limit = G.jokers.config.card_limit + 1
-                    G.E_MANAGER:add_event(Event({trigger = 'before', delay = 0.4, func = function()
-                        local card = copy_card(t, nil, nil, nil, nil)
+                    joker_slot_to_remove = 1
+                    local copiable_cards = {}
+                    for i = 1, #G.jokers.cards do
+                        if G.jokers.cards[i].ability.name ~= 'What If' and G.jokers.cards[i] ~= j then
+                            copiable_cards[#copiable_cards + 1] = G.jokers.cards[i]
+                        end
+                    end
+                    local target = #copiable_cards > 0  and pseudorandom_element(copiable_cards, pseudoseed('what_if_copy')) or nil
+                    if target then
+                        local card = copy_card(target, nil, nil, nil, nil)
                         card:start_materialize()
                         card:add_to_deck()
                         G.jokers:emplace(card)
-                        return true
-                    end}))
-                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_duplicate_random_joker'), colour = G.C.GREEN})
-                    joker_slot_to_remove = 1
+                        card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_duplicate_random_joker'), colour = G.C.GREEN})
+                    else
+                        fail = true
+                    end
                 end
-                -- 2% => 1000x global probabilities
-                if (81 <= d and d <= 82) then
-                    sendDebugMessage('What If: Non-Legendary Negative 5: 1000x Global Probabilities')
+                -- 3% => 1000x global probabilities
+                if (81 <= d and d <= 83) then
+                    sendDebugMessage('what if: 1000x global probabilities ')
                     for k, v in pairs(G.GAME.probabilities) do
                         G.GAME.probabilities[k] = v * 1000
                     end
                     card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_1000x_global_probabilities'), colour = G.C.RED})
                 end
-                -- 18% => double tag
-                if (82 <= d and d <= 100) then
-                    sendDebugMessage('What If: Non-Legendary Negative 6: Double Tag')
-                    G.E_MANAGER:add_event(Event({
-                        func = function()
-                            add_tag(Tag('tag_double'))
-                            play_sound('generic1', 0.9 + math.random()*0.1, 0.8)
-                            play_sound('holo1', 1.2 + math.random()*0.1, 0.4)
-                            return true
-                        end
-                    }))
-                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_double_tag'), colour = G.C.RED})
+                -- 1% => win game
+                if (84 <= d and d <= 84) then
+                    sendDebugMessage('what if: win game ')
+                    if G.STAGE == G.STAGES.RUN then win_game() end
+                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_win_game'), colour = G.C.YELLOW})
+                end
+                -- 1% => random legendary joker
+                if (85 <= d and d <= 85) then
+                    sendDebugMessage('what if: random legendary joker ')
+                    G.GAME.joker_buffer = G.GAME.joker_buffer + 1
+                    joker_slot_to_remove = 1
+                    G.E_MANAGER:add_event(Event({func = function()
+                        local card = create_card('Joker', G.jokers, true, nil, nil, nil, nil, 'what_if_random_legendary_joker')
+                        card:add_to_deck()
+                        G.jokers:emplace(card)
+                        card:start_materialize()
+                        G.GAME.joker_buffer = 0
+                    return true end}))
+                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_random_legendary_joker'), colour = G.C.YELLOW})
+                end
+                -- 15% => edition all jokers
+                if (86 <= d and d <= 100) then
+                    sendDebugMessage('what if: edition all jokers ')
+                    local editions = {{foil = true}, {holo = true}, {polychrome = true}, {negative = true}}
+                    for i = 1, #G.jokers.cards do
+                        local edition = editions[pseudorandom('what_if_edition', 1, #editions)]
+                        G.jokers.cards[i]:set_edition(edition, true)
+                    end
+                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_edition_all_jokers'), colour = G.C.DARK_EDITION})
                 end
             -- rare
             elseif j.config.center.rarity == 3 then
                 local fail = false
-                -- 20% => +1 shop card slot
-                if (d <= 20) then
-                    sendDebugMessage('What If: Rare Non-Negative 1: +1 Shop Card Slot')
-                    if G.GAME.shop.joker_max > 7 then
-                        fail = true
-                    else
-                        change_shop_size(1)
-                        card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_add_shop_card_slot'), colour = G.C.ORANGE})
+                -- set 1
+                if j.edition or (e <= 50) then
+                    -- 20% => +1 shop card slot
+                    if (d <= 20) then
+                        sendDebugMessage('what if: +1 shop card slot ')
+                        if G.GAME.shop.joker_max > 7 then
+                            fail = true
+                        else
+                            change_shop_size(1)
+                            card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_add_shop_card_slot'), colour = G.C.ORANGE})
+                        end
                     end
-                end
-                -- 20% => +1 consumeable slot
-                if (21 <= d and d <= 40) or fail then
-                    sendDebugMessage('What If: Rare Non-Negative 2: +1 Consumeable Slot')
-                    G.consumeables.config.card_limit = G.consumeables.config.card_limit + 1
-                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_add_consumeable_slot'), colour = G.C.PURPLE})
-                    fail = false
-                end
-                -- 10% => X2 interest cap
-                if (41 <= d and d <= 50) then
-                    sendDebugMessage('What If: Rare Non-Negative 3: X2 Interest Cap')
-                    if G.GAME.modifiers.no_interest then
-                        fail = true
-                    else
-                        G.GAME.interest_cap = math.max(0, G.GAME.interest_cap * 2)
-                        card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_double_interest_cap'), colour = G.C.BLUE})
+                    -- 20% => X2 interest cap
+                    if (21 <= d and d <= 40) then
+                        sendDebugMessage('what if: x2 interest cap ')
+                        if G.GAME.modifiers.no_interest then
+                            fail = true
+                        else
+                            G.GAME.interest_cap = math.max(25, G.GAME.interest_cap * 2)
+                            card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_double_interest_cap'), colour = G.C.PURPLE})
+                        end
                     end
-                end
-                -- 10% => apply negative
-                if (51 <= d and d <= 60) or fail then
-                    sendDebugMessage('What If: Rare Non-Negative 4: Apply Negative')
-                    t:set_edition({negative = true}, true)
-                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_edition_negative'), colour = G.C.GREEN})
-                    fail = false
-                end
-                -- 4% => 2x global probabilities
-                if (61 <= d and d <= 64) then
-                    sendDebugMessage('What If: Rare Non-Negative 5: 2x Global Probabilities')
-                    for k, v in pairs(G.GAME.probabilities) do
-                        G.GAME.probabilities[k] = v * 2
+                    -- 20% => apply negative
+                    if (41 <= d and d <= 60) or fail then
+                        sendDebugMessage('what if: apply negative ')
+                        if not joker_to_edition then
+                            fail = true
+                        else
+                            joker_to_edition:set_edition({negative = true}, true)
+                            card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_edition_negative'), colour = G.C.GREEN})
+                            fail = false
+                        end
                     end
-                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_2x_global_probabilities'), colour = G.C.RED})
-                end
-                -- 16% => double money
-                if (65 <= d and d <= 80) then
-                    sendDebugMessage('What If: Rare Non-Negative 6: Double Money')
-                    local dollars = G.GAME.dollars
-                    if dollars + G.GAME.dollars < 20 then dollars = 20 - G.GAME.dollars end
-                    ease_dollars(dollars)
-                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('$') .. dollars, dollars = dollars, colour = G.C.MONEY, instant = true})
-                end
-                -- 20% => negative effect
-                if (81 <= d and d <= 100) or fail then
-                    local n = pseudorandom('what_if_negative', 1, 100)
-                    -- 50% => -1 shop card slot
-                    if n <= 50 and G.GAME.shop.joker_max > 1 then
-                        sendDebugMessage('What If: Rare Non-Negative 7.1: -1 Shop Card Slot')
-                        change_shop_size(-1)
-                        card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_sub_shop_card_slot'), colour = G.C.RED})
-                    -- 50% => destroy random joker
-                    else
-                        sendDebugMessage('What If: Rare Non-Negative 7.2: Destroy Random Joker')
+                    -- 10% => edition all playing cards
+                    if (61 <= d and d <= 70) or fail then
+                        sendDebugMessage('what if: edition all playing cards ')
+                        local editions = {{foil = true}, {holo = true}, {polychrome = true}}
+                        for i = #G.playing_cards, 1, -1 do
+                            local edition = editions[pseudorandom('what_if_edition', 1, #editions)]
+                            G.playing_cards[i]:set_edition(edition, true, true)
+                        end
+                        card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_edition_all_playing_cards'), colour = G.C.BLUE})
+                    end
+                    -- 10% => seal all playing cards
+                    if (71 <= d and d <= 80) then
+                        sendDebugMessage('what if: seal all playing cards ')
+                        local seals = {"Red", "Blue", "Gold", "Purple"}
+                        for i = #G.playing_cards, 1, -1 do
+                            local seal = seals[pseudorandom('what_if_seal', 1, #seals)]
+                            G.playing_cards[i]:set_seal(seal, true, true)
+                        end
+                        card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_seal_all_playing_cards'), colour = G.C.YELLOW})
+                    end
+                    -- 10% => (negative effect) -1 shop card slot
+                    if (81 <= d and d <= 90) then
+                        sendDebugMessage('what if: -1 shop card slot ')
+                        if G.GAME.shop.joker_max < 2 then
+                            fail = true
+                        else
+                            change_shop_size(-1)
+                            card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_sub_shop_card_slot'), colour = G.C.PURPLE})
+                        end
+                    end
+                    -- 10% => (negative effect) destroy random joker
+                    if (91 <= d and d <= 100) or fail then
                         local destructable_jokers = {}
                         for i = 1, #G.jokers.cards do
-                            if G.jokers.cards[i] ~= self and G.jokers.cards[i] ~= j and not G.jokers.cards[i].getting_sliced then
+                            if G.jokers.cards[i] ~= self and G.jokers.cards[i] ~= j and not G.jokers.cards[i].getting_sliced and not G.jokers.cards[i].ability.eternal then
                                 destructable_jokers[#destructable_jokers + 1] = G.jokers.cards[i]
                             end
                         end
-                        local target = #destructable_jokers > 0 and pseudorandom_element(destructable_jokers, pseudoseed('what_if_destroy')) or nil
+                        local target = #destructable_jokers > 0 and pseudorandom_element(destructable_jokers, pseudoseed('what_if_destruct')) or nil
 
                         if target then
                             target.getting_sliced = true
@@ -2479,65 +2625,122 @@ function SMODS.INIT.MojiJoker()
                             card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_destroy_random_joker'), colour = G.C.RED})
                         end
                     end
+                -- set 2
+                else
+                    -- 20% => apply negative
+                    if (d <= 20) then
+                        if not joker_to_edition then
+                            fail = true
+                        else
+                            joker_to_edition:set_edition({negative = true}, true)
+                            card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_edition_negative'), colour = G.C.GREEN})
+                            fail = false
+                        end
+                    end
+                    -- 20% => +1 consumeable slot
+                    if (21 <= d and d <= 40) then
+                        sendDebugMessage('what if: +1 consumeable slot ')
+                        G.consumeables.config.card_limit = G.consumeables.config.card_limit + 1
+                        card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_add_consumeable_slot'), colour = G.C.PURPLE})
+                    end
+                    -- 10% => enhance all playing cards
+                    if (41 <= d and d <= 50) then
+                        sendDebugMessage('what if: enhance all playing cards ')
+                        local enhances = {G.P_CENTERS.m_stone, G.P_CENTERS.m_steel, G.P_CENTERS.m_glass, G.P_CENTERS.m_gold, G.P_CENTERS.m_bonus, G.P_CENTERS.m_mult, G.P_CENTERS.m_wild, G.P_CENTERS.m_lucky}
+                        for i = #G.playing_cards, 1, -1 do
+                            local enhance = enhances[pseudorandom('what_if_enhance', 1, #enhances)]
+                            G.playing_cards[i]:set_ability(enhance)
+                        end
+                        card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_enhance_all_playing_cards'), colour = G.C.BLUE})
+                    end
+                    -- 5% => 2x global probabilities
+                    if (51 <= d and d <= 55) then
+                        sendDebugMessage('what if: 2x global probabilities ')
+                        for k, v in pairs(G.GAME.probabilities) do
+                            G.GAME.probabilities[k] = v * 2
+                        end
+                        card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_2x_global_probabilities'), colour = G.C.RED})
+                    end
+                    -- 10% => 2x all poker hand levels
+                    if (56 <= d and d <= 65) or fail then
+                        sendDebugMessage('what if: 2x all poker hand levels ')
+                        for k, v in ipairs(G.handlist) do
+                            G.GAME.hands[hand].level = math.max(G.GAME.hands[hand].level * 2, 2)
+                            G.GAME.hands[hand].mult = G.GAME.hands[hand].s_mult + G.GAME.hands[hand].l_mult*(G.GAME.hands[hand].level - 1)
+                            G.GAME.hands[hand].chips = G.GAME.hands[hand].s_chips + G.GAME.hands[hand].l_chips*(G.GAME.hands[hand].level - 1)
+                        end
+                        card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_2x_all_poker_hand_levels'), colour = G.C.YELLOW})
+                    end
+                    -- 15% => self mult ^1.5 (min x2)
+                    if (66 <= d and d <= 80) then
+                        sendDebugMessage('what if: self mult ^1.5 ')
+                        self.ability.x_mult = self.ability.x_mult * math.floor(math.max(math.sqrt(self.ability.x_mult), 2))
+                        card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_xmult',vars={self.ability.x_mult}}, colour = G.C.GREEN})
+                    end
+                    -- 10% => (negative effect) -1 joker slot
+                    if (81 <= d and d <= 90) then
+                        sendDebugMessage('what if: -1 joker slot ')
+                        G.jokers.config.card_limit = G.jokers.config.card_limit - 1
+                        card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_sub_joker_slot'), colour = G.C.PURPLE})
+                    end
+                    -- 10% => (negative effect) blind score x 1.5
+                    if (91 <= d and d <= 100) then
+                        sendDebugMessage('what if: blind score x 1.5 ')
+                        self.ability.extra.XBlind = self.ability.extra.XBlind * 1.5
+                        card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_blind_score_up'), colour = G.C.RED})
+                    end
                 end
             -- uncommon
             elseif j.config.center.rarity == 2 then
                 local fail = false
-                -- 20% => apply polychrome
-                if (d <= 20) then
-                    sendDebugMessage('What If: Uncommon Non-Negative 1: Apply Polychrome')
-                    t:set_edition({polychrome = true}, true)
-                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_edition_polychrome'), colour = G.C.ORANGE})
-                end
-                -- 20% => Xmult x2
-                if (21 <= d and d <= 40) then
-                    sendDebugMessage('What If: Uncommon Non-Negative 2: Xmult x2')
-                    self.ability.x_mult = self.ability.x_mult * 2
-                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_xmult',vars={self.ability.x_mult / 2}}, colour = G.C.PURPLE})
-                end
-                -- 20% => apply holo
-                if (41 <= d and d <= 60) then
-                    sendDebugMessage('What If: Uncommon Non-Negative 3: Apply Holo')
-                    t:set_edition({holo = true}, true)
-                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_edition_holo'), colour = G.C.BLUE})
-                end
-                -- 10% => duplicate playing cards
-                if (61 <= d and d <= 70) then
-                    sendDebugMessage('What If: Uncommon Non-Negative 4: Duplicate Playing Cards')
-                    local _t = pseudorandom('what_if_duplicate_card', 1, #G.playing_cards)
-                    local _card = G.playing_cards[_t]
-                    local dupe = pseudorandom('what_if_duplicate_card', 1, 100)
-                    G.E_MANAGER:add_event(Event({
-                        func = function()
-                            local _first_dissolve = nil
-                            local new_cards = {}
-                            for i = 1, dupe do
-                                G.playing_card = (G.playing_card and G.playing_card + 1) or 1
-                                local card = copy_card(_card, nil, nil, G.playing_card)
-                                card:add_to_deck()
-                                G.deck.config.card_limit = G.deck.config.card_limit + 1
-                                table.insert(G.playing_cards, card)
-                                _card:start_materialize(nil, _first_dissolve)
-                                _first_dissolve = true
-                                new_cards[#new_cards+1] = card
-                            end
-                            playing_card_joker_effects(new_cards)
-                            return true
+                -- set 1
+                if j.edition or (e <= 50) then
+                    -- 20% => apply polychrome
+                    if (d <= 20) then
+                        if not joker_to_edition then
+                            fail = true
+                        else
+                            joker_to_edition:set_edition({polychrome = true}, true)
+                            card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_edition_polychrome'), colour = G.C.GREEN})
+                            fail = false
                         end
-                    }))
-                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_duplicate_playing_card'), colour = G.C.GREEN})
-                end
-                -- 30% => negative effect
-                if (71 <= d and d <= 100) then
-                    local n = pseudorandom('what_if_negative', 1, 100)
-                    -- 50% => +1 win ante
-                    if n <= 50 then
-                        sendDebugMessage('What If: Uncommon Non-Negative 5.1: +1 Win Ante')
+                    end
+                    -- 20% => apply holo
+                    if (21 <= d and d <= 40) then
+                        if not joker_to_edition then
+                            fail = true
+                        else
+                            joker_to_edition:set_edition({holo = true}, true)
+                            card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_edition_holo'), colour = G.C.ORANGE})
+                            fail = false
+                        end
+                    end
+                    -- 20% => self mult x2
+                    if (41 <= d and d <= 60) or fail then
+                        sendDebugMessage('what if: self mult x2 ')
+                        self.ability.x_mult = self.ability.x_mult * 2
+                        card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_xmult',vars={self.ability.x_mult}}, colour = G.C.PURPLE})
+                        fail = false
+                    end
+                    -- 10% => level up all poker hands
+                    if (61 <= d and d <= 70) then
+                        sendDebugMessage('what if: level up all poker hands ')
+                        for k, v in ipairs(G.handlist) do
+                            G.GAME.hands[hand].level = G.GAME.hands[hand].level + 1
+                            G.GAME.hands[hand].mult = G.GAME.hands[hand].s_mult + G.GAME.hands[hand].l_mult*(G.GAME.hands[hand].level - 1)
+                            G.GAME.hands[hand].chips = G.GAME.hands[hand].s_chips + G.GAME.hands[hand].l_chips*(G.GAME.hands[hand].level - 1)
+                        end
+                        card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_level_up_all_poker_hands'), colour = G.C.BLUE})
+                    end
+                    -- 15% => (negative effect) +1 win ante
+                    if (71 <= d and d <= 85) then
+                        sendDebugMessage('what if: +1 win ante ')
                         G.GAME.win_ante = G.GAME.win_ante + 1
                         card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_add_win_ante'), colour = G.C.BLUE})
-                    -- 50% => destroy playing cards
-                    else
-                        sendDebugMessage('What If: Uncommon Non-Negative 5.2: Destroy Playing Cards')
+                    end
+                    -- 15% => (negative effect) destroy playing cards
+                    if (86 <= d and d <= 100) then
+                        sendDebugMessage('what if: destroy playing cards ')
                         local destroy_threshold = pseudorandom('what_if_destroy')
                         G.E_MANAGER:add_event(Event({
                             trigger = 'after',
@@ -2558,55 +2761,120 @@ function SMODS.INIT.MojiJoker()
                         }))
                         card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_destory_playing_card'), colour = G.C.RED})
                     end
+                -- set 2
+                else
+                    -- 20% => apply polychrome
+                    if (d <= 20) then
+                        if not joker_to_edition then
+                            fail = true
+                        else
+                            joker_to_edition:set_edition({polychrome = true}, true)
+                            card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_edition_polychrome'), colour = G.C.GREEN})
+                            fail = false
+                        end
+                    end
+                    -- 20% => apply holo
+                    if (21 <= d and d <= 40) then
+                        if not joker_to_edition then
+                            fail = true
+                        else
+                            joker_to_edition:set_edition({holo = true}, true)
+                            card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_edition_holo'), colour = G.C.ORANGE})
+                            fail = false
+                        end
+                    end
+                    -- 20% => double money
+                    if (41 <= d and d <= 60) or fail then
+                        sendDebugMessage('what if: double money ')
+                        local dollars = G.GAME.dollars
+                        if dollars + G.GAME.dollars < 20 then dollars = 20 - G.GAME.dollars end
+                        ease_dollars(dollars)
+                        card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('$') .. dollars, dollars = dollars, colour = G.C.MONEY, instant = true})
+                    end
+                    -- 20% => blind score x 0.8
+                    if (61 <= d and d <= 80) then
+                        sendDebugMessage('what if: blind score x 0.8 ')
+                        self.ability.extra.XBlind = self.ability.extra.XBlind * 0.8
+                        card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_blind_score_down'), colour = G.C.PURPLE})
+                    end
+                    -- 15% => (negative effect) lose half money
+                    if (81 <= d and d <= 95) then
+                        sendDebugMessage('what if: lose half money ')
+                        local dollars = -math.floor(G.GAME.dollars / 2)
+                        if G.GAME.dollars < 0 then dollars = G.GAME.dollars end
+                        ease_dollars(dollars)
+                        card_eval_status_text(self, 'extra', nil, nil, nil, {message = '-' .. localize('$') .. math.abs(dollars), dollars = dollars, colour = G.C.MONEY, instant = true})
+                    end
+                    -- 5% => (negative effect) eternal all jokers
+                    if (96 <= d and d <= 100) then
+                        sendDebugMessage('what if: eternal all jokers ')
+                        for i = 1, #G.jokers.cards do
+                            G.jokers.cards[i]:set_eternal(true)
+                        end
+                        card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_eternal_all_jokers'), colour = G.C.YELLOW})
+                    end
                 end
             -- common
-            else
+            elseif j.config.center.rarity == 1 then
                 -- 20% => apply foil
                 if (d <= 20) then
-                    sendDebugMessage('What If: Common Non-Negative 1: Apply Foil')
-                    t:set_edition({foil = true}, true)
-                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_edition_foil'), colour = G.C.ORANGE})
+                    if not joker_to_edition then
+                        fail = true
+                    else
+                        sendDebugMessage('what if: apply foil ')
+                        joker_to_edition:set_edition({foil = true}, true)
+                        card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_edition_foil'), colour = G.C.GREEN})
+                        fail = false
+                    end
                 end
-                -- 20% => growth x2
-                if (21 <= d and d <= 40) then
-                    sendDebugMessage('What If: Common Non-Negative 2: Growth x2')
+                -- 25% => growth x2
+                if (21 <= d and d <= 45) or fail then
+                    sendDebugMessage('what if: growth x2 ')
                     self.ability.extra.Xmult_add = self.ability.extra.Xmult_add * 2
                     card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_double_growth'), colour = G.C.PURPLE})
                 end
                 -- 20% => +1 hand size
-                if (41 <= d and d <= 60) then
-                    sendDebugMessage('What If: Common Non-Negative 3: +1 Hand Size')
+                if (46 <= d and d <= 65) then
+                    sendDebugMessage('what if: +1 hand size ')
                     G.hand:change_size(1)
                     card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_add_hand_size'), colour = G.C.BLUE})
                 end
-                -- 10% => +1 discard
-                if (61 <= d and d <= 70) then
-                    sendDebugMessage('What If: Common Non-Negative 4: +1 Discard')
-                    G.GAME.round_resets.discards = G.GAME.round_resets.discards + 1
-                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_add_discard'), colour = G.C.GREEN})
+                -- 5% => +1 hand
+                if (66 <= d and d <= 70) then
+                    sendDebugMessage('what if: +1 hand ')
+                    G.GAME.round_resets.hands = G.GAME.round_resets.hands + 1
+                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_add_hand'), colour = G.C.GREEN})
                 end
-                -- 30% => negative effect
-                if (71 <= d and d <= 100) then
-                    local n = pseudorandom('what_if_negative', 1, 100)
-                    -- 50% => lose $10
-                    if n <= 50 then
-                        sendDebugMessage('What If: Common Non-Negative 5.1: Lose $10')
-                        local dollars = -10
-                        ease_dollars(dollars)
-                        card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('$') .. dollars, dollars = dollars, colour = G.C.RED, instant = true})
-                    -- 30% => -1 hand size
-                    elseif n <= 80 and G.hand.config.card_limit > 5 then
-                        sendDebugMessage('What If: Common Non-Negative 5.2: -1 Hand Size')
-                        G.hand:change_size(-1)
-                        card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_sub_hand_size'), colour = G.C.RED})
-                    -- 20% => 0.5x global probabilities
+                -- 5% => +1 discard
+                if (71 <= d and d <= 75) then
+                    sendDebugMessage('what if: +1 discard ')
+                    G.GAME.round_resets.discards = G.GAME.round_resets.discards + 1
+                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_add_discard'), colour = G.C.ORANGE})
+                end
+                -- 15% => (negative effect) lose $10
+                if (76 <= d and d <= 90) then
+                    sendDebugMessage('what if: lose $10 ')
+                    local dollars = -10
+                    ease_dollars(dollars)
+                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = '-' .. localize('$') .. math.abs(dollars), dollars = dollars, colour = G.C.MONEY, instant = true})
+                end
+                -- 5% => (negative effect) -1 hand size
+                if (91 <= d and d <= 95) then
+                    sendDebugMessage('what if: -1 hand size ')
+                    if G.hand.config.card_limit < 2 then
+                        fail = true
                     else
-                        sendDebugMessage('What If: Common Non-Negative 5.3: 0.5x Global Probabilities')
-                        for k, v in pairs(G.GAME.probabilities) do
-                            G.GAME.probabilities[k] = v / 2
-                        end
-                        card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_half_global_probabilities'), colour = G.C.RED})
+                        G.hand:change_size(-1)
+                        card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_sub_hand_size'), colour = G.C.PURPLE})
                     end
+                end
+                -- 5% => (negative effect) 0.5x global probabilities
+                if (96 <= d and d <= 100) or fail then
+                    sendDebugMessage('what if: 0.5x global probabilities ')
+                    for k, v in pairs(G.GAME.probabilities) do
+                        G.GAME.probabilities[k] = v / 2
+                    end
+                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_half_global_probabilities'), colour = G.C.RED})
                 end
             end
 
@@ -2621,8 +2889,14 @@ function SMODS.INIT.MojiJoker()
             if joker_slot_to_remove > 0 then
                 G.jokers.config.card_limit = G.jokers.config.card_limit - joker_slot_to_remove
             end
+
+            if self.ability.extra.XBlind ~= 1 then
+                G.GAME.blind.chips = G.GAME.blind.chips * self.ability.extra.XBlind
+                G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+            end
         end
     end
+
     SMODS.Jokers.j_moji_what_if.loc_def = function(card)
         return {card.ability.extra.Xmult_add, card.ability.x_mult}
     end
@@ -2742,12 +3016,17 @@ end
 local Card_sell_card_ref = Card.sell_card
 function Card:sell_card()
     if self.ability.set == 'Joker' then
-        local free_refill_index = #find_joker('Free Refill')
-        if free_refill_index > 0 and G.jokers.cards[free_refill_index] ~= self then
-            local free_refill = G.jokers.cards[free_refill_index]
+        local dollars_lose = 0
+        for i = 1, #G.jokers.cards do
+            if G.jokers.cards[i].ability.name == 'Free Refill' then
+                dollars_lose = dollars_lose + G.jokers.cards[i].ability.extra.dollars_lose
+                break
+            end
+        end
+        if dollars_lose > 0 then
             G.E_MANAGER:add_event(Event({hand_trigger = 'after', delay = 0.3, func = function()
-                ease_dollars(-free_refill.ability.extra.dollars_lose, true)
-                card_eval_status_text(free_refill, 'extra', nil, nil, nil, {message = '-' .. localize('$') .. free_refill.ability.extra.dollars_lose, dollars = free_refill.ability.extra.dollars_lose, colour = G.C.MONEY, instant = true})
+                ease_dollars(-dollars_lose, true)
+                card_eval_status_text(self, 'extra', nil, nil, nil, {message = '-' .. localize('$') .. dollars_lose, dollars = dollars_lose, colour = G.C.MONEY, instant = true})
                 return true end }))
         end
     end
@@ -2757,10 +3036,9 @@ end
 local ease_dollars_ref = ease_dollars
 function ease_dollars(mod, instant)
     if mod < 0 and G.jokers then
-        local max_possible = G.consumeables.config.card_limit - #G.consumeables.cards - G.GAME.consumeable_buffer
-        if max_possible > 0 then
-            for i = 1, #G.jokers.cards do
-                if G.jokers.cards[i].ability.name == 'Buy One Get One Free' and -mod >= G.jokers.cards[i].ability.extra.dollars_min then
+        for i = 1, #G.jokers.cards do
+            if G.jokers.cards[i].ability.name == 'Buy One Get One Free' then
+                if G.consumeables.config.card_limit - #G.consumeables.cards - G.GAME.consumeable_buffer > 0 and -mod >= G.jokers.cards[i].ability.extra.dollars_min then
                     G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
                     G.E_MANAGER:add_event(Event({
                         func = (function()
@@ -2775,11 +3053,13 @@ function ease_dollars(mod, instant)
                                 card_eval_status_text(G.jokers.cards[i], 'extra', nil, nil, nil, {message = localize('k_plus_planet'), colour = G.C.BLUE})
                             return true
                         end)}))
-                    end
-                    max_possible = max_possible - 1
-                    if max_possible == 0 then break end
                 end
             end
+            if G.jokers.cards[i].ability.name == 'Who Needs Money?' then
+                G.jokers.cards[i].ability.mult = G.jokers.cards[i].ability.mult + (-mod) * G.jokers.cards[i].ability.extra.mult_add
+                card_eval_status_text(G.jokers.cards[i], 'extra', nil, nil, nil, {message = localize{type='variable',key='a_mult',vars={G.jokers.cards[i].ability.mult}}, colour = G.C.MULT})
+            end
+        end
     end
     ease_dollars_ref(mod, instant)
 end
