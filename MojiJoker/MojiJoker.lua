@@ -8,7 +8,7 @@
 ------------MOD CODE -------------------------
 
 local MOD_ID = "MojiJoker"
-local MOD_VERSION = "1.1.0"
+local MOD_VERSION = "1.1.1"
 
 -- If you would like to disable a specific card, set the corresponding value to false
 -- 如果你想禁用某张卡牌，请将对应的值设置为 false
@@ -27,6 +27,7 @@ local enabled_cards = {
     ["j_moji_transcendence"] = true, -- Effect: Consumeables
     ["j_moji_acrobatics"] = true, -- Effect: Hand Size
     ["j_moji_luxury_tax"] = true, -- Effect: Hand Size
+    ["j_moji_mojimoon"] = true, -- Effect: Joker
     -- Uncommon
     ["j_moji_salvage_the_world"] = true, -- Chips
     ["j_moji_quantization"] = true, -- + Mult
@@ -432,6 +433,36 @@ local loc_en = {
             "for every {C:money}$#3#{} you have"
         }
     },
+    j_moji_mojimoon = {
+        name = "Mojimoon",
+        text = {
+            "Create a random Joker",
+            "from {C:attention}MojiJoker{}",
+            "when {C:attention}Blind{} is selected",
+            "{C:inactive}(Must have room)"
+        }
+    },
+    j_moji_certificate_of_deposit = {
+        name = "Certificate of Deposit",
+        text = {
+            "Go up to",
+            "{C:red}-$#1#{} in debt",
+            "Whenever you earn money",
+            "increase the credit limit",
+            "by the same amount"
+        }
+    },
+    -- j_moji_limited_edition = {
+    --     name = "Limited Edition",
+    --     text = {
+    --         "Apply random {C:attention}enhancement{}",
+    --         "to played and scored cards",
+    --         "{X:mult,C:white}X#1#{} Mult",
+    --         "for each non-enhanced card",
+    --         "in your full deck",
+    --         "{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)"
+    --     }
+    -- }
 }
 
 local loc_zh = {
@@ -802,6 +833,35 @@ local loc_zh = {
             "提供的倍率{C:mult}-#4#{}"
         }
     },
+    j_moji_mojimoon = {
+        name = "文字门",
+        text = {
+            "选择{C:attention}盲注{}后，",
+            "随机生成一张来自",
+            "{C:attention}MojiJoker{}的小丑牌",
+            "{C:inactive}（必须有空位）"
+        }
+    },
+    j_moji_certificate_of_deposit = {
+        name = "存款证明",
+        text = {
+            "可以负债，",
+            "最多{C:red}-$#1#{}",
+            "获得资金时，",
+            "相应提高负债限额"
+        }
+    },
+    -- j_moji_limited_edition = {
+    --     name = "限量版",
+    --     text = {
+    --         "为打出并计分的牌",
+    --         "添加随机{C:attention}增强",
+    --         "完整牌组中每有",
+    --         "一张非增强牌，",
+    --         "提供{X:mult,C:white}X#1#{}倍率",
+    --         "{C:inactive}（当前为{X:mult,C:white}X#2#{C:inactive}倍率）"
+    --     }
+    -- }
 }
 
 local misc_loc_en = {
@@ -1105,7 +1165,7 @@ local jokers = {
     j_moji_world_heritage = {
         ability_name = "World Heritage",
         slug = "moji_world_heritage",
-        ability = {extra = {Xmult_sub = 0.02, Xmult_add = 0.04}},
+        ability = {extra = {Xmult_sub = 0.03, Xmult_add = 0.04}},
         rarity = 2,
         cost = 7,
         unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
@@ -1113,7 +1173,7 @@ local jokers = {
     j_moji_neutron_star = {
         ability_name = "Neutron Star",
         slug = "moji_neutron_star",
-        ability = {extra = {chips = 12}},
+        ability = {extra = {chips = 10}},
         rarity = 1,
         cost = 5,
         unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
@@ -1212,16 +1272,40 @@ local jokers = {
         ability = {extra = {Xmult_add = 0.5, XBlind = 1}},
         rarity = 3,
         cost = 12,
-        unlocked = true, discovered = true, blueprint_compat = false, eternal_compat = true
+        unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
     },
     j_moji_who_needs_money = {
         ability_name = "Who Needs Money?",
         slug = "moji_who_needs_money",
-        ability = {extra = {mult_add = 1, per = 4, mult_sub = 1}},
+        ability = {extra = {mult_add = 1, per = 5, mult_sub = 2}},
         rarity = 2,
         cost = 7,
         unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
-    }
+    },
+    j_moji_mojimoon = {
+        ability_name = "MojiMoon",
+        slug = "moji_mojimoon",
+        ability = {},
+        rarity = 1,
+        cost = 5,
+        unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
+    },
+    j_moji_certificate_of_deposit = {
+        ability_name = "Certificate of Deposit",
+        slug = "moji_certificate_of_deposit",
+        ability = {extra = {dollars = 5}},
+        rarity = 1,
+        cost = 1,
+        unlocked = true, discovered = true, blueprint_compat = false, eternal_compat = true
+    },
+    -- j_moji_limited_edition = {
+    --     ability_name = "Limited Edition",
+    --     slug = "moji_limited_edition",
+    --     ability = {extra = {Xmult = 0.05}},
+    --     rarity = 3,
+    --     cost = 9,
+    --     unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true
+    -- }
 }
 
 local rank_to_str = {
@@ -1286,9 +1370,25 @@ function count_suit(cards, suit)
     return count
 end
 
+function count_enhance(cards, enhance)
+    local count = 0
+    for k, v in pairs(cards) do
+        if enhance then
+            if v.config.center == enhance then count = count + 1 end
+        else
+            if v.config.center ~= G.P_CENTERS.c_base then count = count + 1 end
+        end
+    end
+    return count
+end
+
 function round(num, numDecimalPlaces)
     local mult = 10^(numDecimalPlaces or 0)
     return math.floor(num * mult + 0.5) / mult
+end
+
+function startswith(str, start)
+    return str:sub(1, #start) == start
 end
 
 -- Joker-specific helper functions
@@ -2384,6 +2484,63 @@ function SMODS.INIT.MojiJoker()
         return {card.ability.extra.mult_add, card.ability.mult, card.ability.extra.per, card.ability.extra.mult_sub}
     end
 
+    -- Mojimoon
+    SMODS.Jokers.j_moji_mojimoon.calculate = function(self, context)
+        if context.setting_blind and not self.getting_sliced then
+            local jokers_to_create = math.max(0, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
+            if jokers_to_create == 0 then return end
+            G.GAME.joker_buffer = G.GAME.joker_buffer + 1
+            G.E_MANAGER:add_event(Event({
+                func = function() 
+                    local card = create_card('Joker', G.jokers, nil, nil, nil, nil, nil, 'mojimoon', true)
+                    card:add_to_deck()
+                    G.jokers:emplace(card)
+                    card:start_materialize()
+                    G.GAME.joker_buffer = 0
+                    return true
+                end}))
+            card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_plus_joker'), colour = G.C.BLUE}) 
+        end
+    end
+
+    SMODS.Jokers.j_moji_mojimoon.loc_def = function(card)
+        return {}
+    end
+
+    -- Certificate of Deposit
+    SMODS.Jokers.j_moji_certificate_of_deposit.loc_def = function(card)
+        return {card.ability.extra.dollars}
+    end
+
+    -- Limited Edition
+    -- SMODS.Jokers.j_moji_limited_edition.calculate = function(self, context)
+    --     if context.before and not context.blueprint then
+    --         for k, v in ipairs(context.full_hand) do
+    --             if v.config.center == G.P_CENTERS.c_base and not v.debuff then
+    --                 local enhances = {G.P_CENTERS.m_stone, G.P_CENTERS.m_steel, G.P_CENTERS.m_glass, G.P_CENTERS.m_gold, G.P_CENTERS.m_bonus, G.P_CENTERS.m_mult, G.P_CENTERS.m_wild, G.P_CENTERS.m_lucky}
+    --                 local enhance = pseudorandom_element(enhances, pseudoseed('limited_edition'))
+    --                 v:set_ability(enhance, true)
+    --                 G.E_MANAGER:add_event(Event({func = function() v:juice_up() return true end}))
+    --             end
+    --         end
+    --     end
+
+    --     if SMODS.end_calculate_context(context) then
+    --         local Xmult = self.ability.extra.Xmult * (G.GAME.starting_deck_size - count_enhance(G.playing_cards)) + 1
+    --         if Xmult > 1 then
+    --             return {
+    --                 message = localize{type='variable',key='a_xmult',vars={Xmult}},
+    --                 colour = G.C.RED,
+    --                 Xmult_mod = Xmult
+    --             }
+    --         end
+    --     end
+    -- end
+
+    -- SMODS.Jokers.j_moji_limited_edition.loc_def = function(card)
+    --     return {card.ability.extra.Xmult, ((G.GAME.starting_deck_size and G.GAME.starting_deck_size or 52) - (G.playing_cards and count_enhance(G.playing_cards) or 0)) * card.ability.extra.Xmult + 1}
+    -- end
+
     -- What If ... ? (ability name: What If)
     SMODS.Jokers.j_moji_what_if.calculate = function(self, context)
         if context.setting_blind and not context.blueprint and not self.getting_sliced then
@@ -2942,6 +3099,8 @@ function Card:add_to_deck(from_debuff)
             end
             G.jokers.config.card_limit = G.jokers.config.card_limit + self.ability.extra.cur_slot
             G.E_MANAGER:add_event(Event({func = function() self:juice_up(0.8, 0.5) return true end}))
+        elseif self.ability.name == 'Certificate of Deposit' then
+            G.GAME.bankrupt_at = G.GAME.bankrupt_at - self.ability.extra.dollars
         else
             if self.ability.eternal then
                 for i = 1, #G.jokers.cards do
@@ -2976,6 +3135,8 @@ function Card:remove_from_deck(from_debuff)
             G.hand:change_size(-self.ability.extra.cur_hand_size)
         elseif self.ability.name == 'Pawn Shop' then
             G.jokers.config.card_limit = G.jokers.config.card_limit - self.ability.extra.cur_slot
+        elseif self.ability.name == 'Certificate of Deposit' then
+            G.GAME.bankrupt_at = G.GAME.bankrupt_at + self.ability.extra.dollars
         else
             if self.ability.eternal then
                 for i = 1, #G.jokers.cards do
@@ -3035,10 +3196,19 @@ end
 
 local ease_dollars_ref = ease_dollars
 function ease_dollars(mod, instant)
+    if mod > 0 and G.jokers then
+        for i = 1, #G.jokers.cards do
+            if G.jokers.cards[i].ability.name == 'Certificate of Deposit' then
+                G.jokers.cards[i].ability.dollars = G.jokers.cards[i].ability.dollars + mod
+                G.GAME.bankrupt_at = G.GAME.bankrupt_at - mod
+            end
+        end
+    end
+
     if mod < 0 and G.jokers then
         for i = 1, #G.jokers.cards do
             if G.jokers.cards[i].ability.name == 'Buy One Get One Free' then
-                if G.consumeables.config.card_limit - #G.consumeables.cards - G.GAME.consumeable_buffer > 0 and -mod >= G.jokers.cards[i].ability.extra.dollars_min then
+                if -mod >= G.jokers.cards[i].ability.extra.dollars_min and G.consumeables.config.card_limit - #G.consumeables.cards - G.GAME.consumeable_buffer > 0 then
                     G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
                     G.E_MANAGER:add_event(Event({
                         func = (function()
@@ -3205,6 +3375,62 @@ function Back.apply_to_run(arg_56_0)
             return true
         end
     }))
+end
+
+local create_card_ref = create_card
+function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append, _moji)
+    if _moji then
+        local area = area or G.jokers
+        local center = G.P_CENTERS.b_red
+
+        if forced_key and not G.GAME.banned_keys[forced_key] then 
+            center = G.P_CENTERS[forced_key]
+            _type = (center.set ~= 'Default' and center.set or _type)
+        else
+            local _old_pool, _pool_key = get_current_pool(_type, _rarity, legendary, key_append)
+            local _pool = {}
+            for k, v in ipairs(_old_pool) do
+                if startswith(v, 'j_moji') then
+                    table.insert(_pool, v)
+                end
+            end
+            center = pseudorandom_element(_pool, pseudoseed(_pool_key))
+            local it = 1
+            while center == 'UNAVAILABLE' do
+                it = it + 1
+                center = pseudorandom_element(_pool, pseudoseed(_pool_key..'_resample'..it))
+            end
+
+            center = G.P_CENTERS[center]
+        end
+
+        local front = ((_type=='Base' or _type == 'Enhanced') and pseudorandom_element(G.P_CARDS, pseudoseed('front'..(key_append or '')..G.GAME.round_resets.ante))) or nil
+
+        local card = Card(area.T.x + area.T.w/2, area.T.y, G.CARD_W, G.CARD_H, front, center,
+        {bypass_discovery_center = area==G.shop_jokers or area == G.pack_cards or area == G.shop_vouchers or (G.shop_demo and area==G.shop_demo) or area==G.jokers or area==G.consumeables,
+        bypass_discovery_ui = area==G.shop_jokers or area == G.pack_cards or area==G.shop_vouchers or (G.shop_demo and area==G.shop_demo),
+        discover = area==G.jokers or area==G.consumeables, 
+        bypass_back = G.GAME.selected_back.pos})
+        if card.ability.consumeable and not skip_materialize then card:start_materialize() end
+
+        if _type == 'Joker' then
+            if G.GAME.modifiers.all_eternal then
+                card:set_eternal(true)
+            end
+            if area == G.shop_jokers then 
+                if G.GAME.modifiers.enable_eternals_in_shop and pseudorandom('stake_shop_joker_eternal'..G.GAME.round_resets.ante) > 0.7 then
+                    card:set_eternal(true)
+                end
+            end
+
+            local edition = poll_edition('edi'..(key_append or '')..G.GAME.round_resets.ante)
+            card:set_edition(edition)
+            check_for_unlock({type = 'have_edition'})
+        end
+        return card
+    end
+
+    return create_card_ref(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
 end
 
 ----------------------------------------------

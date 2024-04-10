@@ -16,7 +16,7 @@ let jokers = [
     text: [
       "{C:attention}出牌牌型{}每被",
       "打出过1次，",
-      "提供{C:chips}+12{}筹码"
+      "提供{C:chips}+10{}筹码"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_neutron_star.png",
     rarity: "普通",
@@ -56,12 +56,58 @@ let jokers = [
     cost: 5
   },
   {
+    name: "存款证明",
+    text: [
+      "可以负债，",
+      "最多{C:red}-$5{}",
+      "获得资金时，",
+      "相应提高负债限额"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_certificate_of_deposit.png",
+    rarity: "普通",
+    cost: 1
+  },
+  {
     name: "双筒望远镜",
     text: [
       "使用{C:planet}星球牌{}时，",
       "再使用{C:attention}1{}次"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_binoculars.png",
+    rarity: "普通",
+    cost: 5
+  },
+  {
+    name: "杂技",
+    text: [
+      "每次{C:red}弃牌{}后，",
+      "手牌上限{C:attention}+3{}",
+      "每次{C:blue}出牌{}后重置",
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_acrobatics.png",
+    rarity: "普通",
+    cost: 4
+  },
+  {
+    name: "奢侈税",
+    text: [
+      "手牌上限{C:blue}+3",
+      "每有{C:money}$20{}，手牌上限{C:red}-1{}",
+      "{C:inactive}（当前为{C:attention}+3{C:inactive}，最少为{C:attention}+0{C:inactive}）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_luxury_tax.png",
+    rarity: "普通",
+    cost: 5
+  },
+  {
+    name: "文字门",
+    text: [
+      "选择{C:attention}盲注{}后，",
+      "随机生成一张来自",
+      "{C:attention}MojiJoker{}的小丑牌",
+      "{C:inactive}（必须有空位）"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_mojimoon.png",
     rarity: "普通",
     cost: 5
   },
@@ -121,28 +167,6 @@ let jokers = [
     cost: 5
   },
   {
-    name: "杂技",
-    text: [
-      "每次{C:red}弃牌{}后，",
-      "手牌上限{C:attention}+3{}",
-      "每次{C:blue}出牌{}后重置",
-    ],
-    image_url: "MojiJoker/assets/2x/j_moji_acrobatics.png",
-    rarity: "普通",
-    cost: 4
-  },
-  {
-    name: "奢侈税",
-    text: [
-      "手牌上限{C:blue}+3",
-      "每有{C:money}$20{}，手牌上限{C:red}-1{}",
-      "{C:inactive}（当前为{C:attention}+3{C:inactive}，最少为{C:attention}+0{C:inactive}）"
-    ],
-    image_url: "MojiJoker/assets/2x/j_moji_luxury_tax.png",
-    rarity: "普通",
-    cost: 5
-  },
-  {
     name: "量(子)化",
     text: [
       "同时打出至少{C:attention}3{}张计分牌时，",
@@ -175,6 +199,19 @@ let jokers = [
     image_url: "MojiJoker/assets/2x/j_moji_return_on_investment.png",
     rarity: "罕见",
     cost: 6
+  },
+  {
+    name: "破罐子破摔",
+    text: [
+      "每消费{C:money}$1{}，",
+      "获得{C:mult}+1{}倍率",
+      "{C:inactive}（当前为{C:mult}+0{C:inactive}倍率）",
+      "每拥有{C:money}$5{}，",
+      "提供的倍率{C:mult}-2{}"
+    ],
+    image_url: "MojiJoker/assets/2x/j_moji_who_needs_money.png",
+    rarity: "罕见",
+    cost: 7
   },
   {
     name: "逐星",
@@ -224,19 +261,6 @@ let jokers = [
     cost: 7
   },
   {
-    name: "破罐子破摔",
-    text: [
-      "每消费{C:money}$1{}，",
-      "获得{C:mult}+1{}倍率",
-      "{C:inactive}（当前为{C:mult}+0{C:inactive}倍率）",
-      "每拥有{C:money}$4{}，",
-      "提供的倍率{C:mult}-1{}"
-    ],
-    image_url: "MojiJoker/assets/2x/j_moji_who_needs_money.png",
-    rarity: "罕见",
-    cost: 7
-  },
-  {
     name: "星之彩",
     text: [
       "连续打出包含{C:attention}同花{}的牌时，",
@@ -264,7 +288,7 @@ let jokers = [
     name: "世界遗产",
     text: [
       "每弃1张牌，获得{X:mult,C:white}X0.04{}倍率",
-      "每出1张牌，失去{X:mult,C:white}X0.02{}倍率",
+      "每出1张牌，失去{X:mult,C:white}X0.03{}倍率",
       "{C:inactive}（当前为{X:mult,C:white}X1{C:inactive}倍率）"
     ],
     image_url: "MojiJoker/assets/2x/j_moji_world_heritage.png",
