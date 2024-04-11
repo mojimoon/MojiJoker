@@ -8,7 +8,7 @@
 ------------MOD CODE -------------------------
 
 local MOD_ID = "MojiJoker"
-local MOD_VERSION = "1.1.3.4"
+local MOD_VERSION = "1.1.3.5"
 
 -- If you would like to disable a specific card, set the corresponding value to false
 -- 如果你想禁用某张卡牌，请将对应的值设置为 false
@@ -67,7 +67,7 @@ local enabled_cards = {
 -- If you would like to enable a specific behavior, set the corresponding value to true
 -- 如果你想启用某种效果，请将对应的值设置为 true
 local enabled_behaviors = {
-    allow_what_if_destroy_eternal = true,
+    allow_what_if_destroy_eternal = false,
 }
 
 local loc_en = {
@@ -2563,7 +2563,7 @@ function SMODS.INIT.MojiJoker()
         if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
             if G.GAME.dollars < 5 then return end
             local interest = G.GAME.interest_amount*math.min(math.floor(G.GAME.dollars/5), G.GAME.interest_cap/5)
-            self.ability.mult = self.ability.mult - interest * self.ability.extra.mult_sub
+            self.ability.mult = math.max(self.ability.mult - interest * self.ability.extra.mult_sub, 0)
             G.E_MANAGER:add_event(Event({func = function()
                 card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_mult_minus', vars = {interest * self.ability.extra.mult_sub}}, colour = G.C.RED})
             return true end }))
