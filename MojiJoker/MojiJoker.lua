@@ -8,7 +8,7 @@
 ------------MOD CODE -------------------------
 
 local MOD_ID = "MojiJoker"
-local MOD_VERSION = "1.1.3.2"
+local MOD_VERSION = "1.1.3.3"
 
 -- If you would like to disable a specific card, set the corresponding value to false
 -- 如果你想禁用某张卡牌，请将对应的值设置为 false
@@ -2743,7 +2743,7 @@ function SMODS.INIT.MojiJoker()
                     break
                 end
             end
-            if not j or (j.ability.eternal and not enabled_effects.allow_what_if_destroy_eternal) then return end
+            if not j or (j.ability.eternal and not enabled_behaviors.allow_what_if_destroy_eternal) then return end
 
             local eligible_cards = {}
             for i = 1, #G.jokers.cards do
