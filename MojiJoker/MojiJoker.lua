@@ -8,7 +8,7 @@
 ------------MOD CODE -------------------------
 
 local MOD_ID = "MojiJoker"
-local MOD_VERSION = "1.1.3"
+local MOD_VERSION = "1.1.3.1"
 
 -- If you would like to disable a specific card, set the corresponding value to false
 -- 如果你想禁用某张卡牌，请将对应的值设置为 false
@@ -954,7 +954,8 @@ local misc_loc_en = {
     k_what_if_blind_score_down = "X0.8 Blind Score Requirement",
     k_what_if_eternal_all_jokers = "Apply Eternal to All Jokers",
     k_what_if_edition_foil = "Foil",
-    k_what_if_double_growth = "Grows 2X faster",
+    k_what_if_2x_growth = "Grows 2X faster",
+    k_what_if_speedy_growth = "Grows even faster",
     k_what_if_add_hand_size = "+1 Hand Size",
     k_what_if_add_hand = "+1 Hand",
     k_what_if_add_discard = "+1 Discard",
@@ -998,7 +999,8 @@ local misc_loc_zh = {
     k_what_if_blind_score_down = '盲注分数要求 X0.8',
     k_what_if_eternal_all_jokers = '所有小丑牌获得永恒',
     k_what_if_edition_foil = '闪箔',
-    k_what_if_double_growth = '本牌成长 X2',
+    k_what_if_2x_growth = '本牌成长 X2',
+    k_what_if_speedy_growth = '本牌成长更快',
     k_what_if_add_hand_size  = '手牌上限 +1',
     k_what_if_add_hand = '出牌次数 +1',
     k_what_if_add_discard = '弃牌次数 +1',
@@ -2741,7 +2743,7 @@ function SMODS.INIT.MojiJoker()
                     eligible_cards[#eligible_cards + 1] = G.jokers.cards[i]
                 end
             end
-            local joker_to_edition = eligible_cards and pseudorandom_element(eligible_cards, pseudoseed('what_if')) or nil
+            local joker_to_edition = #eligible_cards > 0 and pseudorandom_element(eligible_cards, pseudoseed('what_if')) or nil
 
             local d = pseudorandom('what_if_dice', 1, 100)
             local e = pseudorandom('what_if_edition', 1, 100)
@@ -2822,7 +2824,7 @@ function SMODS.INIT.MojiJoker()
                 -- 20% => duplicate random joker until full
                 if (61 <= d and d <= 80) then
                     sendDebugMessage('what if: duplicate random joker ')
-                    G.Jokers.config.card_limit = G.jokers.config.card_limit + 1
+                    G.jokers.config.card_limit = G.jokers.config.card_limit + 1
                     joker_slot_to_remove = 1
                     local copiable_cards = {}
                     for i = 1, #G.jokers.cards do
@@ -2975,14 +2977,14 @@ function SMODS.INIT.MojiJoker()
                             fail = false
                         end
                     end
-                    -- 20% => +1 consumeable slot
-                    if (21 <= d and d <= 40) then
+                    -- 15% => +1 consumeable slot
+                    if (21 <= d and d <= 35) then
                         sendDebugMessage('what if: +1 consumeable slot ')
                         G.consumeables.config.card_limit = G.consumeables.config.card_limit + 1
                         card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_add_consumeable_slot'), colour = G.C.PURPLE})
                     end
                     -- 10% => enhance all playing cards
-                    if (41 <= d and d <= 50) then
+                    if (36 <= d and d <= 45) then
                         sendDebugMessage('what if: enhance all playing cards ')
                         local enhances = {G.P_CENTERS.m_stone, G.P_CENTERS.m_steel, G.P_CENTERS.m_glass, G.P_CENTERS.m_gold, G.P_CENTERS.m_bonus, G.P_CENTERS.m_mult, G.P_CENTERS.m_wild, G.P_CENTERS.m_lucky}
                         for i = #G.playing_cards, 1, -1 do
@@ -2992,7 +2994,7 @@ function SMODS.INIT.MojiJoker()
                         card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_enhance_all_playing_cards'), colour = G.C.BLUE})
                     end
                     -- 5% => 2x global probabilities
-                    if (51 <= d and d <= 55) then
+                    if (46 <= d and d <= 50) then
                         sendDebugMessage('what if: 2x global probabilities ')
                         for k, v in pairs(G.GAME.probabilities) do
                             G.GAME.probabilities[k] = v * 2
@@ -3000,19 +3002,19 @@ function SMODS.INIT.MojiJoker()
                         card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_2x_global_probabilities'), colour = G.C.RED})
                     end
                     -- 10% => 2x all poker hand levels
-                    if (56 <= d and d <= 65) or fail then
+                    if (51 <= d and d <= 60) or fail then
                         sendDebugMessage('what if: 2x all poker hand levels ')
-                        for k, v in ipairs(G.handlist) do
-                            G.GAME.hands[hand].level = math.max(G.GAME.hands[hand].level * 2, 2)
-                            G.GAME.hands[hand].mult = G.GAME.hands[hand].s_mult + G.GAME.hands[hand].l_mult*(G.GAME.hands[hand].level - 1)
-                            G.GAME.hands[hand].chips = G.GAME.hands[hand].s_chips + G.GAME.hands[hand].l_chips*(G.GAME.hands[hand].level - 1)
+                        for k, v in pairs(G.GAME.hands) do
+                            G.GAME.hands[k].level = math.max(2, G.GAME.hands[k].level * 2)
+                            G.GAME.hands[k].mult = G.GAME.hands[k].s_mult + G.GAME.hands[k].l_mult*(G.GAME.hands[k].level - 1)
+                            G.GAME.hands[k].chips = G.GAME.hands[k].s_chips + G.GAME.hands[k].l_chips*(G.GAME.hands[k].level - 1)
                         end
                         card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_2x_all_poker_hand_levels'), colour = G.C.YELLOW})
                     end
-                    -- 15% => self mult ^1.5 (min x2)
-                    if (66 <= d and d <= 80) then
-                        sendDebugMessage('what if: self mult ^1.5 ')
-                        self.ability.x_mult = self.ability.x_mult * math.floor(math.max(math.sqrt(self.ability.x_mult), 2))
+                    -- 20% => self mult ^2 (min x2)
+                    if (61 <= d and d <= 80) then
+                        sendDebugMessage('what if: self mult ^2 ')
+                        self.ability.x_mult = self.ability.x_mult * math.max(math.floor(self.ability.x_mult), 2)
                         card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_xmult',vars={self.ability.x_mult}}, colour = G.C.GREEN})
                     end
                     -- 10% => (negative effect) -1 joker slot
@@ -3060,24 +3062,24 @@ function SMODS.INIT.MojiJoker()
                         card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_xmult',vars={self.ability.x_mult}}, colour = G.C.PURPLE})
                         fail = false
                     end
-                    -- 10% => level up all poker hands
-                    if (61 <= d and d <= 70) then
+                    -- 20% => level up all poker hands
+                    if (61 <= d and d <= 80) then
                         sendDebugMessage('what if: level up all poker hands ')
-                        for k, v in ipairs(G.handlist) do
-                            G.GAME.hands[hand].level = G.GAME.hands[hand].level + 1
-                            G.GAME.hands[hand].mult = G.GAME.hands[hand].s_mult + G.GAME.hands[hand].l_mult*(G.GAME.hands[hand].level - 1)
-                            G.GAME.hands[hand].chips = G.GAME.hands[hand].s_chips + G.GAME.hands[hand].l_chips*(G.GAME.hands[hand].level - 1)
+                        for k, v in pairs(G.GAME.hands) do
+                            G.GAME.hands[k].level = G.GAME.hands[k].level + 1
+                            G.GAME.hands[k].mult = G.GAME.hands[k].s_mult + G.GAME.hands[k].l_mult*(G.GAME.hands[k].level - 1)
+                            G.GAME.hands[k].chips = G.GAME.hands[k].s_chips + G.GAME.hands[k].l_chips*(G.GAME.hands[k].level - 1)
                         end
                         card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_level_up_all_poker_hands'), colour = G.C.BLUE})
                     end
                     -- 15% => (negative effect) +1 win ante
-                    if (71 <= d and d <= 85) then
+                    if (81 <= d and d <= 95) then
                         sendDebugMessage('what if: +1 win ante ')
                         G.GAME.win_ante = G.GAME.win_ante + 1
                         card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_add_win_ante'), colour = G.C.BLUE})
                     end
-                    -- 15% => (negative effect) destroy playing cards
-                    if (86 <= d and d <= 100) then
+                    -- 5% => (negative effect) destroy playing cards
+                    if (96 <= d and d <= 100) then
                         sendDebugMessage('what if: destroy playing cards ')
                         local destroy_threshold = pseudorandom('what_if_destroy')
                         G.E_MANAGER:add_event(Event({
@@ -3165,47 +3167,53 @@ function SMODS.INIT.MojiJoker()
                         fail = false
                     end
                 end
-                -- 25% => growth x2
-                if (21 <= d and d <= 45) or fail then
+                -- 20% => growth x2
+                if (21 <= d and d <= 40) or fail then
                     sendDebugMessage('what if: growth x2 ')
                     self.ability.extra.Xmult_add = self.ability.extra.Xmult_add * 2
-                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_double_growth'), colour = G.C.PURPLE})
+                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_2x_growth'), colour = G.C.PURPLE})
+                end
+                -- 10% => growth ^2 (min x2)
+                if (41 <= d and d <= 50) then
+                    sendDebugMessage('what if: growth ^2 ')
+                    self.ability.extra.Xmult_add = self.ability.extra.Xmult_add * math.max(math.floor(self.ability.extra.Xmult_add), 2)
+                    card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_speedy_growth'), colour = G.C.PURPLE})
                 end
                 -- 20% => +1 hand size
-                if (46 <= d and d <= 65) then
+                if (51 <= d and d <= 70) then
                     sendDebugMessage('what if: +1 hand size ')
                     G.hand:change_size(1)
                     card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_add_hand_size'), colour = G.C.BLUE})
                 end
                 -- 5% => +1 hand
-                if (66 <= d and d <= 70) then
+                if (71 <= d and d <= 75) then
                     sendDebugMessage('what if: +1 hand ')
                     G.GAME.round_resets.hands = G.GAME.round_resets.hands + 1
                     card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_add_hand'), colour = G.C.GREEN})
                 end
                 -- 5% => +1 discard
-                if (71 <= d and d <= 75) then
+                if (76 <= d and d <= 80) then
                     sendDebugMessage('what if: +1 discard ')
                     G.GAME.round_resets.discards = G.GAME.round_resets.discards + 1
                     card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_add_discard'), colour = G.C.ORANGE})
                 end
                 -- 15% => (negative effect) lose $10
-                if (76 <= d and d <= 90) then
+                if (81 <= d and d <= 95) then
                     sendDebugMessage('what if: lose $10 ')
                     local dollars = -10
                     ease_dollars(dollars)
                     card_eval_status_text(self, 'extra', nil, nil, nil, {message = '-' .. localize('$') .. math.abs(dollars), dollars = dollars, colour = G.C.MONEY, instant = true})
                 end
                 -- 5% => (negative effect) -1 hand size
-                if (91 <= d and d <= 95) then
-                    sendDebugMessage('what if: -1 hand size ')
-                    if G.hand.config.card_limit < 2 then
-                        fail = true
-                    else
-                        G.hand:change_size(-1)
-                        card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_sub_hand_size'), colour = G.C.PURPLE})
-                    end
-                end
+                -- if (91 <= d and d <= 95) then
+                --     sendDebugMessage('what if: -1 hand size ')
+                --     if G.hand.config.card_limit < 2 then
+                --         fail = true
+                --     else
+                --         G.hand:change_size(-1)
+                --         card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_sub_hand_size'), colour = G.C.PURPLE})
+                --     end
+                -- end
                 -- 5% => (negative effect) 0.5x global probabilities
                 if (96 <= d and d <= 100) or fail then
                     sendDebugMessage('what if: 0.5x global probabilities ')
@@ -3278,6 +3286,7 @@ function Card:add_to_deck(from_debuff)
                     self.ability.extra.cur_slot = self.ability.extra.slot + 1
                 end
             end
+            self.ability.extra.cur_slot = self.ability.extra.slot + 1 -- count self
             G.jokers.config.card_limit = G.jokers.config.card_limit + self.ability.extra.cur_slot
             G.E_MANAGER:add_event(Event({func = function() self:juice_up(0.8, 0.5) return true end}))
         elseif self.ability.name == 'Certificate of Deposit' then
