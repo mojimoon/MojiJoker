@@ -8,7 +8,7 @@
 ------------MOD CODE -------------------------
 
 local MOD_ID = "MojiJoker"
-local MOD_VERSION = "1.1.3.1"
+local MOD_VERSION = "1.1.3.2"
 
 -- If you would like to disable a specific card, set the corresponding value to false
 -- 如果你想禁用某张卡牌，请将对应的值设置为 false
@@ -62,6 +62,12 @@ local enabled_cards = {
     ["j_moji_hell"] = true, -- Effect: Misc
     -- Legendary
     ["j_moji_these_are_the_odds"] = true, -- Effect: Joker
+}
+
+-- If you would like to enable a specific behavior, set the corresponding value to true
+-- 如果你想启用某种效果，请将对应的值设置为 true
+local enabled_behaviors = {
+    allow_what_if_destroy_eternal = false,
 }
 
 local loc_en = {
@@ -423,8 +429,9 @@ local loc_en = {
             "and apply a random effect",
             "based on its rarity and edition",
             "when {C:attention}Blind{} is selected",
-            "{C:inactive}(Fortune, Space, Power, Luck)",
-            "{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)"
+            "{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
+            "{C:inactive}(Cannot destroy Eternal Jokers by default)",
+            "{C:inactive}(Behavior can be toggled in source code)"
         }
     },
     j_moji_who_needs_money = {
@@ -851,8 +858,9 @@ local loc_zh = {
             "获得{X:mult,C:white}X#1#{}倍率",
             "并根据其稀有度和版本",
             "获得随机效果",
-            "{C:inactive}（财富、空间、力量、幸运）",
-            "{C:inactive}（当前为{X:mult,C:white}X#2#{C:inactive}倍率）"
+            "{C:inactive}（当前为{X:mult,C:white}X#2#{C:inactive}倍率）",
+            "{C:inactive}（默认不可摧毁永恒小丑牌，",
+            "{C:inactive}可在源码中修改）"
         }
     },
     j_moji_who_needs_money = {
@@ -1049,7 +1057,7 @@ local jokers = {
     j_moji_satellite_payment = {
         ability_name = "Satellite Payment",
         slug = "moji_satellite_payment",
-        ability = {extra = {price_sub = 1, planets_used = 0}},
+        ability = {extra = {price_sub = 0.75, planets_used = 0}},
         rarity = 2,
         cost = 6,
         unlocked = true, discovered = true, blueprint_compat = false, eternal_compat = true
@@ -1684,7 +1692,7 @@ function SMODS.INIT.MojiJoker()
 
     SMODS.Jokers.j_moji_satellite_payment.loc_def = function(card)
         card.ability.extra.planets_used = count_used_consumeables('Planet')
-        return {card.ability.extra.price_sub, card.ability.extra.planets_used * card.ability.extra.price_sub}
+        return {card.ability.extra.price_sub, math.floor(card.ability.extra.planets_used * card.ability.extra.price_sub)}
     end
 
     -- Transcendence
@@ -2735,7 +2743,7 @@ function SMODS.INIT.MojiJoker()
                     break
                 end
             end
-            if not j or j.ability.eternal then return end
+            if not j or (j.ability.eternal and not enabled_effects.allow_what_if_destroy_eternal) then return end
 
             local eligible_cards = {}
             for i = 1, #G.jokers.cards do
@@ -2937,8 +2945,8 @@ function SMODS.INIT.MojiJoker()
                         end
                         card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_seal_all_playing_cards'), colour = G.C.YELLOW})
                     end
-                    -- 10% => (negative effect) -1 shop card slot
-                    if (81 <= d and d <= 90) then
+                    -- 5% => (negative effect) -1 shop card slot
+                    if (81 <= d and d <= 85) then
                         sendDebugMessage('what if: -1 shop card slot ')
                         if G.GAME.shop.joker_max < 2 then
                             fail = true
@@ -2947,8 +2955,8 @@ function SMODS.INIT.MojiJoker()
                             card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_sub_shop_card_slot'), colour = G.C.PURPLE})
                         end
                     end
-                    -- 10% => (negative effect) destroy random joker
-                    if (91 <= d and d <= 100) or fail then
+                    -- 15% => (negative effect) destroy random joker
+                    if (86 <= d and d <= 100) or fail then
                         local destructable_jokers = {}
                         for i = 1, #G.jokers.cards do
                             if G.jokers.cards[i] ~= self and G.jokers.cards[i] ~= j and not G.jokers.cards[i].getting_sliced and not G.jokers.cards[i].ability.eternal then
@@ -3017,14 +3025,14 @@ function SMODS.INIT.MojiJoker()
                         self.ability.x_mult = self.ability.x_mult * math.max(math.floor(self.ability.x_mult), 2)
                         card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_xmult',vars={self.ability.x_mult}}, colour = G.C.GREEN})
                     end
-                    -- 10% => (negative effect) -1 joker slot
-                    if (81 <= d and d <= 90) then
+                    -- 5% => (negative effect) -1 joker slot
+                    if (81 <= d and d <= 85) then
                         sendDebugMessage('what if: -1 joker slot ')
                         G.jokers.config.card_limit = G.jokers.config.card_limit - 1
                         card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_sub_joker_slot'), colour = G.C.PURPLE})
                     end
-                    -- 10% => (negative effect) blind score x 1.5
-                    if (91 <= d and d <= 100) then
+                    -- 15% => (negative effect) blind score x 1.5
+                    if (86 <= d and d <= 100) then
                         sendDebugMessage('what if: blind score x 1.5 ')
                         self.ability.extra.XBlind = self.ability.extra.XBlind * 1.5
                         card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_what_if_blind_score_up'), colour = G.C.RED})
@@ -3254,7 +3262,7 @@ function Card:set_cost()
     if G.jokers then
         for i = 1, #G.jokers.cards do
             if G.jokers.cards[i].ability.name == 'Satellite Payment' then
-                price_adjust = price_adjust - G.jokers.cards[i].ability.extra.planets_used * G.jokers.cards[i].ability.extra.price_sub
+                price_adjust = price_adjust - math.floor(G.jokers.cards[i].ability.extra.planets_used * G.jokers.cards[i].ability.extra.price_sub)
             end
         end
     end
