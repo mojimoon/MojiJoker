@@ -8,7 +8,7 @@
 ------------MOD CODE -------------------------
 
 local MOD_ID = "MojiJoker"
-local MOD_VERSION = "1.1.3.3"
+local MOD_VERSION = "1.1.3.4"
 
 -- If you would like to disable a specific card, set the corresponding value to false
 -- 如果你想禁用某张卡牌，请将对应的值设置为 false
@@ -67,7 +67,7 @@ local enabled_cards = {
 -- If you would like to enable a specific behavior, set the corresponding value to true
 -- 如果你想启用某种效果，请将对应的值设置为 true
 local enabled_behaviors = {
-    allow_what_if_destroy_eternal = false,
+    allow_what_if_destroy_eternal = true,
 }
 
 local loc_en = {
@@ -2174,9 +2174,9 @@ function SMODS.INIT.MojiJoker()
     SMODS.Jokers.j_moji_luxury_tax.calculate = function(self, context)
         if context.setting_blind and not context.blueprint and not self.getting_sliced then
             local new_hand_size = math.max(self.ability.extra.hand_size - self.ability.extra.hand_size_sub * (G.GAME.dollars > 0 and math.floor(G.GAME.dollars / self.ability.extra.per) or 0), self.ability.extra.min_hand_size)
-            if new_hand_size ~= self.ability.extra.hand_size then
-                G.hand:change_size(new_hand_size - self.ability.extra.hand_size)
-                self.ability.extra.hand_size = new_hand_size
+            if new_hand_size ~= self.ability.extra.cur_hand_size then
+                G.hand:change_size(new_hand_size - self.ability.extra.cur_hand_size)
+                self.ability.extra.cur_hand_size = new_hand_size
             end
         end
     end
